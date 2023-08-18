@@ -10,3 +10,15 @@ C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Data Access Layer\obj\Debug\net6.0\Da
 C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Data Access Layer\obj\Debug\net6.0\refint\Data Access Layer.dll
 C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Data Access Layer\obj\Debug\net6.0\Data Access Layer.pdb
 C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Data Access Layer\obj\Debug\net6.0\ref\Data Access Layer.dll
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\bin\Debug\net6.0\Data Access Layer.deps.json
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\bin\Debug\net6.0\Data Access Layer.dll
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\bin\Debug\net6.0\Data Access Layer.pdb
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.csproj.AssemblyReference.cache
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.AssemblyInfoInputs.cache
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.AssemblyInfo.cs
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.csproj.CoreCompileInputs.cache
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.dll
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\refint\Data Access Layer.dll
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\Data Access Layer.pdb
+C:\Users\Brook\Source\Repos\erp\Data Access Layer\obj\Debug\net6.0\ref\Data Access Layer.dll

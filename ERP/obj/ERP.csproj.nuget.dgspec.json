@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\ERP\\ERP.csproj": {}
+    "C:\\Users\\Brook\\Source\\Repos\\erp\\ERP\\ERP.csproj": {}
   },
   "projects": {
-    "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\ERP\\ERP.csproj": {
+    "C:\\Users\\Brook\\Source\\Repos\\erp\\ERP\\ERP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\ERP\\ERP.csproj",
+        "projectUniqueName": "C:\\Users\\Brook\\Source\\Repos\\erp\\ERP\\ERP.csproj",
         "projectName": "ERP",
-        "projectPath": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\ERP\\ERP.csproj",
-        "packagesPath": "C:\\Users\\abrha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\ERP\\obj\\",
+        "projectPath": "C:\\Users\\Brook\\Source\\Repos\\erp\\ERP\\ERP.csproj",
+        "packagesPath": "C:\\Users\\Brook\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Brook\\Source\\Repos\\erp\\ERP\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\abrha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Brook\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

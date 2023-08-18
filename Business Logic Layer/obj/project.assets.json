@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\abrha\\.nuget\\packages\\": {}
+    "C:\\Users\\Brook\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Business Logic Layer\\Business Logic Layer.csproj",
+      "projectUniqueName": "C:\\Users\\Brook\\Source\\Repos\\erp\\Business Logic Layer\\Business Logic Layer.csproj",
       "projectName": "Business Logic Layer",
-      "projectPath": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Business Logic Layer\\Business Logic Layer.csproj",
-      "packagesPath": "C:\\Users\\abrha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Business Logic Layer\\obj\\",
+      "projectPath": "C:\\Users\\Brook\\Source\\Repos\\erp\\Business Logic Layer\\Business Logic Layer.csproj",
+      "packagesPath": "C:\\Users\\Brook\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Brook\\Source\\Repos\\erp\\Business Logic Layer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\abrha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Brook\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

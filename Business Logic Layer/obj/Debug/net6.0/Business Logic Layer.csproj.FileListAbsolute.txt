@@ -10,3 +10,15 @@ C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Business Logic Layer\obj\Debug\net6.0
 C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Business Logic Layer\obj\Debug\net6.0\refint\Business Logic Layer.dll
 C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.pdb
 C:\Users\abrha\Documents\mols-erp\MoLS-ERP\Business Logic Layer\obj\Debug\net6.0\ref\Business Logic Layer.dll
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\bin\Debug\net6.0\Business Logic Layer.deps.json
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\bin\Debug\net6.0\Business Logic Layer.dll
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\bin\Debug\net6.0\Business Logic Layer.pdb
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.csproj.AssemblyReference.cache
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.AssemblyInfoInputs.cache
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.AssemblyInfo.cs
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.csproj.CoreCompileInputs.cache
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.dll
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\refint\Business Logic Layer.dll
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\Business Logic Layer.pdb
+C:\Users\Brook\Source\Repos\erp\Business Logic Layer\obj\Debug\net6.0\ref\Business Logic Layer.dll

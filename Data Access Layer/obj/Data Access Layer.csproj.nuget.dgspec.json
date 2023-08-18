@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Data Access Layer\\Data Access Layer.csproj": {}
+    "C:\\Users\\Brook\\Source\\Repos\\erp\\Data Access Layer\\Data Access Layer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Data Access Layer\\Data Access Layer.csproj": {
+    "C:\\Users\\Brook\\Source\\Repos\\erp\\Data Access Layer\\Data Access Layer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Data Access Layer\\Data Access Layer.csproj",
+        "projectUniqueName": "C:\\Users\\Brook\\Source\\Repos\\erp\\Data Access Layer\\Data Access Layer.csproj",
         "projectName": "Data Access Layer",
-        "projectPath": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Data Access Layer\\Data Access Layer.csproj",
-        "packagesPath": "C:\\Users\\abrha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\abrha\\Documents\\mols-erp\\MoLS-ERP\\Data Access Layer\\obj\\",
+        "projectPath": "C:\\Users\\Brook\\Source\\Repos\\erp\\Data Access Layer\\Data Access Layer.csproj",
+        "packagesPath": "C:\\Users\\Brook\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Brook\\Source\\Repos\\erp\\Data Access Layer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\abrha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Brook\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
