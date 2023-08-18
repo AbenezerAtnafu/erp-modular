@@ -1,55 +1,30 @@
 # Visual Studio files
-/.vs/
+.vs/
+bin/
+obj/
+
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# NuGet packages
+*.nuget/
+
+# User-specific files
+*.userprefs
 *.suo
 *.user
-*.userprefs
-*.psess
-*.vspscc
-*_i.c
-*_p.c
-*.ncb
-*.sln.docstates
-*.suo
-*.pdb
-*.cache
-*.ilk
-*.log
-*.obj
-*.exe
-*.dll
-/bin/
-/obj/
-# Build results
-/[Dd]ebug/
-/[Rr]elease/
-/x64/
-/build/
-/[Bb]in/
-/[Oo]bj/
+*.bak
 
-
-Build results
-# NuGet packages
-/packages/
-
-# MSTest test results
+# Test results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-# Resharper-specific
+# Resharper
 _ReSharper*/
-*.resharper
-*.DotSettings.user
 
-# Rider-specific
+# Rider
 .idea/
-*.sln.iml
-
-# User-specific files
-*.user
-*.suo
-*.userprefs
-*.bak
 
 # Visual Studio Code
 .vscode/
