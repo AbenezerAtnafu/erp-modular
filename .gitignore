@@ -1,14 +1,14 @@
 # Visual Studio files
 .vs/
-bin/
-obj/
+/bin/
+/obj/
 
 # Build output
-[Bb]in/
-[Oo]bj/
+/[Bb]in/
+/[Oo]bj/
 
 # NuGet packages
-*.nuget/
+/*.nuget/
 
 # User-specific files
 *.userprefs
@@ -28,3 +28,5 @@ _ReSharper*/
 
 # Visual Studio Code
 .vscode/
+
+/Migrations/
