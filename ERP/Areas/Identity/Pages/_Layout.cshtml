@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ERP - @ViewData["Title"] </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Mols ERP. Confidential Area." />
+    <meta name="author" content="LMISDev" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/img/mols.png" type="image/x-icon">
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="~/assets/fonts/fontawesome/css/fontawesome-all.min.css">
+    <!-- animation css -->
+    <link rel="stylesheet" href="~/assets/animate/animate.min.css">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <!-- custom css -->
+    <link rel="stylesheet" href="~/assets/css/customstyle.css">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.css">
+
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="auth-bg">
+                <span class="r"></span>
+                <span class="r s"></span>
+                <span class="r s"></span>
+                <span class="r"></span>
+            </div>
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <div class="b-bg">
+                            <img src="~/img/mols.png" width="40" height="40" alt="MoLs" />
+                        </div>
+                    </div>
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Js -->
+    <script src="~/assets/js/vendor-all.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required:false)
+</body>
+</html>
