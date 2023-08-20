@@ -6,6 +6,7 @@
 }
 <h5 class="mb-5">@ViewData["Title"]</h5>
 <form id="account" method="post" class="form-signin">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="input-group mb-2 d-flex flex-column">
         <input asp-for="Input.Email" class="form-control w-100" placeholder="example@gmail.com" />
         <span asp-validation-for="Input.Email" class="text-danger"></span>

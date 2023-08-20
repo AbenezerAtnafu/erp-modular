@@ -4,3 +4,12 @@
     font-size: 80%;
     font-weight:400;
 }
+
+
+#profilePictureHolder {
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:100%;
+    cursor:pointer;
+}
