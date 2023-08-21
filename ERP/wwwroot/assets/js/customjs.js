@@ -35,6 +35,18 @@ function hideEndDate() {
         }
 }
 
+//show end date if not currently working
+function hideMessagInput() {
+    var checkbox = document.getElementById("ApproveEmployee");
+        if (checkbox.checked) {
+            // hide end date
+            document.getElementById("EmpRejectMessageInput").style.display = "none";
+        } else {
+            // show end date
+            document.getElementById("EmpRejectMessageInput").style.display = "block";
+        }
+}
+
 // tab navigation
 function nextButton() {
     const nextTabLinkEl = $('.nav-tabs .active').closest('li').next('li').find('a')[0];
@@ -230,4 +242,26 @@ function submitThirdTab() {
 function submitfinalTab() {
     var pattern = /^[a-zA-Z\s]{2,30}$/;
     document.getElementById("CreateEmpForm").submit();
+}
+
+//submit modal
+function submitApproveModal() {
+    var pattern = /^[a-zA-Z\s]{2,30}$/;
+
+    if (document.getElementById("ApproveEmployee").checked) {
+        document.getElementById("EmployeeApproveForm").submit();
+
+    } else {
+        if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
+            isbankValid = false
+            document.getElementById("EmpRejectMessage").classList.add("is-invalid");
+            document.getElementById("EmpRejectMessageValidation").textContent = "Account number should at least be 4 or max 30 digits."
+        } else {
+            document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
+            document.getElementById("EmpRejectMessageValidation").textContent = ""
+            isbankValid = true
+        }
+        isbankValid ? setTimeout(() => { document.getElementById("EmployeeApproveForm").submit() }, 400)  : '';
+    }
+    
 }

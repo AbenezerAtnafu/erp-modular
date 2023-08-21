@@ -10,6 +10,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>();
 
 // Add services to the container.
