@@ -1,4 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using ERP.Areas.Identity.Data
+@inject UserManager<ERP.Areas.Identity.Data.User> UserManager
+@inject UserDbContext userDbContext
+
+
+
 <aside class="pcoded-navbar">
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
@@ -31,26 +37,30 @@
                  </li>
             </ul>
 
-            <ul class="nav pcoded-inner-navbar">
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Manage User Roles</label>
-                </li>
-                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                    <a class="nav-link" asp-action="Index" asp-controller="UserRoles"><span class="pcoded-micon"></span><span class="pcoded-mtext">Assign Role</span></a>
-                </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Manage Users</label>
-                </li>
-                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                    <a class="nav-link" asp-action="InactiveUsers" asp-controller="Users"><span class="pcoded-micon"></span><span class="pcoded-mtext">Inactive Users</span></a>
-                </li>
-                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                    <a class="nav-link" asp-action="ActiveUsers" asp-controller="Users"><span class="pcoded-micon"></span><span class="pcoded-mtext">Active Users</span></a>
-                </li>
-            </ul>
-
-            <ul class="nav pcoded-inner-navbar">
-                <li class="nav-item pcoded-menu-caption">
+            @if (Context.User.IsInRole("SuperAdmin"))
+            {
+                 <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Manage User Roles</label>
+                    </li>
+                    <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
+                        <a class="nav-link" asp-action="Index" asp-controller="UserRoles"><span class="pcoded-micon"></span><span class="pcoded-mtext">Assign Role</span></a>
+                    </li>
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Manage Users</label>
+                    </li>
+                    <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
+                        <a class="nav-link" asp-action="InactiveUsers" asp-controller="Users"><span class="pcoded-micon"></span><span class="pcoded-mtext">Inactive Users</span></a>
+                    </li>
+                    <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
+                        <a class="nav-link" asp-action="ActiveUsers" asp-controller="Users"><span class="pcoded-micon"></span><span class="pcoded-mtext">Active Users</span></a>
+                    </li>
+                </ul>
+            }
+            @if (Context.User.IsInRole("HR"))
+            {
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
                     <label>Base Information</label>
                 </li>
 
@@ -81,7 +91,7 @@
                     </ul>
                 </li>
             </ul>
-
+            }
         </div>
     </div>
 </aside>

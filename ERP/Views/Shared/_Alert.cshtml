@@ -2,22 +2,24 @@
 @if (TempData.ContainsKey("Success"))
 {
  
-    <div id="alert-box" class="alert-success px-3 fade show py-2 shadow" style="width:290px; position:fixed; top: 60px; right: 20px; z-index: 10; transition: opacity 1s ease-out;" role="alert">
-        <div class="my-2">
+    <div id="alert-box" class="alert-success border border-success px-3 fade show py-2 shadow" style="width:290px; position:fixed; top: 60px; right: 20px; z-index: 9994; transition: opacity 1s ease-out;" role="alert">
+        <div class="">
 
             <span class="font-weight-bolder mr-1 "><i class="feather icon-check-square fa-fw"></i>  Success!</span>
             <button type="button" onclick="closeAlert()" class="font-weight-bold btn btn-link m-0 mb-1 p-0 font-weight-bold float-right" style="top:0; font-size: 18px; color: darkgreen;"> <i class="feather icon-x fa-fw "></i> </button>
         </div>
-        <span class="p-2 mb-2">@TempData["Success"]</span>
+        <hr style="margin-top:3px;">
+        <span class="p-2 mb-3 text-dark">@TempData["Success"]</span>
     </div>
 }
 @if (TempData.ContainsKey("Warning"))
 {
-    <div id="alert-box" class="alert-warning fade show px-3 py-2 shadow" style="width:290px; position:fixed; top: 60px; right: 20px; z-index: 10; transition: opacity 1s ease-out;" role="alert">
-        <div class="my-2">
+    <div id="alert-box" class="alert-warning border border-warning fade show px-3 py-2 shadow" style="width:290px; position:fixed; top: 60px; right: 20px; z-index: 9994; transition: opacity 1s ease-out;" role="alert">
+        <div class="">
             <span class="font-weight-bold"><i class="feather icon-alert-triangle fa-fw"></i>  Warning!</span>
             <button type="button" onclick="closeAlert()" class="font-weight-bold btn btn-link mb-auto mx-0 p-0 font-weight-bold float-right" style="top:0; font-size: 18px; color: saddlebrown;"> <i class="feather icon-x fa-fw "></i> </button>
         </div>
-        <span class="p-2 mb-2">@TempData["Warning"]</span>
+        <hr style="margin-top:3px;">
+        <span class="p-2 mb-3 text-dark">@TempData["Warning"]</span>
     </div>
 }

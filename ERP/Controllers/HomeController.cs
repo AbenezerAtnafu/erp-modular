@@ -13,9 +13,10 @@ namespace ERP.Controllers
             _logger = logger;
         }
 
-        public IActionResult Profile()
+        public IActionResult Create()
         {
-            return View("~/Views/HRMs/Employee/Profile.cshtml");
+            TempData["Warning"] = "this is success";
+            return View("~/Views/HRMs/Employee/Create.cshtml");
         }
 
         public IActionResult Privacy()

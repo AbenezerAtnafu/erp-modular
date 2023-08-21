@@ -38,7 +38,7 @@
                         <a class="nav-link text-uppercase disabled" id="financial-tab" data-toggle="tab" href="#financial" role="tab" aria-controls="financial" aria-selected="false">Financial Details</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-uppercase disabled" id="position-tab" data-toggle="tab" href="#position" role="tab" aria-controls="position" aria-selected="false">Position Details</a>
+                        <a class="nav-link text-uppercase" id="position-tab" data-toggle="tab" href="#position" role="tab" aria-controls="position" aria-selected="false">Position Details</a>
                         </li>
                   </ul>
                   <form id="CreateEmpForm" method="post" enctype="multipart/form-data">
@@ -306,8 +306,13 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="Position" class="control-label">Position <span class="text-danger">*</span></label>
-                                            <input type="number" id="Position" name="Position" class="form-control" placeholder="Chala" />
-                                          <small id="PositionValidation" class="text-danger"></small>
+                                            <div class="multiselect">
+                                                <select multiple class="border w-100">
+                                                    <option value="option1">Option 1</option>
+                                                    <option value="option2">Option 2</option>
+                                                </select>
+                                            </div>
+                                            <small id="PositionValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
