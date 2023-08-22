@@ -9,11 +9,15 @@ var connectionString = builder.Configuration.GetConnectionString("UserDbContextC
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddDbContext<employee_context>(options =>
+    options.UseSqlServer(connectionString));
+
+
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>();
 
-// Add services to the container.
+// Add services to the container.b
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -40,4 +44,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+var userManager = services.GetRequiredService<UserManager<User>>();
+var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+await SeedRoles.SeedRolesAsync(userManager, roleManager);
+await SeedRoles.SeedSuperAdminAsync(userManager, roleManager);
 app.Run();

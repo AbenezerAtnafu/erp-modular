@@ -9,8 +9,49 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Areas\Identity\Data\employee_context.cs" />
+    <Content Include="Areas\Identity\Data\Roles.cs" />
+    <Content Include="Areas\Identity\Data\SeedRoles.cs" />
+    <Content Include="Areas\Identity\Data\User.cs" />
+    <Content Include="Areas\Identity\Data\UserDbContext.cs" />
+    <Content Include="Areas\Identity\Pages\Account\AccessDenied.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ConfirmEmail.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ConfirmEmailChange.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ForgotPassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Lockout.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Login.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\LoginWith2fa.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\LoginWithRecoveryCode.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Logout.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ChangePassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\DeletePersonalData.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\Disable2fa.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\DownloadPersonalData.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\Email.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\EnableAuthenticator.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ExternalLogins.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\GenerateRecoveryCodes.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\Index.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ManageNavPages.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\PersonalData.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ResetAuthenticator.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\SetPassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\TwoFactorAuthentication.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Register.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ResendEmailConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ResetPassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Error.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">
       <PrivateAssets>all</PrivateAssets>
@@ -19,5 +60,19 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Data Access Layer">
+      <HintPath>..\Data Access Layer\bin\Debug\net6.0\Data Access Layer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\HRMs\" />
+  </ItemGroup>
+
+  
+
+
 
 </Project>

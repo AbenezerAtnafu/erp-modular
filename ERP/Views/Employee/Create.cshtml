@@ -1,0 +1,371 @@
+﻿@{
+    ViewData["Title"] = "Register Employee";
+}
+
+<div class="container px-1" style="position:initial;">
+    <div class="col-xl-12">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><i class="feather icon-home"></i></li>
+                            <li class="breadcrumb-item">Employee</li>
+                            <li class="breadcrumb-item">Register</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5>Insert Employee Information</h5>
+            <small class="d-block mt-4 text-muted">
+                Ensure that you fill out the form accurately and carefully, as any errors or incomplete information may cause delays in the approval process by HR.
+            </small>
+        </div>
+        <div class="card-block table-border-style">
+             <div class="pb-4">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active text-uppercase" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-uppercase disabled" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-uppercase disabled" id="financial-tab" data-toggle="tab" href="#financial" role="tab" aria-controls="financial" aria-selected="false">Financial Details</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-uppercase" id="position-tab" data-toggle="tab" href="#position" role="tab" aria-controls="position" aria-selected="false">Position Details</a>
+                        </li>
+                  </ul>
+                  <form id="CreateEmpForm" method="post" enctype="multipart/form-data">
+                      <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active mt-4" id="basic" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="m-2 img-container position-relative d-inline-block">
+                                    @*  @if (Model != null)
+                                    {
+                                    @if (Model.ProfilePicture == null)
+                                    {
+                                    <img id="profilePictureHolder" src="~/images/male_img_avatar.png" alt="Avatar" />
+                                    }
+                                    else
+                                    {
+                                    }*@
+                                    <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" />
+                                    <input type="file"
+                                           accept=".png,.jpg,.jpeg,.gif,.tif"
+                                           id="ProfilePicture"
+                                           class="form-control d-none"
+                                        />
+                                    <small id="ProfilePictureValidation" class="text-danger"></small>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="FirstName" class="control-label">First Name <span class="text-danger">*</span></label>
+                                            <input 
+                                                type="text"
+                                                id="FirstName"
+                                                name="FirstName"
+                                                class="form-control name-input"
+                                                placeholder="Abebe"
+                                              />
+                                            <small id="FirstNameValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="FatherName" class="control-label">Father Name <span class="text-danger">*</span></label>
+                                            <input type="text" id="FatherName" name="FatherName" class="form-control name-input" placeholder="Kebede" />
+                                          <small id="FatherNameValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="GrandFatherName" class="control-label">GrandFather Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="Chala" />
+                                          <small id="GrandFatherNameValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="PlaceofBirth" class="control-label">Place of Birth <span class="text-danger">*</span></label>
+                                        <input type="text" id="PlaceofBirth" name="PlaceofBirth" class="form-control name-input" placeholder="Addis Ababa" />
+                                          <small id="PlaceofBirthValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="DateofBirth" class="control-label">Date of Birth <span class="text-danger">*</span></label>
+                                            <input type="date" id="DateofBirth" name="DateofBirth" class="form-control" />
+                                          <small id="DateofBirthValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Nationality" class="control-label">Nationality <span class="text-danger">*</span></label>
+                                            <input type="text" id="Nationality" name="Nationality" class="form-control" placeholder="Ethiopian" />
+                                          <small id="NationalityValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12">
+                                        <div class="form-group p-2">
+                                            <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
+                                            <div class="form-check pt-2">
+                                                <span class="mx-2">
+                                                    <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" />
+                                                    <label for="Female" class="form-check-label">Female</label>
+                                                </span>
+                                                <span class="mx-2">
+
+                                                    <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" />
+                                                    <label for="Male" class="form-check-label">Male</label>
+                                                </span>
+                                            </div>
+                                          <small id="GenderValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Religion" class="control-label">Religion <span class="text-danger">*</span></label>
+                                        <input type="text" id="Religion" name="Religion" class="form-control name-input" placeholder="Christian" />
+                                          <small id="ReligionValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="maritalstatus" class="control-label">Matrital Status <span class="text-danger">*</span></label>
+                                            <input type="text" id="maritalstatus" name="maritalstatus" class="form-control" placeholder="Single" />
+                                          <small id="maritalstatusValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="px-3 py-4 mt-2">
+                                    <button id="nexttab" class="btn btn-info float-right" onclick="submitFirstTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                                </div>
+                                
+                            </div>
+                            <div class="tab-pane fade mt-4" id="address" role="tabpanel" aria-labelledby="profile-tab">
+                                <h6 class="mt-4">Location</h6>
+                                <hr>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Region" class="control-label">Region <span class="text-danger">*</span></label>
+                                            <input type="text" id="Region" name="Region" class="form-control" placeholder="Abebe" />
+                                          <small id="RegionValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
+                                            <input type="text" id="Zone" name="Zone" class="form-control" placeholder="Kebede" />
+                                          <small id="ZoneValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
+                                            <input type="text" id="Subcity" name="Subcity" class="form-control" placeholder="Chala" />
+                                          <small id="SubcityValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
+                                            <input type="text" id="Woreda" name="Woreda" class="form-control" placeholder="Abebe" />
+                                            <small id="WoredaValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="kebele" class="control-label">kebele</label>
+                                            <input type="text" id="kebele" name="kebele" class="form-control address-input" placeholder="Kebede" />
+                                            <small id="kebeleValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="PrimaryAddress" class="control-label">Primary Address</label>
+                                        <input type="text" id="PrimaryAddress" name="PrimaryAddress" class="form-control address-input" placeholder="Chala" />
+                                             <small id="PrimaryAddressValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h6 class="mt-5">Contact</h6>
+                                <hr>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="PhoneNumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
+                                             <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">+251</span>
+                                                </div>
+                                                <input type="text" class="form-control phone-input" placeholder="920124578" aria-label="PhoneNumber" aria-describedby="Phone-Number">
+                                                <small id="PhoneNumberValidation" class="text-danger bg-white"></small>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="AlternativePhoneNumber" class="control-label">Alternative Phone Number</label>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">+251</span>
+                                                </div>
+                                                <input type="text" class="form-control phone-input" placeholder="920124578" aria-label="AlternativePhoneNumber" aria-describedby="AlternativePhone-Number">
+                                                <small id="AlternativePhoneNumberValidation" class="text-danger  bg-white"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="InternalPhoneNumber" class="control-label">Internal Phone Line</label>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">011</span>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="820124578" aria-label="InternalPhoneNumber" aria-describedby="InternalPhoneNumber">
+                                            </div>
+                                          <small id="InternalPhoneNumberValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-3 py-4 mt-2">
+                                    <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
+                                    <button id="nexttab" class="btn btn-info float-right" onclick="submitSecondTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade  mt-4" id="financial" role="tabpanel" aria-labelledby="contact-tab">
+                                    <div class="row p-0 m-0">
+                                        <div class="col-md-4 col-sm-12 ">
+                                            <div class="form-group p-2">
+                                                <label for="BankNumber" class="control-label">Bank Account Number <span class="text-danger">*</span></label>
+                                                <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="10001842693" />
+                                                <small id="BankNumberValidation" class="text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 ">
+                                            <div class="form-group p-2">
+                                                <label for="PensionNumber" class="control-label">Pension Number</label>
+                                                <input type="number" id="PensionNumber" name="PensionNumber" class="form-control" placeholder="1245" />
+                                                <small id="PensionNumberValidation" class="text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 ">
+                                            <div class="form-group p-2">
+                                                <label for="TinNumber" class="control-label">Tin Number</label>
+                                                <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="1236578952" />
+                                                <small id="TinNumberValidation" class="text-danger"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-3 py-4 mt-2">
+                                        <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
+                                        <button id="nexttab" class="btn btn-info float-right" onclick="submitThirdTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                                    </div>
+                                </div>
+                            <div class="tab-pane fade  mt-4" id="position" role="tabpanel" aria-labelledby="contact-tab">
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
+                                            <input type="text" id="Division" name="Division" class="form-control" placeholder="Abebe" />
+                                          <small id="DivisionValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
+                                            <input type="text" id="Department" name="Department" class="form-control" placeholder="Kebede" />
+                                          <small id="DepartmentValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
+                                            <input type="number" id="Team" name="Team" class="form-control" placeholder="Chala" />
+                                          <small id="TeamValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Position" class="control-label">Position <span class="text-danger">*</span></label>
+                                            <div class="multiselect">
+                                                <select multiple class="border w-100">
+                                                    <option value="option1">Option 1</option>
+                                                    <option value="option2">Option 2</option>
+                                                </select>
+                                            </div>
+                                            <small id="PositionValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="Employmenttype" class="control-label">Employment type <span class="text-danger">*</span></label>
+                                            <input type="number" id="Employmenttype" name="Employmenttype" class="form-control" placeholder="Chala" />
+                                          <small id="EmploymenttypeValidation" class="text-danger"></small>
+                                        </div>
+                                    </div><div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="OfficeNumber" class="control-label">Office Number</label>
+                                            <input type="number" id="OfficeNumber" name="OfficeNumber" class="form-control" placeholder="125" />
+                                          <small id="OfficeNumberValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-6 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="PlaceofWork" class="control-label">Place of work <span class="text-danger">*</span></label>
+                                            <input type="number" id="PlaceofWork" name="PlaceofWork" class="form-control position-input" placeholder="Addis Ababa" />
+                                          <small id="PlaceofWorkValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 ">
+                                        <div class="form-group p-2">
+                                            <label for="StartDate" class="control-label">Start Date <span class="text-danger">*</span></label>
+                                            <input type="date" id="StartDate" name="StartDate" class="form-control" />
+                                          <small id="StartDateValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mb-2">
+                                            <div class="checkbox checkbox-fill d-inline">
+                                                <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()">
+                                                <label for="AlreadyWorking" class="cr">I am currently working at mols.</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group p-2" id="EmpEndDate">
+                                            <label for="EndDate" class="control-label">End date</label>
+                                            <input type="date" id="EndDate" name="EndDate" class="form-control" />
+                                          <small id="EndDateValidation" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-3 py-4 mt-2">
+                                    <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
+                                    <button class="btn btn-primary float-right" onclick="submitfinalTab()" type="button">Submit</button>
+                                </div>
+                            </div>
+                      </div>
+                 </form>
+             </div>
+        </div>
+    </div>
+</div>
