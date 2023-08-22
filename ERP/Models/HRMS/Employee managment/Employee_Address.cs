@@ -22,17 +22,14 @@ namespace ERP.Models.HRMS.Employee_managments
         public int? woreda_id { get; set; }
         public string? kebele{ get; set; }
         public string? primary_address { get; set; }
-        [ForeignKey("Employee")]
-        public int employee_id { get; set; }
         public Region Region { get; set; } 
         public Zone Zone { get; set; }
         public Subcity Subcity { get; set; }
         public Woreda Woreda { get; set; }
+
+        [ForeignKey("Employees")]
+        public int employee_id { get; set; }
         public Employee Employees { get; set; }
-
-
-
-
 
     }
 }

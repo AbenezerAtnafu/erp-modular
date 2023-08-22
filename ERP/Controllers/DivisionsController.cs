@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
 
-namespace ERP.Controllers.HRMs
+namespace ERP.Controllers
 {
     public class DivisionsController : Controller
     {
@@ -48,7 +48,8 @@ namespace ERP.Controllers.HRMs
         // GET: Divisions/Create
         public IActionResult Create()
         {
-            ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
+           // ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
+            ViewBag.org_id = new SelectList(_context.Organizations, "Id", "name");
             return View();
         }
 
@@ -61,14 +62,13 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
-                division.created_date = DateTime.Now;
-                division.updated_date = DateTime.Now;
+                division.created_date= DateTime.Now;
+                division.updated_date= DateTime.Now;
                 _context.Add(division);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
+            ViewBag.org_id = new SelectList(_context.Organizations, "id", "name", division.org_id);
             return View(division);
         }
 
@@ -108,7 +108,6 @@ namespace ERP.Controllers.HRMs
                     division.updated_date = DateTime.Now;
                     _context.Update(division);
                     await _context.SaveChangesAsync();
-                    TempData["Success"] = "You have Updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -162,7 +161,6 @@ namespace ERP.Controllers.HRMs
             }
             
             await _context.SaveChangesAsync();
-            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
