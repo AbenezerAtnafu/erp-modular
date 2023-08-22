@@ -1,5 +1,4 @@
 ﻿using ERP.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +10,9 @@ public class UserDbContext : IdentityDbContext<User>
         : base(options)
     {
     }
+
+    
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
