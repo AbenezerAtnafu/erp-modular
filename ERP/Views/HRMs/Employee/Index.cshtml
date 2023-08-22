@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Employee ";
+    ViewData["Title"] = "Employee List";
 }
 
 <div class="container px-1" style="position:initial;">
@@ -22,22 +22,12 @@
                                 <h6 class="text-muted"><i class="fas fa-circle text-c-green f-10 m-r-15"></i>11 MAY 12:56</h6>
                             </td>
                             <td>
-                                <i class="feather icon-more-vertical position-relative" onclick="showTableMenu()" id="TableMenuMenu"></i>
-                                <div class="d-none bg-white py-3 px-3 shadow border position-absolute" id="TableMenu">
-                                    <a>
-                                        <small class="d-block  text-danger mb-2">
-                                            <i class="feather icon-trash-2 fa-fw"></i>
-                                            Delete
-                                        </small>
-                                    </a>
-                                    <hr class="m-1"/>
-                                    <a>
-                                        <small class="d-block text-success">
-                                            <i class="feather icon-edit fa-fw"></i>
-                                            Edit
-                                        </small>
-                                    </a>
-                                </div>
+                                 <small class="d-block  text-danger mb-2">
+                                 <i class="feather icon-trash-2 fa-fw"></i>
+                                </small>
+                                <small class="d-block text-success">
+                                    <i class="feather icon-edit fa-fw"></i>
+                                </small>
                              @*    <a href="#!" class="label theme-bg2 text-white f-12">Reject</a>
                                <a href="#!" class="label theme-bg text-white f-12">Approve</a> *@
                             </td>

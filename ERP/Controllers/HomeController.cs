@@ -4,22 +4,19 @@ using System.Diagnostics;
 
 namespace ERP.Controllers
 {
-    public class EmployeeController : Controller
+    public class HomeController : Controller
     {
-        private readonly ILogger<EmployeeController> _logger;
+        private readonly ILogger<HomeController> _logger;
 
-        public EmployeeController(ILogger<EmployeeController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Create()
+        public IActionResult Index()
         {
 
-            return View("~/Views/HRMs/Employee/Profile.cshtml");
-
-            TempData["Warning"] = "this is success";
-            return View("~/Views/HRMs/Employee/Create.cshtml");
+            return View();
 
         }
 

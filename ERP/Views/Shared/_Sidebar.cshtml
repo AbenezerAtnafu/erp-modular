@@ -1,8 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Identity
-<<<<<<< HEAD
-
-<nav class="pcoded-navbar">
-=======
 @using ERP.Areas.Identity.Data
 @inject UserManager<ERP.Areas.Identity.Data.User> UserManager
 @inject UserDbContext userDbContext
@@ -10,7 +6,6 @@
 
 
 <aside class="pcoded-navbar">
->>>>>>> 6c4912f5a5228b835f8a4febe69ae6f4ef23902e
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
             <div class="b-brand">
@@ -62,8 +57,8 @@
                     </li>
                 </ul>
             }
-            @if (Context.User.IsInRole("HR"))
-            {
+          @*   @if (Context.User.IsInRole("HR"))
+            { *@
                 <ul class="nav pcoded-inner-navbar">
                     <li class="nav-item pcoded-menu-caption">
                     <label>Base Information</label>
@@ -73,13 +68,13 @@
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-layers" aria-hidden="true"></i></span><span class="pcoded-mtext">Organization Structure</span></a>
                     <ul class="pcoded-submenu">
                         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Employees"><span class="pcoded-micon"></span><span class="pcoded-mtext">Division</span></a>
+                            <a class="nav-link" asp-action="Index" asp-controller="Divisions"><span class="pcoded-micon"></span><span class="pcoded-mtext">Division</span></a>
                         </li>
                         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Employees"><span class="pcoded-micon"></span><span class="pcoded-mtext">Department</span></a>
+                            <a class="nav-link" asp-action="Index" asp-controller="Departments"><span class="pcoded-micon"></span><span class="pcoded-mtext">Department</span></a>
                         </li>
                         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                            <a class="nav-link" asp-action="IndexBasic" asp-controller="Educations"><span class="pcoded-micon"></span><span class="pcoded-mtext">Team</span></a>
+                            <a class="nav-link" asp-action="Index" asp-controller="Teams"><span class="pcoded-micon"></span><span class="pcoded-mtext">Team</span></a>
                         </li>
                     </ul>
                 </li>
@@ -88,15 +83,15 @@
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-briefcase" aria-hidden="true"></i></span><span class="pcoded-mtext">Position & Employment</span></a>
                     <ul class="pcoded-submenu">
                         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Employees"><span class="pcoded-micon"></span><span class="pcoded-mtext">Position</span></a>
+                            <a class="nav-link" asp-action="Index" asp-controller="Positions"><span class="pcoded-micon"></span><span class="pcoded-mtext">Position</span></a>
                         </li>
                         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                            <a class="nav-link" asp-action="Create" asp-controller="Employees"><span class="pcoded-micon"></span><span class="pcoded-mtext">Employment Type</span></a>
+                             <a class="nav-link" asp-action="Index" asp-controller="Employment_Type"><span class="pcoded-micon"></span><span class="pcoded-mtext">Employment Type</span></a>
                         </li>
                     </ul>
                 </li>
             </ul>
-            }
+           @*  } *@
         </div>
     </div>
 </aside>
