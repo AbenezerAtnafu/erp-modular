@@ -18,7 +18,8 @@ namespace ERP.Models.HRMS.Employee_managments
         public int? internal_phonenumber { get; set; }
         [MinLength(6, ErrorMessage = "The 'home number' field must be a 6-digit number.")]
         public int? home_phonenumber { get; set; }
-        [ForeignKey("Employee")]
+
+        [ForeignKey("Employees")]
         public int employee_id { get; set; }
         public Employee Employees { get; set; }
 

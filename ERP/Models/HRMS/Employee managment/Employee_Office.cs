@@ -22,8 +22,6 @@ namespace ERP.Models.HRMS.Employee_managments
         public int position_id { get; set; }
         [ForeignKey("Employement_Type")]
         public int employment_type_id { get; set; }
-        [ForeignKey("Employee")]
-        public int employee_id { get; set; }
         public int? office_number { get; set; }
         [Required(ErrorMessage = "The 'start date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The start date' field must be a valid Date.")]
@@ -31,13 +29,15 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'end date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The end date' field must be a valid Date.")]
         public DateTime end_date { get; set;}
+
+        [ForeignKey("Employees")]
+        public int employee_id { get; set; }
+        public Employee Employees { get; set; }
         public Division Division { get; set; }
         public Department Department { get; set; }
         public Team Team { get; set; } 
         public Position Position { get; set; } 
         public Employement_Type Employement_Type { get; set; } 
-        public Employee Employee { get; set; }
-
 
 
 

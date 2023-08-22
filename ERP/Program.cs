@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
 
 builder.Services.AddDbContext<UserDbContext>(options =>
+
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDbContext<employee_context>(options =>
@@ -18,8 +19,21 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
     .AddEntityFrameworkStores<UserDbContext>();
 
 // Add services to the container.b
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30000);
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
 
+
+builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,6 +62,7 @@ var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var userManager = services.GetRequiredService<UserManager<User>>();
 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
 
 await SeedRoles.SeedRolesAsync(userManager, roleManager);
 await SeedRoles.SeedSuperAdminAsync(userManager, roleManager);

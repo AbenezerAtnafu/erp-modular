@@ -1,25 +1,30 @@
-﻿using ERP.Models;
+﻿using ERP.Areas.Identity.Data;
+using ERP.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace ERP.Controllers
 {
-    public class EmployeeController : Controller
+    [Authorize]
+    public class HomeController : Controller
     {
-        private readonly ILogger<EmployeeController> _logger;
+        private readonly ILogger<HomeController> _logger;
+        private readonly employee_context _context;
+        private readonly UserManager<User> _userManager;
 
-        public EmployeeController(ILogger<EmployeeController> logger)
+        public HomeController(ILogger<HomeController> logger, employee_context context, UserManager<User> userManager)
         {
+            _context = context;
+            _userManager = userManager;
             _logger = logger;
         }
 
-        public IActionResult Create()
+        public IActionResult Index()
         {
 
-            return View("~/Views/HRMs/Employee/Profile.cshtml");
-
-            TempData["Warning"] = "this is success";
-            return View("~/Views/HRMs/Employee/Create.cshtml");
+            return View();
 
         }
 
