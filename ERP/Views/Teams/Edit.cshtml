@@ -1,30 +1,35 @@
-﻿@model HRMS.Types.Marital_Status_Types
+﻿@model HRMS.Office.Team
 
 @{
-    ViewData["Title"] = "Marital Status Create";
+    ViewData["Title"] = "Team Edit";
 }
 
 <div class="container px-1" style="position:initial;">
     <div class="card">
         <div class="card-header">
-            <h5>Create New Marital Status</h5>
-            <span class="d-block m-t-5">Create a new Marital Status.</span>
+            <h5>Update Team</h5>
+            <span class="d-block m-t-5">update team.</span>
         </div>
         <div class="card-block table-border-style">
-            <form asp-action="Create">
+            <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="id" />
+                <div class="form-group">
+                    <label asp-for="department_id" class="control-label">Department</label>
+                    <select asp-for="department_id" class="form-control" asp-items="ViewBag.org_id"></select>
+                </div>
                 <div class="form-group">
                     <label asp-for="name" class="control-label">Name</label>
-                    <input asp-for="name" class="form-control" placeholder="Single" />
+                    <input asp-for="name" class="form-control" placeholder="LMIS" />
                     <small><span asp-validation-for="name" class="text-danger"></span></small>
                 </div>
                 <div class="form-group">
                     <label asp-for="description" class="control-label">Description</label>
-                    <textarea asp-for="description" class="form-control" placeholder="Do not have a partner."></textarea>
+                    <textarea asp-for="description" class="form-control" placeholder="project office"></textarea>
                     <small><span asp-validation-for="description" class="text-danger"></span></small>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Update" class="btn btn-primary" />
                 </div>
             </form>
         </div>

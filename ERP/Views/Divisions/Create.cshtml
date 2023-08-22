@@ -1,26 +1,31 @@
-﻿@model HRMS.Office.Organization
+﻿@model HRMS.Office.Division
 
 @{
-    ViewData["Title"] = "Organization Create";
+    ViewData["Title"] = "Create";
 }
 
 <div class="container px-1" style="position:initial;">
     <div class="card">
         <div class="card-header">
-            <h5>Create New Organization</h5>
-            <span class="d-block m-t-5">Create a new Organization.</span>
+            <h5>Create New Division</h5>
+            <span class="d-block m-t-5">Create a new division under organization.</span>
         </div>
         <div class="card-block table-border-style">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
+                    <label asp-for="org_id" class="control-label">Organization <span class="text-danger">*</span></label>
+                    <select asp-for="org_id" class ="form-control" asp-items="ViewBag.org_id"></select>
+                    <span asp-validation-for="org_id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="name" class="control-label">Name <span class="text-danger">*</span></label>
-                    <input asp-for="name" class="form-control" placeholder="Mols" />
+                    <input asp-for="name" class="form-control" placeholder="LMIS" />
                     <small><span asp-validation-for="name" class="text-danger"></span></small>
                 </div>
                 <div class="form-group">
                     <label asp-for="description" class="control-label">Description</label>
-                    <textarea asp-for="description" class="form-control" placeholder="Minstry of labor and skills."></textarea>
+                    <textarea asp-for="description" class="form-control" placeholder="project office"></textarea>
                     <small><span asp-validation-for="description" class="text-danger"></span></small>
                 </div>
                 <div class="form-group">
@@ -30,3 +35,10 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

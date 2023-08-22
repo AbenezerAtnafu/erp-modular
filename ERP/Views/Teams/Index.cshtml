@@ -1,15 +1,16 @@
-﻿@model IEnumerable<HRMS.Office.Organization>
+﻿@model IEnumerable<HRMS.Office.Team>
 
 @{
-    ViewData["Title"] = "Organization Index";
+    ViewData["Title"] = "Team Index";
 }
+
 
 <div class="container px-1" style="position:initial;">
     <div class="card">
         <div class="card-header">
             <div class="">
-                <h5>Organization List</h5>
-                <span class="d-block m-t-5">The following is a list of Organization.</span>
+                <h5>Team List</h5>
+                <span class="d-block m-t-5">The following is a list of Teams.</span>
             </div>
             <a class="btn btn-info float-right" asp-action="Create"><i class="feather icon-plus fa-fw"></i>Create New</a>
         </div>
@@ -18,6 +19,9 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>
+                                Department
+                            </th>
                             <th>
                                 Name
                             </th>
@@ -35,13 +39,24 @@
                         {
                             <tr>
                                 <td>
-                                    @if (@item.name != null && @item.name.Length > 10)
+                                    @if (@item.Department.name != null && @item.Department.name.Length > 10)
                                     {
-                                    <h6 class="mb-1">@item.name.Substring(0, 10)...</h6>
+                                        <h6 class="mb-1">@item.Department.name.Substring(0, 10)...</h6>
                                     }
                                     else
                                     {
-                                    <h6 class="mb-1">@Html.DisplayFor(modelItem => item.name)</h6>
+                                        <h6 class="mb-1">@Html.DisplayFor(modelItem => item.Department.name)</h6>
+                                    }
+
+                                </td>
+                                <td>
+                                    @if (@item.name != null && @item.name.Length > 10)
+                                    {
+                                        <h6 class="mb-1">@item.name.Substring(0, 10)...</h6>
+                                    }
+                                    else
+                                    {
+                                        <h6 class="mb-1">@Html.DisplayFor(modelItem => item.name)</h6>
                                     }
 
                                 </td>
@@ -62,10 +77,10 @@
                                     <a onclick="deleteConf(@item.id)" class="text-danger ml-2" id="DeleteLink">
                                         <i class="feather icon-trash-2 fa-fw"></i>
                                     </a>
-                                    <a asp-action="Edit" asp-route-id="@item.id"  class="text-success ml-2">
+                                    <a asp-action="Edit" asp-route-id="@item.id" class="text-success ml-2">
                                         <i class="feather icon-edit fa-fw"></i>
                                     </a>
-                                    <a asp-action ="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
+                                    <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
                                         View
                                     </a>
                                 </td>

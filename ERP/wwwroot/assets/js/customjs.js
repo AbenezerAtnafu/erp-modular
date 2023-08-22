@@ -66,7 +66,7 @@ function prevButton() {
 //delete action from modal
 function deleteConf(id) {
     $('#RecordIdDelete').val(id);
-    $("#exampleModalCenter").modal()
+    $("#DeleteModalCenter").modal()
 }
 
 
