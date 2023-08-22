@@ -44,7 +44,7 @@ namespace ERP.Controllers
         // GET: Teams/Create
         public IActionResult Create()
         {
-            ViewData["department_id"] = new SelectList(_context.Departments, "id", "id");
+            ViewData["department_id"] = new SelectList(_context.Departments, "id", "name");
             return View();
         }
 
@@ -57,11 +57,14 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                team.created_date = DateTime.Now;
+                team.updated_date = DateTime.Now;
                 _context.Add(team);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["department_id"] = new SelectList(_context.Departments, "id", "id", team.department_id);
+            ViewData["department_id"] = new SelectList(_context.Departments, "id", "name", team.department_id);
             return View(team);
         }
 
@@ -78,7 +81,7 @@ namespace ERP.Controllers
             {
                 return NotFound();
             }
-            ViewData["department_id"] = new SelectList(_context.Departments, "id", "id", team.department_id);
+            ViewData["department_id"] = new SelectList(_context.Departments, "id", "name", team.department_id);
             return View(team);
         }
 
@@ -98,8 +101,10 @@ namespace ERP.Controllers
             {
                 try
                 {
-                    _context.Update(team);
+                    team.updated_date= DateTime.Now;
+                    _context.Update(team);                   
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "You have Updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -114,7 +119,7 @@ namespace ERP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["department_id"] = new SelectList(_context.Departments, "id", "id", team.department_id);
+            ViewData["department_id"] = new SelectList(_context.Departments, "id", "name", team.department_id);
             return View(team);
         }
 
@@ -153,6 +158,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

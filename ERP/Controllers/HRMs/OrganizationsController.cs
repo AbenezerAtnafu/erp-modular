@@ -64,6 +64,7 @@ namespace ERP.Controllers
                 organization.updated_date=DateTime.Now;
                 _context.Add(organization);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(organization);
@@ -104,6 +105,7 @@ namespace ERP.Controllers
                     organization.updated_date = DateTime.Now;
                     _context.Update(organization);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "You have Updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -155,6 +157,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

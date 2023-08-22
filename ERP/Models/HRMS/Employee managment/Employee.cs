@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using ERP.Models.HRMS.Employee_managments;
 
 namespace ERP.HRMS.Employee_managment
 {
@@ -69,14 +70,11 @@ namespace ERP.HRMS.Employee_managment
 
         [ForeignKey("User")]
         public string user_id { get; set; }
-
         public Marital_Status_Types Marital_Status_Types { get; set; }
         public User User { get; set; }
-
-
-
-
-
+        public Employee_Address Employee_Address { get; set; }
+        public Employee_Contact Employee_Contact { get; set; }
+        public Employee_Office Employee_Office { get; set; }
 
     }
 }

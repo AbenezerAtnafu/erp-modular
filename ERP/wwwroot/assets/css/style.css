@@ -62,7 +62,7 @@ body {
     font-size: 14px;
     color: #888;
     font-weight: 400;
-    background: #f4f7fa;
+    background: #f4f7fa !important;
     position: relative;
 }
 
@@ -9626,7 +9626,6 @@ a.btn-theme {
 ==========================  **/
 /* Breadcrumbs */
 .breadcrumb {
-    background-color: #f4f7fa;
     border-radius: 0;
 }
 

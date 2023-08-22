@@ -58,13 +58,13 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Position position)
         {
-            if (ModelState.IsValid)
-            {
+          
                 _context.Add(position);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
-            }
-            return View(position);
+            
+          
         }
 
         // GET: Positions/Edit/5
@@ -113,6 +113,7 @@ namespace ERP.Controllers
                         throw;
                     }
                 }
+                TempData["Success"] = "You have Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(position);
@@ -152,6 +153,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

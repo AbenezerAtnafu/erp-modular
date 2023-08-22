@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
 
-namespace ERP.Controllers.HRMs
+namespace ERP.Controllers
 {
     public class DivisionsController : Controller
     {
@@ -46,9 +46,11 @@ namespace ERP.Controllers.HRMs
         }
 
         // GET: Divisions/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
+           // ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
+            ViewBag.org_id = new SelectList(_context.Organizations, "Id", "name");
             return View();
         }
 
@@ -59,16 +61,14 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,org_id")] Division division)
         {
-            if (ModelState.IsValid)
-            {
-                division.created_date = DateTime.Now;
-                division.updated_date = DateTime.Now;
+           
+               division.created_date = DateTime.Now.Date;
+                division.updated_date = DateTime.Now.Date;
                 _context.Add(division);
-                await _context.SaveChangesAsync();
+                ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
+               await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
-            return View(division);
+            
         }
 
         // GET: Divisions/Edit/5
@@ -104,7 +104,6 @@ namespace ERP.Controllers.HRMs
             {
                 try
                 {
-                    division.updated_date = DateTime.Now;
                     _context.Update(division);
                     await _context.SaveChangesAsync();
                 }

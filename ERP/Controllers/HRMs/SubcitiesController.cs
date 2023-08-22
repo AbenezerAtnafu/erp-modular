@@ -61,8 +61,11 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                subcity.created_date = DateTime.Now;
+                subcity.updated_date = DateTime.Now;
                 _context.Add(subcity);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["region_id"] = new SelectList(_context.Regions, "id", "name", subcity.region_id);
@@ -102,7 +105,9 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    subcity.updated_date = DateTime.Now;
                     _context.Update(subcity);
+                    TempData["Success"] = "You have Updated successfully.";
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -157,6 +162,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
