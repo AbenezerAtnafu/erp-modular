@@ -60,8 +60,11 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                region.created_date = DateTime.Now;
+                region.updated_date = DateTime.Now;
                 _context.Add(region);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(region);
@@ -99,6 +102,7 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    region.updated_date= DateTime.Now;
                     _context.Update(region);
                     await _context.SaveChangesAsync();
                 }
@@ -113,6 +117,7 @@ namespace ERP.Controllers
                         throw;
                     }
                 }
+                TempData["Success"] = "You have Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(region);
@@ -152,6 +157,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
