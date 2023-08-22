@@ -15,7 +15,12 @@ namespace ERP.Controllers
 
         public IActionResult Create()
         {
+
             return View("~/Views/HRMs/Employee/Profile.cshtml");
+
+            TempData["Warning"] = "this is success";
+            return View("~/Views/HRMs/Employee/Create.cshtml");
+
         }
 
         public IActionResult Privacy()

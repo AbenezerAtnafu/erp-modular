@@ -13,3 +13,10 @@
     border-radius:100%;
     cursor:pointer;
 }
+
+.certificated-badge{
+    position: absolute;
+    top: 12px;
+    right: -5px;
+}
+
