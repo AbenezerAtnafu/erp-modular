@@ -1,44 +1,50 @@
-﻿{
-    ViewData["Title"] = "Dashboard";
+﻿@{
+    ViewData["Title"] = "Employee ";
 }
 
-<div class="card">
-    <div class="card-header">
-        <h5>Hover Table</h5>
-        <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
-    </div>
-    <div class="card-block table-border-style">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>twitter</td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Employee List</h5>
+            <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr class="unread">
+                            <td><img class="rounded-circle" style="width:40px;" src="assets/images/user/avatar-1.jpg" alt="activity-user"></td>
+                            <td>
+                                <h6 class="mb-1">Isabella Christensen</h6>
+                                <p class="m-0">Lorem Ipsum is simply…</p>
+                            </td>
+                            <td>
+                                <h6 class="text-muted"><i class="fas fa-circle text-c-green f-10 m-r-15"></i>11 MAY 12:56</h6>
+                            </td>
+                            <td>
+                                <i class="feather icon-more-vertical position-relative" onclick="showTableMenu()" id="TableMenuMenu"></i>
+                                <div class="d-none bg-white py-3 px-3 shadow border position-absolute" id="TableMenu">
+                                    <a>
+                                        <small class="d-block  text-danger mb-2">
+                                            <i class="feather icon-trash-2 fa-fw"></i>
+                                            Delete
+                                        </small>
+                                    </a>
+                                    <hr class="m-1"/>
+                                    <a>
+                                        <small class="d-block text-success">
+                                            <i class="feather icon-edit fa-fw"></i>
+                                            Edit
+                                        </small>
+                                    </a>
+                                </div>
+                             @*    <a href="#!" class="label theme-bg2 text-white f-12">Reject</a>
+                               <a href="#!" class="label theme-bg text-white f-12">Approve</a> *@
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

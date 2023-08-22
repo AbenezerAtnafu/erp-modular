@@ -20,3 +20,10 @@
     right: -5px;
 }
 
+#TableMenu a{
+    cursor:pointer;
+}
+
+#TableMenuMenu {
+    cursor: pointer;
+}

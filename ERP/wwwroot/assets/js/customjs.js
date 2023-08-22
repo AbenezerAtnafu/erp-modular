@@ -72,20 +72,26 @@ function deleteConf(id) {
 
 
 //file upload placeholder
-document.getElementById('profilePictureHolder').addEventListener('click', function () {
-    document.getElementById('ProfilePicture').click();
-});
+const profilepicture = document.getElementById('profilePictureHolder');
+if (profilepicture) {
+    profilepicture.addEventListener('click', function () {
+        document.getElementById('ProfilePicture').click();
+    });
 
-document.getElementById('ProfilePicture').addEventListener('change', function () {
-var file = this.files[0];
-var reader = new FileReader();
+    document.getElementById('ProfilePicture').addEventListener('change', function () {
+        var file = this.files[0];
+        var reader = new FileReader();
 
-reader.onload = function (e) {
-    document.getElementById('profilePictureHolder').src = e.target.result;
-};
+        reader.onload = function (e) {
+            document.getElementById('profilePictureHolder').src = e.target.result;
+        };
 
-reader.readAsDataURL(file);
-});
+        reader.readAsDataURL(file);
+    });
+}
+
+
+
 
 
 //employee validation first tab
@@ -264,4 +270,32 @@ function submitApproveModal() {
         isbankValid ? setTimeout(() => { document.getElementById("EmployeeApproveForm").submit() }, 400)  : '';
     }
     
+}
+
+
+// show table actions
+function showTableMenu() {
+    const tbl = document.getElementById("TableMenu");
+    if (tbl.classList.contains("d-none")) {
+        tbl.classList.remove("d-none");
+    } else {
+        tbl.classList.add("d-none");
+    }
+}
+
+const tblmenu = document.getElementById("TableMenu");
+if (tblmenu) {
+        console.log("vlid here")
+    if (tblmenu.classList.contains("d-none")) {
+        console.log("yes here")
+    } else {
+        console.log("no here")
+        document.addEventListener('mousedown', function (event) {
+            tblmenu.addEventListener('mousedown', function (event) {
+                if (!event.target === box) {
+                    tblmenu.classList.add("d-none");
+                }
+            });
+        });
+    }
 }
