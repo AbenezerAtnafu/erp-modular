@@ -61,8 +61,11 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                zone.updated_date = DateTime.Now;
+                zone.created_date = DateTime.Now;
                 _context.Add(zone);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["region_id"] = new SelectList(_context.Regions, "id", "name", zone.region_id);
@@ -102,7 +105,9 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    zone.updated_date = DateTime.Now;
                     _context.Update(zone);
+                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -116,6 +121,7 @@ namespace ERP.Controllers
                         throw;
                     }
                 }
+                TempData["Success"] = "You have Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["region_id"] = new SelectList(_context.Regions, "id", "name", zone.region_id);
@@ -157,6 +163,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

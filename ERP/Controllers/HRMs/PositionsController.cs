@@ -62,6 +62,7 @@ namespace ERP.Controllers
             {
                 _context.Add(position);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(position);
@@ -113,6 +114,7 @@ namespace ERP.Controllers
                         throw;
                     }
                 }
+                TempData["Success"] = "You have Updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(position);
@@ -152,6 +154,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

@@ -65,6 +65,7 @@ namespace ERP.Controllers.HRMs
                 division.updated_date = DateTime.Now;
                 _context.Add(division);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
@@ -107,6 +108,7 @@ namespace ERP.Controllers.HRMs
                     division.updated_date = DateTime.Now;
                     _context.Update(division);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "You have Updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -160,6 +162,7 @@ namespace ERP.Controllers.HRMs
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

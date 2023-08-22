@@ -60,8 +60,11 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                marital_Status_Types.created_date = DateTime.Now;
+                marital_Status_Types.updated_date= DateTime.Now;
                 _context.Add(marital_Status_Types);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
             }
             return View(marital_Status_Types);
@@ -101,6 +104,7 @@ namespace ERP.Controllers
                 {
                     _context.Update(marital_Status_Types);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "You have Updated successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,6 +156,7 @@ namespace ERP.Controllers
             }
             
             await _context.SaveChangesAsync();
+            TempData["Success"] = "You have deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
