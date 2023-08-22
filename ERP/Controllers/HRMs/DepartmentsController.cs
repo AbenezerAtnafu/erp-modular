@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
 
-namespace ERP.Views
+namespace ERP.Controllers.HRMs
 {
     public class DepartmentsController : Controller
     {
@@ -155,14 +155,14 @@ namespace ERP.Views
             {
                 _context.Departments.Remove(department);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DepartmentExists(int id)
         {
-            return (_context.Departments?.Any(e => e.id == id)).GetValueOrDefault();
+          return (_context.Departments?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

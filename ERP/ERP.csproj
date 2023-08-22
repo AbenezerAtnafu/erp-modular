@@ -67,10 +67,6 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\HRMs\" />
-  </ItemGroup>
-
   
 
 

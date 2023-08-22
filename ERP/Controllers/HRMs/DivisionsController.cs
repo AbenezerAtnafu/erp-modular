@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
 
-namespace ERP.Controllers
+namespace ERP.Controllers.HRMs
 {
     public class DivisionsController : Controller
     {
@@ -61,6 +61,8 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                division.created_date = DateTime.Now;
+                division.updated_date = DateTime.Now;
                 _context.Add(division);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -102,6 +104,7 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    division.updated_date = DateTime.Now;
                     _context.Update(division);
                     await _context.SaveChangesAsync();
                 }
