@@ -29,7 +29,7 @@ namespace HRMS.Office
         [Required(ErrorMessage = "The 'Department' field is required.")]
         public int department_id { get; set; }
 
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
 
     }
 }

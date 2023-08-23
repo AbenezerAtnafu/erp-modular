@@ -27,7 +27,7 @@ namespace HRMS.Office
         [Required(ErrorMessage = "The 'Division' field is required.")]
         public int division_id { get; set; }
 
-        public Division Division { get; set; }
+        public Division? Division { get; set; }
 
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
 
-namespace ERP.Controllers
+namespace ERP.Controllers.HRMs
 {
     public class DivisionsController : Controller
     {
@@ -49,8 +49,8 @@ namespace ERP.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-           // ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
-            ViewBag.org_id = new SelectList(_context.Organizations, "Id", "name");
+            // ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
+            ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
             return View();
         }
 
@@ -61,14 +61,18 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,org_id")] Division division)
         {
-           
-               division.created_date = DateTime.Now.Date;
+            if (ModelState.IsValid)
+            {
+                division.created_date = DateTime.Now.Date;
                 division.updated_date = DateTime.Now.Date;
                 _context.Add(division);
-                ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
-               await _context.SaveChangesAsync();
+               
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            
+            }
+            ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
+            return View(division);
+
         }
 
         // GET: Divisions/Edit/5
@@ -157,14 +161,14 @@ namespace ERP.Controllers
             {
                 _context.Divisions.Remove(division);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DivisionExists(int id)
         {
-          return (_context.Divisions?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Divisions?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

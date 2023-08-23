@@ -14,7 +14,7 @@ namespace HRMS.Office
         [StringLength(50, ErrorMessage = "The 'name' field must be between {2} and {1} characters long.", MinimumLength = 2)]
         public string name { get; set; }
 
-        [StringLength(200, ErrorMessage = "The 'description' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+      
         public string? description { get; set; }
 
         [Required(ErrorMessage = "The 'created_date' field is required.")]
@@ -29,7 +29,7 @@ namespace HRMS.Office
         [Required(ErrorMessage = "The 'Organization' field is required.")]
         public int org_id { get; set; }
 
-        public Organization Organization { get; set; }
+        public Organization? Organization { get; set; }
 
     }
 }
