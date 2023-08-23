@@ -26,7 +26,7 @@ namespace HRMS.Office
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
 
-        public ICollection<Employee_Office> Employee_Office { get; set; }
+        public ICollection<Employee_Office>? Employee_Office { get; set; }
 
 
 

@@ -58,13 +58,15 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Position position)
         {
-          
+            if(ModelState.IsValid){
+                position.created_date = DateTime.Now.Date;
+                position.updated_date = DateTime.Now.Date;
                 _context.Add(position);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
-            
-          
+            }
+          return View();
         }
 
         // GET: Positions/Edit/5
