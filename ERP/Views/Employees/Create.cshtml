@@ -61,7 +61,7 @@
                                     <input type="file"
                                            accept=".png,.jpg,.jpeg,.gif,.tif"
                                            id="ProfilePicture"
-                                           name="ProfilePicture"
+                                           name="file"
                                            class="form-control d-none"
                                         />
                                     <small id="ProfilePictureValidation" class="text-danger"></small>
@@ -91,7 +91,7 @@
                                         <div class="form-group p-2">
                                             <label for="GrandFatherName" class="control-label">GrandFather Name <span class="text-danger">*</span></label>
                                             <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="Chala" />
-                                          <small id="GrandFatherNameValidation" class="text-danger"></small>
+                                            <small id="GrandFatherNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -358,18 +358,13 @@
                                             <small id="DepartmentValidation" class="text-danger"></small>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
-                                            <select name="Team" class="form-control" asp-items="ViewBag.Team">
-                                            @if (office != null)
-                                            {
-                                                <option value="@office.Team.id" selected>@office.Team.name</option>
-                                            }
-                                            </select>
-                                          <small id="TeamValidation" class="text-danger"></small>
-                                        </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
+                                        <select name="Team" class="form-control" asp-items="ViewBag.Team"></select>
+                                        <small id="TeamtValidation" class="text-danger"></small>
                                     </div>
+                                </div>
                                 </div>
                                 <div class="row p-0 m-0">
                                     <div class="col-md-4 col-sm-12 ">

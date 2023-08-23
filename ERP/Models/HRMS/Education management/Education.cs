@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using ERP.HRMS.Employee_managment;
+using HRMS.Types;
 
 namespace HRMS.Education_management
 {
@@ -38,6 +40,12 @@ namespace HRMS.Education_management
         [DataType(DataType.Date, ErrorMessage = "The 'end_date' field must be a valid Date.")]
         public string end_date { get; set; }
 
+        public double Identificationnumber { get; set; }
+
+        public bool? status { get; set; }
+
+        public string? feedback { get; set; }
+
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]
         public DateTime created_date { get; set; }
@@ -46,6 +54,20 @@ namespace HRMS.Education_management
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
 
-    
+        [ForeignKey("employeeId")]
+        public Employee Employee { get; set; }
+        public int educational_program_id { get; set; }
+
+        [ForeignKey("educational_program_type_id")]
+        public Education_Program_Type Education_Program_Type { get; set; }
+
+        [ForeignKey("Education_Level_type_id")]
+        public Education_Level_Type Education_Level_Type { get; set; }
+
+
+
+
+
+
     }
 }
