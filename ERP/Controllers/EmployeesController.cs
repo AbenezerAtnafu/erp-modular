@@ -7,6 +7,7 @@ using ERP.HRMS.Employee_managment;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
 
+
 namespace ERP.Controllers
 {
     public class EmployeesController : Controller
@@ -74,7 +75,7 @@ namespace ERP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateorUpdate()
+        public async Task<IActionResult> CreateorUpdate(IFormFile file)
         {
             User user = await _userManager.GetUserAsync(User);
             
@@ -93,10 +94,14 @@ namespace ERP.Controllers
                 employee.gender = Convert.ToString(HttpContext.Request.Form["Gender"]);
                 employee.religion = Convert.ToString(HttpContext.Request.Form["Religion"]);
                 employee.marital_status_type_id = Convert.ToInt32(HttpContext.Request.Form["maritalstatus"]);
-                employee.pension_number = Convert.ToInt32(HttpContext.Request.Form["PensionNumber"]);
-                employee.tin_number = Convert.ToInt32(HttpContext.Request.Form["TinNumber"]);
-                employee.back_account_number = Convert.ToInt32(HttpContext.Request.Form["BankNumber"]);
-                employee.profile_picture = UploadPicture(Request.Form.Files.FirstOrDefault());
+                employee.pension_number = Convert.ToString(HttpContext.Request.Form["PensionNumber"]);
+                employee.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
+                employee.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
+               
+                    employee.profile_picture = UploadPicture(file);
+                
+         
+             
                 employee.user_id = user.Id;
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
@@ -110,6 +115,7 @@ namespace ERP.Controllers
                 address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
                 address.kebele = Convert.ToString(HttpContext.Request.Form["kebele"]);
                 address.primary_address = Convert.ToString(HttpContext.Request.Form["PrimaryAddress"]);
+                address.employee_id = employee.id;
                 _context.Add(address);
                 await _context.SaveChangesAsync();  
                 
@@ -120,6 +126,7 @@ namespace ERP.Controllers
                 contact.alternative_phonenumber = Convert.ToInt32(HttpContext.Request.Form["AlternativePhoneNumber"]);
                 contact.home_phonenumber = Convert.ToInt32(HttpContext.Request.Form["AlternativePhoneNumber"]);
                 contact.internal_phonenumber = Convert.ToInt32(HttpContext.Request.Form["AlternativePhoneNumber"]);
+                contact.employee_id = employee.id;
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
 
@@ -131,6 +138,7 @@ namespace ERP.Controllers
                 office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
+                office.employee_id = employee.id;
                 _context.Add(office);
                 await _context.SaveChangesAsync();
 
@@ -152,9 +160,9 @@ namespace ERP.Controllers
                 emp.gender = Convert.ToString(HttpContext.Request.Form["Gender"]);
                 emp.religion = Convert.ToString(HttpContext.Request.Form["Religion"]);
                 emp.marital_status_type_id = Convert.ToInt32(HttpContext.Request.Form["maritalstatus"]);
-                emp.pension_number = Convert.ToInt32(HttpContext.Request.Form["PensionNumber"]);
-                emp.tin_number = Convert.ToInt32(HttpContext.Request.Form["TinNumber"]);
-                emp.back_account_number = Convert.ToInt32(HttpContext.Request.Form["BankNumber"]);
+                emp.pension_number = Convert.ToString(HttpContext.Request.Form["PensionNumber"]);
+                emp.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
+                emp.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 _context.Update(emp);
                 await _context.SaveChangesAsync();
 
@@ -277,30 +285,31 @@ namespace ERP.Controllers
         //upload picture and return path
         public String UploadPicture(IFormFile file)
         {
-            if (file != null)
+            if (file != null && file.Length > 0)
             {
                 // Generate a unique file name
                 string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
 
                 // Save the file to a specific directory on the server
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "ProfilePictures", fileName);
+                string path = Path.Combine("C://systemfilestore/ProfilePictures", fileName);
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
 
                 // Store the file path in the database
-                string picturePath = "/Uploads/ProfilePictures/" + fileName;
+                string picturePath = "C://systemfilestore/" + fileName;
 
                 // Optionally, you can perform additional tasks such as resizing the image, creating thumbnails, etc.
 
                 return picturePath;
+
             }
             else
             {
-                return "The file is empty";
+               return "file is empty";
             }
         }
-
+        
     }
 }
