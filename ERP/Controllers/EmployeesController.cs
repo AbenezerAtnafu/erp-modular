@@ -26,8 +26,12 @@ namespace ERP.Controllers
             return View();
         }
 
-        // GET: Employees/Details/5
-      
+        // GET: Employees
+        public async Task<IActionResult> Profile()
+        {
+            return View();
+        }
+
 
         // GET: Employees/Create
         public IActionResult Create()

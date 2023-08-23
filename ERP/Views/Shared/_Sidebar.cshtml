@@ -57,8 +57,8 @@
                     </li>
                 </ul>
             }
-          @*   @if (Context.User.IsInRole("HR"))
-            { *@
+            @if (Context.User.IsInRole("HR"))
+            { 
                 <ul class="nav pcoded-inner-navbar">
                     <li class="nav-item pcoded-menu-caption">
                     <label>Base Information</label>
@@ -106,7 +106,7 @@
                     </ul>
                 </li>
             </ul>
-           @*  } *@
+            } 
         </div>
     </div>
 </aside>

@@ -3,194 +3,113 @@
 }
 
 
+
 <div class="container">
-    <div class="row mx-1">
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="position-relative mx-auto">
-                        @*  @if (Model.ProfilePicture != null)
-                        {
-                            <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePicture))"
+    <h5 class="mt-4">Employee Profile</h5>
+    <hr>
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="padding-left: 15px;">
+                <li><a class="nav-link text-left active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">General</a></li>
+                <li><a class="nav-link text-left" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Address</a></li>
+                <li><a class="nav-link text-left" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Contact</a></li>
+                <li><a class="nav-link text-left" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Employment</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9 col-sm-12">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    <div class="card-body">
+                            <div class="position-relative mx-auto">
+                                @*  @if (Model.ProfilePicture != null)
+                                {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePicture))"
                                 class="rounded-circle mx-auto position-relative"
                                 alt="Profile"
                                 style="object-position:top; top:80%; height:150px; width:150px; object-fit:cover;">
-                        }
-                        else
-                        {
-                            @if (Model.Sex == "Male")
-                            {
+                                }
+                                else
+                                {
+                                @if (Model.Sex == "Male")
+                                {
                                 <img class="img-radius img-fluid" width="80" src="~/images/male_img_avatar.png" alt="User image">
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
 
-                            }
-                        }
-                    @if (Model.Approve == true)
-                    { *@
-                        <img class="img-radius mx-auto" width="80" src="~/img/male_img_avatar.png" alt="Employee Profile Photo">
-                        <div class="certificated-badge">
-                            <i class="fas fa-certificate text-warning bg-icon"></i>
+                                }
+                                }
+                                @if (Model.Approve == true)
+                                { *@
+                                <img class="img-radius mx-auto" width="80" src="~/img/male_img_avatar.png" alt="Employee Profile Photo">
+                                <div class="certificated-badge">
+                                    <i class="fas fa-certificate text-warning bg-icon"></i>
+                                </div>
+                                @* } *@
+                            </div>
+                            <div class="my-4 text-center">
+                                <h6 class="mb-1">FirstName LastName Grandfathername</h6>
+                                <p class="mb-0 text-muted">Nationality</p>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col">
+                                    @*   @if (Model.Sex == "Male")
+                                    { *@
+                                    @*  <h6 class="mb-1"><i class="fas fa-male fa-fw fa-1x" style="color: cadetblue;"></i> </h6> *@
+                                    @*      <p class="mb-0">Male</p>
+                                    }
+                                    else
+                                    { *@
+                                    <h6 class="mb-1"><i class="fas fa-female fa-fw fa-1x" style="color: cadetblue;"></i> </h6>
+                                    <p class="mb-0">Female</p>
+                                    @* } *@
+
+                                </div>
+                                <div class="col border-start">
+                                    @*  @if (Model.Status == true)
+                                    {
+                                    <h6 class="mb-1"><i class="feather icon-check text-success"></i></h6>
+                                    <p class="badge badge-success">Working</p>
+                                    }
+                                    else if (Model.Status == false)
+                                    {
+                                    <h6 class="mb-1"><i class="feather icon-alert-triangle text-danger"></i></h6>
+                                    <p class="badge badge-danger">Terminated</p>
+                                    }
+                                    else
+                                    {
+                                    }
+                                    *@
+                                    <h6 class="mb-1"><i class="feather icon-info text-warning"></i></h6>
+                                    <p class="badge badge-warning">On Leave</p>
+                                </div>
+                                <div class="col border-start">
+                                    <p class="mb-0">DOB</p>
+                                    <h6 class="mb-1">2023-03-23</h6>
+                                </div>
+                            </div>
                         </div>
-                    @* } *@
-                    </div>
-                    <div class="my-4 text-center">
-                        <h6 class="mb-1">FirstName LastName Grandfathername</h6>
-                        <p class="mb-0 text-muted">Nationality</p>
-                    </div>
+                        <div class="nav flex-column nav-pills list-group list-group-flush list-pills" id="user-set-tab" role="tablist" aria-orientation="vertical">
+                            <button type="button" class="btn btn-primary py-1 px-2 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
+                                Change Status
+                            </button>
+
+                        </div>
                 </div>
-                <div class="card-body py-0">
-                    <div class="row text-center">
-                        <div class="col">
-                          @*   @if (Model.Sex == "Male")
-                            { *@
-                               @*  <h6 class="mb-1"><i class="fas fa-male fa-fw fa-1x" style="color: cadetblue;"></i> </h6> *@
-                           @*      <p class="mb-0">Male</p>
-                            }
-                            else
-                            { *@
-                                <h6 class="mb-1"><i class="fas fa-female fa-fw fa-1x" style="color: cadetblue;"></i> </h6>
-                                <p class="mb-0">Female</p>
-                            @* } *@
-                        
-                        </div>
-                        <div class="col border-start">
-                           @*  @if (Model.Status == true)
-                            {
-                            <h6 class="mb-1"><i class="feather icon-check text-success"></i></h6>
-                            <p class="badge badge-success">Working</p>
-                            }
-                            else if (Model.Status == false)
-                            {
-                            <h6 class="mb-1"><i class="feather icon-alert-triangle text-danger"></i></h6>
-                            <p class="badge badge-danger">Terminated</p>
-                            }
-                            else
-                            {
-                            }
-                             *@
-                            <h6 class="mb-1"><i class="feather icon-info text-warning"></i></h6>
-                            <p class="badge badge-warning">On Leave</p>
-                        </div>
-                        <div class="col border-start">
-                            <p class="mb-0">DOB</p>
-                            <h6 class="mb-1">2023-03-23</h6>
-                        </div>
-                    </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <p class="mb-0">Culpa dolor voluptate do laboris laboris irure reprehenderit id incididunt duis pariatur mollit aute magna pariatur consectetur. Eu veniam duis non ut dolor deserunt commodo et minim in quis laboris ipsum velit id veniam. Quis ut consectetur adipisicing officia excepteur non sit. Ut et elit aliquip labore Lorem enim eu. Ullamco mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim consectetur qui.</p>
                 </div>
-                <div class="nav flex-column nav-pills list-group list-group-flush list-pills" id="user-set-tab" role="tablist" aria-orientation="vertical">
-                        <button type="button" class="btn btn-primary py-1 px-2 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
-                            Change Status
-                        </button>
-               
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <p class="mb-0">Fugiat id quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad proident laboris ullamco esse anim Lorem Lorem veniam quis Lorem irure occaecat velit nostrud magna nulla. Velit et et proident Lorem do ea tempor officia dolor. Reprehenderit Lorem aliquip labore est magna commodo est ea veniam consectetur.</p>
+                </div>
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <p class="mb-0">
+                        Eu dolore ea ullamco dolore Lorem id cupidatat excepteur reprehenderit consectetur elit id dolor proident in cupidatat officia. Voluptate excepteur commodo labore nisi cillum duis aliqua do. Aliqua amet qui mollit consectetur nulla mollit velit aliqua veniam nisi id do Lorem deserunt amet. Culpa ullamco sit adipisicing labore officia magna elit nisi in aute tempor commodo eiusmod.
+                    </p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
-            <div class="tab-content bg-transparent p-0 shadow-none" id="user-set-tabContent">
-            <div class="tab-pane fade show active" id="user-set-profile" role="tabpanel" aria-labelledby="user-set-profile-tab">
-                <div class="card">
-                    <div class="card-header" id="user-profile">
-                        <h5><i class="feather icon-user text-c-blue wid-20"></i><span class="p-l-5">Employee Information</span></h5>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Address</h5>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td class="py-1">Region</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">LastName</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Subcity</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">Model</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Woreda</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">City</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Kebele</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">WorkTelephone</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Primary Addresss</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">protected</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h5 class="mt-4 mb-4 pb-3 border-bottom font-weight-bold" id="user-education">Contacts</h5>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td class="py-1">Phone Number</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">+251912364578</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Alternative Phone Number</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">+251912364578</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Pobox</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">1245</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Fax</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">-</td>
-                                </tr>
-                            </tbody>
-                           
-                        </table>
-                        @* <h5 class="mt-5 mb-4 pb-3 border-bottom font-weight-bold" id="user-employment">Employment</h5> *@
-                     @*    <div class="row align-items-center mb-3">
-                            <div class="col-sm-3">
-                                <h5>Current</h5><span>Senior</span>
-                            </div>
-                            <div class="col-sm-9 border-start">
-                                <h6>Senior UI/UX designer</h6>
-                                <p class="mb-1">
-                                    Perform task related to project manager with the
-                                    100+ team under my observation. Team management is key role
-                                    in this company.
-                                </p>
-                                <span class="text-muted">Microsoft, TX, USA</span>
-                            </div>
-                        </div> *@
-                      
-                        <h5 class="mt-4 mb-4 pb-3 border-bottom font-weight-bold" id="user-office">Office Information</h5>
-                        <div class="row align-items-center mb-3">
-                            <div class="col-sm-3">
-                                <h5>Division</h5><span>Department</span>
-                            </div>
-                            <div class="col-sm-9 border-start">
-                                <h6>LMIS</h6>
-                                <span class="text-muted">Development</span>
-                            </div> 
-                        </div>
-                        <div class="row align-items-center mb-3">
-                            <div class="col-sm-3">
-                                <h6>Team</h6>
-                            </div>
-                            <div class="col-sm-9 border-start">
-                                <h6>LMIS</h6>
-                                <span class="text-muted">Development</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-         </div>
-    </div>
     </div>
 </div>
+
+
