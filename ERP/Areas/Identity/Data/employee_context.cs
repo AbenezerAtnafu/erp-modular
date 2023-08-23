@@ -8,6 +8,7 @@ using ERP.HRMS.Employee_managment;
 using ERP.Models.HRMS.Employee_managments;
 using HRMS.Office;
 using HRMS.Types;
+using HRMS.Education_management;
 
 namespace ERP.Areas.Identity.Data
 {
@@ -39,6 +40,7 @@ namespace ERP.Areas.Identity.Data
         public DbSet<Reward_Types> Reward_Types { get; set; }
         public DbSet<Marital_Status_Types> Marital_Status_Types { get; set; }
         public DbSet<Violation_Types> Violation_Typess { get; set; }
-       
+        public DbSet<Education> Educations { get; set; }
+
     }
 }

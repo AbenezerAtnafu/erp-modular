@@ -54,14 +54,16 @@ namespace HRMS.Education_management
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
 
-        [ForeignKey("employeeId")]
+        [ForeignKey("Employee")]
+        public int employee_id { get; set; }
         public Employee Employee { get; set; }
-        public int educational_program_id { get; set; }
 
-        [ForeignKey("educational_program_type_id")]
+        [ForeignKey("Education_Program_Type")]
+        public int educational_program_id { get; set; }
         public Education_Program_Type Education_Program_Type { get; set; }
 
-        [ForeignKey("Education_Level_type_id")]
+        [ForeignKey("Education_Level_Type")]
+        public int educational_level_type_id { get; set; }
         public Education_Level_Type Education_Level_Type { get; set; }
 
 

@@ -88,6 +88,9 @@ namespace ERP.Controllers
                 employee.first_name = Convert.ToString(HttpContext.Request.Form["FirstName"]);
                 employee.father_name = Convert.ToString(HttpContext.Request.Form["FatherName"]);
                 employee.grand_father_name = Convert.ToString(HttpContext.Request.Form["GrandFatherName"]);
+                employee.first_name_am = Convert.ToString(HttpContext.Request.Form["FirstNameAm"]);
+                employee.father_name_am= Convert.ToString(HttpContext.Request.Form["FatherNameAm"]);
+                employee.grand_father_name_am = Convert.ToString(HttpContext.Request.Form["GrandFatherNameAm"]);
                 employee.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 employee.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
                 employee.nationality = Convert.ToString(HttpContext.Request.Form["Nationality"]);
