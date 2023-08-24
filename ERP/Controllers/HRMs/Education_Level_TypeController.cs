@@ -60,6 +60,8 @@ namespace ERP.Models.HRMS.Types
         {
             if (ModelState.IsValid)
             {
+                education_Level_Type.created_date = DateTime.Now;
+                education_Level_Type.updated_date = DateTime.Now;
                 _context.Add(education_Level_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,6 +101,7 @@ namespace ERP.Models.HRMS.Types
             {
                 try
                 {
+                    education_Level_Type.updated_date = DateTime.Now;
                     _context.Update(education_Level_Type);
                     await _context.SaveChangesAsync();
                 }

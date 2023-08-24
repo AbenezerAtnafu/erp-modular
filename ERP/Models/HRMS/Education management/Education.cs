@@ -29,15 +29,16 @@ namespace HRMS.Education_management
 
         [Required(ErrorMessage = "The 'start_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'start_date' field must be a valid Date.")]
-        public string start_date { get; set; }
+        public DateTime start_date { get; set; }
 
         [Required(ErrorMessage = "The 'end_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'end_date' field must be a valid Date.")]
-        public string end_date { get; set; }
+        public DateTime end_date { get; set; }
 
         public double Identificationnumber { get; set; }
 
         public bool? status { get; set; }
+        public bool? filestatus { get; set; }
 
         public string? feedback { get; set; }
 

@@ -5,94 +5,77 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Create Education</h5>
+            <span class="d-block m-t-5">Create a new Education.</span>
+        </div>
+        <div class="card-block table-border-style">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>Education</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="institution_name" class="control-label"></label>
-                <input asp-for="institution_name" class="form-control" />
-                <span asp-validation-for="institution_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="institution_email" class="control-label"></label>
-                <input asp-for="institution_email" class="form-control" />
-                <span asp-validation-for="institution_email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="institution_website" class="control-label"></label>
-                <input asp-for="institution_website" class="form-control" />
-                <span asp-validation-for="institution_website" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="filed_of_study" class="control-label"></label>
-                <input asp-for="filed_of_study" class="form-control" />
-                <span asp-validation-for="filed_of_study" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="description" class="control-label"></label>
-                <input asp-for="description" class="form-control" />
-                <span asp-validation-for="description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="start_date" class="control-label"></label>
-                <input asp-for="start_date" class="form-control" />
-                <span asp-validation-for="start_date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="end_date" class="control-label"></label>
-                <input asp-for="end_date" class="form-control" />
-                <span asp-validation-for="end_date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Identificationnumber" class="control-label"></label>
-                <input asp-for="Identificationnumber" class="form-control" />
-                <span asp-validation-for="Identificationnumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="status" class="control-label"></label>
-                <input asp-for="status" class="form-control" />
-                <span asp-validation-for="status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="feedback" class="control-label"></label>
-                <input asp-for="feedback" class="form-control" />
-                <span asp-validation-for="feedback" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="created_date" class="control-label"></label>
-                <input asp-for="created_date" class="form-control" />
-                <span asp-validation-for="created_date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="updated_date" class="control-label"></label>
-                <input asp-for="updated_date" class="form-control" />
-                <span asp-validation-for="updated_date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="employee_id" class="control-label"></label>
-                <select asp-for="employee_id" class ="form-control" asp-items="ViewBag.employee_id"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="educational_program_id" class="control-label"></label>
-                <select asp-for="educational_program_id" class ="form-control" asp-items="ViewBag.educational_program_id"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="educational_level_type_id" class="control-label"></label>
-                <select asp-for="educational_level_type_id" class ="form-control" asp-items="ViewBag.educational_level_type_id"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+                <div class="row p-0 m-0">
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="institution_name" class="control-label">Institution Name <span class="text-danger">*</span></label>
+                        <input asp-for="institution_name" class="form-control" placeholder="Addis Ababa University" />
+                        <small><span asp-validation-for="institution_name" class="text-danger"></span></small>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="institution_email" class="control-label">Institution Email <span class="text-danger"></span></label>
+                        <input asp-for="institution_email" class="form-control" placeholder="Addis@mail.com" />
+                        <small><span asp-validation-for="institution_email" class="text-danger"></span></small>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="institution_website" class="control-label">Institution Website <span class="text-danger"></span></label>
+                        <input asp-for="institution_website" class="form-control" placeholder="www.abc.xxx" />
+                        <small><span asp-validation-for="institution_website" class="text-danger"></span></small>
+                    </div>
+                </div>
+                <br/>
+                <div class="row p-0 m-0">
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="filed_of_study" class="control-label">Filed of Study <span class="text-danger">*</span></label>
+                        <input asp-for="filed_of_study" class="form-control" placeholder="computer eng." />
+                        <small><span asp-validation-for="filed_of_study" class="text-danger"></span></small>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="educational_level_type_id" class="control-label">Educational level Type <span class="text-danger">*</span></label>
+                        <select asp-for="educational_level_type_id" class="form-control" asp-items="ViewBag.educational_level_type_id"></select>
+                        <span asp-validation-for="educational_level_type_id" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="educational_program_id" class="control-label">Educational Program Type <span class="text-danger">*</span></label>
+                        <select asp-for="educational_program_id" class="form-control" asp-items="ViewBag.educational_program_id"></select>
+                        <span asp-validation-for="educational_program_id" class="text-danger"></span>
+                    </div>
+                   
+                </div>
+                <br/>
+                <div class="row p-0 m-0">
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="gpa" class="control-label">GPA <span class="text-danger"></span></label>
+                        <input asp-for="gpa" class="form-control" placeholder="computer eng." />
+                        <small><span asp-validation-for="gpa" class="text-danger"></span></small>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="start_date" class="control-label">Start Date</label>
+                        <input type="date" asp-for="start_date" class="form-control" placeholder="start date..." />
+                        <span asp-validation-for="start_date" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <label asp-for="end_date" class="control-label">End Date</label>
+                        <input type="date" asp-for="end_date" class="form-control" placeholder="end date..." />
+                        <span asp-validation-for="end_date" class="text-danger"></span>
+                    </div>
+                </div>
+                <br/>
+                <div class="row px-3 m-0">
+                    <label asp-for="gpa" class="control-label">Additional Info <span class="text-danger"></span></label>
+                    <textarea asp-for="gpa" class="form-control" placeholder="computer eng."></textarea>
+                    <small><span asp-validation-for="gpa" class="text-danger"></span></small>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                </div>
 
+          
+                </form>

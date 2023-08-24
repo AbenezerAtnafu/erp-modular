@@ -6,6 +6,7 @@ using ERP.Models.HRMS.Employee_managments;
 using HRMS.Office;
 using HRMS.Types;
 using HRMS.Education_management;
+using ERP.Models.HRMS.File_managment;
 
 namespace ERP.Areas.Identity.Data
 {
@@ -39,5 +40,6 @@ namespace ERP.Areas.Identity.Data
         public DbSet<Violation_Types> Violation_Typess { get; set; }
         public DbSet<Education> Educations { get; set; }
 
+        public DbSet<FileUpload> FileUploads {get; set; }
     }
 }
