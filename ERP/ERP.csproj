@@ -70,10 +70,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\HRMs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\assets\animate\animate.min.css" />
     <None Include="wwwroot\assets\css\customstyle.css" />
     <None Include="wwwroot\assets\css\style.css" />
