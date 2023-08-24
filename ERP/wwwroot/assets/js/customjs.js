@@ -111,11 +111,13 @@ function submitFirstTab() {
     var currentDate = new Date();
 
     var fields = document.getElementsByClassName("name-input");
+    var dropdowns = document.getElementsByClassName("first-dropdown");
 
     var isLoopValid = true;
     var isgenderValid = false;
     var isdobValid = false;
     var isppValid = false;
+    var isdropdownValid = false;
 
 
     for (var i = 0; i < fields.length; i++) {
@@ -129,6 +131,23 @@ function submitFirstTab() {
             isLoopValid = false;
         } else {
             isLoopValid = true;
+            error.textContent = "";
+            inputclass.classList.remove("is-invalid");
+
+        }
+    }
+    console.log(dropdowns.length)
+    for (var i = 0; i < dropdowns.length; i++) {
+        var input = dropdowns[i].value;
+        var inputclass = dropdowns[i];
+        var error = dropdowns[i].nextElementSibling;
+
+        if (!input) {
+            error.textContent = "This field is required.";
+            inputclass.classList.add("is-invalid");
+            isdropdownValid = false;
+        } else {
+            isdropdownValid = true;
             error.textContent = "";
             inputclass.classList.remove("is-invalid");
 
@@ -162,30 +181,33 @@ function submitFirstTab() {
         document.getElementById("ProfilePictureValidation").textContent = ""
     }
 
-    if (isLoopValid && isdobValid && isgenderValid && isppValid) {
+    if (isLoopValid && isdobValid && isgenderValid && isppValid && isdropdownValid) {
         nextButton()
     }
 }
-
 
 //second tab validation
 function submitSecondTab() {
     var phonepattern = /^[0-9]{9}$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
+    var kebelepattern = /^[a-zA-Z\s]{2,10}$/;
 
-    var phonefields = document.getElementsByClassName("phone-input");
-    var addressfields = document.getElementsByClassName("address-input");
+    var dropdownfields = document.getElementsByClassName("second-dropdown");
+    var phonevalid = false;
+    var altphonevalid = false;
+    var intphonevalid = false;
+    var addressfield = false;
     var isLoopValid = false;
-    var isaddressValid = false;
+    var iskebeleValid = false;
 
 
-    for (var i = 0; i < phonefields.length; i++) {
-        var input = phonefields[i].value;
-        var inputclass = phonefields[i];
-        var error = phonefields[i].nextElementSibling;
+    for (var i = 0; i < dropdownfields.length; i++) {
+        var input = dropdownfields[i].value;
+        var inputclass = dropdownfields[i];
+        var error = dropdownfields[i].nextElementSibling;
 
-        if (!input.match(phonepattern)) {
-            error.textContent = "Phone number must start with 9 or 7 and 9 characters long.";
+        if (!input) {
+            error.textContent = "This field is required.";
             inputclass.classList.add("is-invalid");
             isLoopValid = false;
         } else {
@@ -195,47 +217,116 @@ function submitSecondTab() {
         }
     }
 
-    for (var i = 0; i < addressfields.length; i++) {
-        var input = addressfields[i].value;
-        var inputclass = addressfields[i];
-        var error = addressfields[i].nextElementSibling;
 
-        if (!input.match(addresspattern)) {
-            error.textContent = "Phone number must start with 9 or 7 and 9 characters long.";
-            inputclass.classList.add("is-invalid");
-            isaddressValid = false;
+    var address = document.getElementById('PrimaryAddress').value;
+    if (!address.match(addresspattern)) {
+        addressfield = false
+        document.getElementById("PrimaryAddressValidation").textContent = "Please enter between 3 and 30 alphabetic characters."
+    } else {
+        addressfield = true
+        document.getElementById("PrimaryAddressValidation").textContent = ""
+    }
+
+    var phone = document.getElementById('PhoneNumber').value;
+    if (!phone.match(phonepattern)) {
+        phonevalid = false
+        document.getElementById("PhoneNumberValidation").textContent = "Phone number must start with 9 or 7 and 9 characters long."
+    } else {
+        phonevalid = true
+        document.getElementById("PhoneNumberValidation").textContent = ""
+    }
+
+    var kebele = document.getElementById('Kebele');
+    if (kebele.value) {
+        if (!kebele.value.match(kebelepattern)) {
+            iskebeleValid = false
+            document.getElementById("kebeleValidation").textContent = "Please enter between 2 and 20 alphabetic characters."
         } else {
-            isaddressValid = true;
-            error.textContent = "";
-            inputclass.classList.remove("is-invalid");
+            iskebeleValid = true
+            document.getElementById("kebeleValidation").textContent = ""
         }
+    } else {
+        iskebeleValid = true
+        document.getElementById("kebeleValidation").textContent = ""
+    }
+
+    var altphone = document.getElementById('AlternativePhoneNumber');
+    if (altphone.value) {
+        console.log(" i have value...")
+        if (!altphone.value.match(phonepattern)) {
+            altphonevalid = false
+            document.getElementById("AlternativePhoneNumberValidation").textContent = "Phone number must start with 9 or 7 and 9 characters long."
+        } else {
+            altphonevalid = true
+            document.getElementById("AlternativePhoneNumberValidation").textContent = ""
+        }
+    } else {
+        altphonevalid = true
+        document.getElementById("AlternativePhoneNumberValidation").textContent = ""
+    }
+
+    var intphone = document.getElementById('InternalPhoneNumber');
+    if (intphone.value) {
+        if (!intphone.value.match(phonepattern)) {
+            intphonevalid = false
+            document.getElementById("InternalPhoneNumberValidation").textContent = "Phone number must start with 9 or 7 and 9 characters long."
+        } else {
+            intphonevalid = true
+            document.getElementById("InternalPhoneNumberValidation").textContent = ""
+        }
+    } else {
+        intphonevalid = true
+        document.getElementById("InternalPhoneNumberValidation").textContent = ""
     }
 
 
-    if (isLoopValid && isaddressValid) {
+
+    if (isLoopValid && addressfield && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
         console.log("ggg")
         nextButton()
     }
+   
 }
 
 //third tab validation
 function submitThirdTab() {
     var tinpattern = /^[0-9]{10}$/;
+    var penpattern = /^[0-9]{4}$/;
     var accountpattern = /^[0-9]{4,30}$/;
 
     var istinValid = false
     var isbankValid = false
+    var penValid = false
 
 
-    var tin = document.getElementById('TinNumber').value;
-    if (!tin.match(tinpattern)) {
-        istinValid = false
-        document.getElementById("TinNumber").classList.add("is-invalid");
-        document.getElementById("TinNumberValidation").textContent = "Tin number should be exactly 10 digits."
+    var tin = document.getElementById('TinNumber');
+    if (tin.value) {
+        if (!tin.value.match(tinpattern)) {
+            istinValid = false
+            document.getElementById("TinNumber").classList.add("is-invalid");
+            document.getElementById("TinNumberValidation").textContent = "Tin number should be exactly 10 digits."
+        } else {
+            istinValid = true
+            document.getElementById("TinNumber").classList.remove("is-invalid");
+            document.getElementById("TinNumberValidation").textContent = ""
+        }
     } else {
         istinValid = true
-        document.getElementById("TinNumber").classList.remove("is-invalid");
         document.getElementById("TinNumberValidation").textContent = ""
+    }
+
+    var pension = document.getElementById('PensionNumber');
+    if (pension.value) {
+        if (!pension.value.match(penpattern)) {
+            penValid = false
+            document.getElementById("PensionNumberValidation").textContent = "Pension number should be 4 digits only."
+        } else {
+            penValid = true
+            document.getElementById("PensionNumberValidation").textContent = ""
+        }
+    } else {
+        penValid = true
+        document.getElementById("PensionNumberValidation").textContent = ""
     }
 
     var bank = document.getElementById('BankNumber').value;
@@ -249,7 +340,7 @@ function submitThirdTab() {
         document.getElementById("BankNumberValidation").textContent = ""
     }
 
-    if (isbankValid && istinValid) {
+    if (isbankValid && istinValid && penValid) {
         nextButton()
     }
 }
@@ -257,8 +348,85 @@ function submitThirdTab() {
 
 //submit employee registration
 function submitfinalTab() {
+    var dropdownfields = document.getElementsByClassName("thrid-dropdown");
     var pattern = /^[a-zA-Z\s]{2,30}$/;
-    document.getElementById("CreateEmpForm").submit();
+    var officepattern = /^[0-9]{2,10}$/;
+    var isLoopValid = false
+    var placeValid = false
+    var officeValid = false
+    var currentValid = false
+    var startValid = false
+
+    for (var i = 0; i < dropdownfields.length; i++) {
+        var input = dropdownfields[i].value;
+        var inputclass = dropdownfields[i];
+        var error = dropdownfields[i].nextElementSibling;
+
+        if (!input) {
+            error.textContent = "This field is required.";
+            inputclass.classList.add("is-invalid");
+            isLoopValid = false;
+        } else {
+            isLoopValid = true;
+            error.textContent = "";
+            inputclass.classList.remove("is-invalid");
+        }
+    }
+
+    var place = document.getElementById('PlaceofWork').value;
+    if (!place.match(pattern)) {
+        placeValid = false
+        document.getElementById("PlaceofWork").classList.add("is-invalid");
+        document.getElementById("PlaceofWorkValidation").textContent = "Please enter between 3 and 30 alphabetic characters."
+    } else {
+        placeValid = true
+        document.getElementById("PlaceofWork").classList.remove("is-invalid");
+        document.getElementById("PlaceofWorkValidation").textContent = ""
+    }
+
+    var office = document.getElementById('OfficeNumber');
+    if (office.value) {
+        if (!office.value.match(officepattern)) {
+            officeValid = false
+            document.getElementById("OfficeNumberValidation").textContent = "Office number should be 2 and 10 digit long."
+        } else {
+            officeValid = true
+            document.getElementById("OfficeNumberValidation").textContent = ""
+        }
+    } else {
+        officeValid = true
+        document.getElementById("OfficeNumberValidation").textContent = ""
+    }
+
+    var startdate = document.getElementById('StartDate').value;
+    if (!startdate) {
+        startValid = false
+        document.getElementById("StartDateValidation").textContent = "This field is required."
+    } else {
+        startValid = true
+        document.getElementById("StartDateValidation").textContent = ""
+    }
+
+
+    if (document.getElementById("AlreadyWorking").checked) {
+        currentValid = true
+
+    } else {
+        if (!document.getElementById('EndDate').value) {
+            currentValid = false
+            document.getElementById("EndDateValidation").classList.add("is-invalid");
+            document.getElementById("EndDateValidation").textContent = "This field is Required."
+        } else {
+            document.getElementById("EndDateValidation").classList.remove("is-invalid");
+            document.getElementById("EndDateValidation").textContent = ""
+            currentValid = true
+        }
+    }
+
+
+    if (isLoopValid && placeValid && officeValid && currentValid && startValid) {
+         document.getElementById("CreateEmpForm").submit();
+    }
 }
 
 //submit modal

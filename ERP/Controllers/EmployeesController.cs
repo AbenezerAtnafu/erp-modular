@@ -233,7 +233,6 @@ namespace ERP.Controllers
                 _context.Update(emp);
                 await _context.SaveChangesAsync();
 
-
                 emp_address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
                 emp_address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
                 emp_address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
