@@ -294,6 +294,7 @@ namespace ERP.Controllers
         {
             if (file != null && file.Length > 0)
             {
+                
                 // Generate a unique file name
                 string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
 
@@ -304,12 +305,9 @@ namespace ERP.Controllers
                     file.CopyTo(stream);
                 }
 
-                // Store the file path in the database
-                string picturePath = "C://systemfilestore/" + fileName;
-
                 // Optionally, you can perform additional tasks such as resizing the image, creating thumbnails, etc.
 
-                return picturePath;
+                return fileName;
 
             }
             else
