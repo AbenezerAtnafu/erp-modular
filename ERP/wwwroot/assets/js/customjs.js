@@ -87,6 +87,17 @@ if (profilepicture) {
         };
 
         reader.readAsDataURL(file);
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                profilePictureHolder.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+
+        }
     });
 }
 
@@ -152,7 +163,6 @@ function submitFirstTab() {
     }
 
     if (isLoopValid && isdobValid && isgenderValid && isppValid) {
-        console.log("ggg")
         nextButton()
     }
 }
@@ -203,6 +213,7 @@ function submitSecondTab() {
 
 
     if (isLoopValid && isaddressValid) {
+        console.log("ggg")
         nextButton()
     }
 }

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-using ERP.HRMS.Employee_managment;
 using HRMS.Types;
+using ERP.Models.HRMS.Employee_managments;
 
 namespace HRMS.Education_management
 {

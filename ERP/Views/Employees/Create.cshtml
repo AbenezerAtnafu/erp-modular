@@ -3,6 +3,7 @@
     var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address; 
     var contact = ViewData["Employee_Contact"] as ERP.Models.HRMS.Employee_managments.Employee_Contact;
     var office = ViewData["Employee_Office"] as ERP.Models.HRMS.Employee_managments.Employee_Office;
+    var employee = ViewData["Employee"] as ERP.Models.HRMS.Employee_managments.Employee;
 }
 
 <div class="col-xl-12">
@@ -48,22 +49,28 @@
                       <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active mt-4" id="basic" role="tabpanel" aria-labelledby="home-tab">
                                 <div class="m-2 img-container position-relative d-inline-block">
-                                    @*  @if (Model != null)
+                                    @if (employee != null)
                                     {
-                                    @if (Model.ProfilePicture == null)
-                                    {
-                                    <img id="profilePictureHolder" src="~/images/male_img_avatar.png" alt="Avatar" />
+                                        @if (employee.profile_picture == null)
+                                        {
+                                        <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" />
+                                        }
+                                        else
+                                        {
+                                        <img id="profilePictureHolder" src="@Url.Content("~/img/" + @employee.profile_picture)" alt="Avatar" />
+                                    }
                                     }
                                     else
                                     {
-                                    }*@
                                     <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" />
+                                    }
                                     <input type="file"
                                            accept=".png,.jpg,.jpeg,.gif,.tif"
                                            id="ProfilePicture"
                                            name="file"
                                            class="form-control d-none"
-                                        />
+                                           value="@((employee != null && employee.profile_picture != null) ? employee.profile_picture : "")" 
+                                       />
                                     <small id="ProfilePictureValidation" class="text-danger"></small>
                                 </div>
                                 <div class="row p-0 m-0">
@@ -76,6 +83,7 @@
                                                 name="FirstName"
                                                 class="form-control name-input"
                                                 placeholder="Abebe"
+                                                value="@((employee != null) ? employee.first_name : "")" 
                                               />
                                             <small id="FirstNameValidation" class="text-danger"></small>
                                         </div>
@@ -83,14 +91,14 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="FatherName" class="control-label">Father Name <span class="text-danger">*</span></label>
-                                            <input type="text" id="FatherName" name="FatherName" class="form-control name-input" placeholder="Kebede" />
+                                        <input type="text" id="FatherName" name="FatherName" class="form-control name-input" placeholder="Kebede" value="@((employee != null) ? employee.father_name : "")" />
                                           <small id="FatherNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="GrandFatherName" class="control-label">GrandFather Name <span class="text-danger">*</span></label>
-                                            <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="Chala" />
+                                            <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="Chala" value="@((employee != null) ? employee.grand_father_name : "")" />
                                             <small id="GrandFatherNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
@@ -104,21 +112,21 @@
                                                    id="FirstName"
                                                    name="FirstNameAm"
                                                    class="form-control name-input"
-                                                   placeholder="Abebe" />
+                                                   placeholder="አበበ" value="@((employee != null) ? employee.first_name_am : "")" />
                                             <small id="FirstNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                         <label for="FatherName" class="control-label">Father Name Amharic<span class="text-danger">*</span></label>
-                                        <input type="text" id="FatherName" name="FatherNameAm" class="form-control name-input" placeholder="Kebede" />
+                                        <input type="text" id="FatherName" name="FatherNameAm" class="form-control name-input" placeholder="ከበደ" value="@((employee != null) ? employee.father_name_am : "")" />
                                             <small id="FatherNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
-                                        <label for="GrandFatherName" class="control-label">GrandFather Name Amharic<span class="text-danger">*</span></label>
-                                            <input type="text" id="GrandFatherName" name="GrandFatherNameAm" class="form-control name-input" placeholder="Chala" />
+                                            <label for="GrandFatherName" class="control-label">GrandFather Name Amharic<span class="text-danger">*</span></label>
+                                            <input type="text" id="GrandFatherName" name="GrandFatherNameAm" class="form-control name-input" placeholder="ጫላ" value="@((employee != null) ? employee.grand_father_name_am : "")" />
                                             <small id="GrandFatherNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
@@ -128,14 +136,14 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="PlaceofBirth" class="control-label">Place of Birth <span class="text-danger">*</span></label>
-                                        <input type="text" id="PlaceofBirth" name="PlaceofBirth" class="form-control name-input" placeholder="Addis Ababa" />
+                                        <input type="text" id="PlaceofBirth" name="PlaceofBirth" class="form-control name-input" placeholder="Addis Ababa" value="@((employee != null) ? employee.place_of_birth : "")" />
                                           <small id="PlaceofBirthValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="DateofBirth" class="control-label">Date of Birth <span class="text-danger">*</span></label>
-                                            <input type="date" id="DateofBirth" name="DateofBirth" class="form-control" />
+                                        <input type="date" id="DateofBirth" name="DateofBirth" class="form-control" value="@((employee != null) ? employee.date_of_birth.ToString("yyyy-MM-dd") : "")" />
                                           <small id="DateofBirthValidation" class="text-danger"></small>
                                         </div>
                                     </div>
@@ -156,12 +164,12 @@
                                             <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
                                             <div class="form-check pt-2">
                                                 <span class="mx-2">
-                                                    <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" />
+                                                <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
                                                     <label for="Female" class="form-check-label">Female</label>
                                                 </span>
                                                 <span class="mx-2">
 
-                                                    <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" />
+                                                <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
                                                     <label for="Male" class="form-check-label">Male</label>
                                                 </span>
                                             </div>
@@ -171,14 +179,19 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="Religion" class="control-label">Religion <span class="text-danger">*</span></label>
-                                            <input type="text" id="Religion" name="Religion" class="form-control name-input" placeholder="Christian" />
+                                        <input type="text" id="Religion" name="Religion" class="form-control name-input" placeholder="Christian" value="@((employee != null) ? employee.religion : "")" />
                                             <small id="ReligionValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="maritalstatus" class="control-label">Matrital Status <span class="text-danger">*</span></label>
-                                            <select name="maritalstatus" class="form-control" asp-items="ViewBag.MaritalStatus"></select>
+                                            <select name="maritalstatus" class="form-control" asp-items="ViewBag.MaritalStatus">
+                                            @if (employee != null)
+                                            {
+                                                <option value="@employee.Marital_Status_Types.id" selected>@employee.Marital_Status_Types.name</option>
+                                            }
+                                            </select>
                                             <small id="maritalstatusValidation" class="text-danger"></small>
                                         </div>
                                     </div>
@@ -199,7 +212,7 @@
                                             <select name="Region" class="form-control" asp-items="ViewBag.Region">
                                             @if(address != null)
                                             {
-                                                <option value="@address.Region.id">@address.Region.name</option>
+                                                <option value="@address.Region.id" selected>@address.Region.name</option>
                                             }
                                             </select>
                                             <small id="RegionValidation" class="text-danger"></small>
@@ -211,7 +224,7 @@
                                             <select name="Zone" class="form-control" asp-items="ViewBag.Zone">
                                             @if (address != null)
                                             {
-                                                <option value="@address.Region.id">@address.Zone.name</option>
+                                                <option value="@address.Zone.id">@address.Zone.name</option>
                                             }
                                             </select>
                                             <small id="ZoneValidation" class="text-danger"></small>
@@ -223,7 +236,7 @@
                                             <select name="Subcity" class="form-control" asp-items="ViewBag.Subcity">
                                             @if (address != null)
                                             {
-                                                <option value="@address.Region.id">@address.Subcity.name</option>
+                                                <option value="@address.Subcity.id">@address.Subcity.name</option>
                                             }
                                             </select>
                                             <small id="SubcityValidation" class="text-danger"></small>
@@ -234,10 +247,10 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
-                                            <select name="Woreda" class="form-control" asp-items="ViewBag.Subcity">
+                                             <select name="Woreda" class="form-control" asp-items="ViewBag.Woreda">
                                                 @if (address != null)
                                                 {
-                                                    <option value="@address.Region.id">@address.Woreda.name</option>
+                                                    <option value="@address.Woreda.id">@address.Woreda.name</option>
                                                 }
                                             </select>
                                             <small id="WoredaValidation" class="text-danger"></small>
@@ -246,15 +259,15 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="kebele" class="control-label">kebele</label>
-                                        <input type="text" id="kebele" name="kebele" class="form-control address-input" placeholder="Kebede" value="@((address != null) ? address.kebele : "")" />
+                                            <input type="text" id="kebele" name="kebele" class="form-control address-input" placeholder="01" value="@((address != null) ? address.kebele : "")" />
                                             <small id="kebeleValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="PrimaryAddress" class="control-label">Primary Address</label>
-                                        <input type="text" id="PrimaryAddress" name="PrimaryAddress" class="form-control address-input" placeholder="Chala" value="@((address != null) ? address.primary_address : "")" />
-                                             <small id="PrimaryAddressValidation" class="text-danger"></small>
+                                            <input type="text" id="PrimaryAddress" name="PrimaryAddress" class="form-control address-input" placeholder="Megenagna" value="@((address != null) ? address.primary_address : "")" />
+                                            <small id="PrimaryAddressValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                 </div>
@@ -268,7 +281,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">+251</span>
                                                 </div>
-                                            <input type="text" class="form-control phone-input" placeholder="920124578" aria-label="PhoneNumber" aria-describedby="Phone-Number" value="@((contact != null) ? contact.phonenumber : "")">
+                                            <input type="text" class="form-control phone-input" placeholder="920124578" name="PhoneNumber" aria-label="PhoneNumber" aria-describedby="Phone-Number" value="@((contact != null) ? contact.phonenumber : "")" />
                                                 <small id="PhoneNumberValidation" class="text-danger bg-white"></small>
                                              </div>
                                         </div>
@@ -280,8 +293,8 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">+251</span>
                                                 </div>
-                                            <input type="text" class="form-control phone-input" placeholder="920124578" aria-label="AlternativePhoneNumber" aria-describedby="AlternativePhone-Number" value="@((contact != null) ? contact.alternative_phonenumber : "")">>
-                                                <small id="AlternativePhoneNumberValidation" class="text-danger  bg-white"></small>
+                                            <input type="text" class="form-control phone-input" placeholder="920124578" name="AlternativePhoneNumber" aria-label="AlternativePhoneNumber" aria-describedby="AlternativePhone-Number" value="@((contact != null) ? contact.alternative_phonenumber : "")" />
+                                                <small id="AlternativePhoneNumberValidation" class="text-danger bg-white"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -292,7 +305,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">011</span>
                                                 </div>
-                                            <input type="text" class="form-control" placeholder="820124578" aria-label="InternalPhoneNumber" aria-describedby="InternalPhoneNumber" value="@((contact != null) ? contact.internal_phonenumber : "")">>
+                                            <input type="text" class="form-control" placeholder="820124578" name="InternalPhoneNumber" aria-label="InternalPhoneNumber" aria-describedby="InternalPhoneNumber" value="@((contact != null) ? contact.internal_phonenumber : "")" />
                                             </div>
                                           <small id="InternalPhoneNumberValidation" class="text-danger"></small>
                                         </div>
@@ -308,21 +321,21 @@
                                         <div class="col-md-4 col-sm-12 ">
                                             <div class="form-group p-2">
                                                 <label for="BankNumber" class="control-label">Bank Account Number <span class="text-danger">*</span></label>
-                                                <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="10001842693" />
+                                                <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="10001842693"  value="@((employee != null) ? employee.back_account_number : "")" />
                                                 <small id="BankNumberValidation" class="text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12 ">
                                             <div class="form-group p-2">
                                                 <label for="PensionNumber" class="control-label">Pension Number</label>
-                                                <input type="number" id="PensionNumber" name="PensionNumber" class="form-control" placeholder="1245" />
+                                                <input type="number" id="PensionNumber" name="PensionNumber" class="form-control" placeholder="1245"  value="@((employee != null) ? employee.pension_number : "")" />
                                                 <small id="PensionNumberValidation" class="text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12 ">
                                             <div class="form-group p-2">
                                                 <label for="TinNumber" class="control-label">Tin Number</label>
-                                                <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="1236578952" />
+                                                <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="1236578952"  value="@((employee != null) ? employee.tin_number : "")" />
                                                 <small id="TinNumberValidation" class="text-danger"></small>
                                             </div>
                                         </div>
@@ -371,7 +384,12 @@
                                         <div class="form-group p-2">
                                             <label for="Position" class="control-label">Position <span class="text-danger">*</span></label>
                                             <div class="multiselect">
-                                            <select name="Position" class="form-control" asp-items="ViewBag.Position" multiple></select>
+                                            <select name="Position" class="form-control" asp-items="ViewBag.Position" multiple>
+                                                @if (office != null)
+                                                {
+                                                    <option value="@office.Position.id" selected>@office.Position.name</option>
+                                                }
+                                            </select>
                                             </div>
                                             <small id="PositionValidation" class="text-danger"></small>
                                         </div>
@@ -399,7 +417,7 @@
                                     <div class="col-md-6 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="PlaceofWork" class="control-label">Place of work <span class="text-danger">*</span></label>
-                                        <input type="number" id="PlaceofWork" name="PlaceofWork" class="form-control position-input" placeholder="Addis Ababa" />
+                                        <input type="number" id="PlaceofWork" name="PlaceofWork" class="form-control position-input" placeholder="Addis Ababa" value="@((employee != null) ? employee.place_of_work : "")" />
                                           <small id="PlaceofWorkValidation" class="text-danger"></small>
                                         </div>
                                     </div>

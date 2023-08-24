@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
-
 using ERP.Models.HRMS.Address;
-using HRMS.Family;
-using ERP.HRMS.Employee_managment;
 using ERP.Models.HRMS.Employee_managments;
 using HRMS.Office;
 using HRMS.Types;

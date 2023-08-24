@@ -34,9 +34,9 @@ html {
 }
 
 @media (min-width: 768px) {
-  .container {
-    max-width: 720px;
-  }
+    .container {
+        max-width: 856px;
+    }
 }
 
 @media (min-width: 992px) {

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ERP;
 using ERP.Areas.Identity.Data;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
@@ -30,6 +31,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+string syspath = @"C:\systemfilestore";
+builder.Services.AddSingleton<IFileProvider>(
+        new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), syspath)));
 
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
