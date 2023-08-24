@@ -6,94 +6,94 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
+using ERP.Models.HRMS.Emergency_contact;
 using HRMS.Types;
 
-namespace ERP.Models.HRMS.Types
+namespace ERP.Controllers.HRMs
 {
-    public class Education_Level_TypeController : Controller
+    public class Emergency_contactController : Controller
     {
         private readonly employee_context _context;
 
-        public Education_Level_TypeController(employee_context context)
+        public Emergency_contactController(employee_context context)
         {
             _context = context;
         }
 
-        // GET: Education_Level_Type
+        // GET: Emergency_contact
         public async Task<IActionResult> Index()
         {
-              return _context.Education_Level_Types != null ? 
-                          View(await _context.Education_Level_Types.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Education_Level_Types'  is null.");
+              return _context.emergency_Contacts != null ? 
+                          View(await _context.emergency_Contacts.ToListAsync()) :
+                          Problem("Entity set 'employee_context.emergency_Contacts'  is null.");
         }
 
-        // GET: Education_Level_Type/Details/5
+        // GET: Emergency_contact/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Education_Level_Types == null)
+            if (id == null || _context.emergency_Contacts == null)
             {
                 return NotFound();
             }
 
-            var education_Level_Type = await _context.Education_Level_Types
+            var emergency_contact = await _context.emergency_Contacts
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (education_Level_Type == null)
+            if (emergency_contact == null)
             {
                 return NotFound();
             }
 
-            return View(education_Level_Type);
+            return View(emergency_contact);
         }
 
-        // GET: Education_Level_Type/Create
+        // GET: Emergency_contact/Create
         public IActionResult Create()
         {
-
             return View();
         }
 
-        // POST: Education_Level_Type/Create
+        // POST: Emergency_contact/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Education_Level_Type education_Level_Type)
+        public async Task<IActionResult> Create([Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id,created_date,updated_date")] Emergency_contact emergency_contact)
         {
             if (ModelState.IsValid)
             {
-                education_Level_Type.created_date = DateTime.Now.Date;
-                education_Level_Type.updated_date = DateTime.Now.Date;
-                _context.Add(education_Level_Type);
+                emergency_contact.created_date = DateTime.Now.Date;
+                emergency_contact.updated_date = DateTime.Now.Date;
+                _context.Add(emergency_contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(education_Level_Type);
+            return View(emergency_contact);
         }
 
-        // GET: Education_Level_Type/Edit/5
+        // GET: Emergency_contact/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Education_Level_Types == null)
+            if (id == null || _context.emergency_Contacts == null)
             {
                 return NotFound();
             }
 
-            var education_Level_Type = await _context.Education_Level_Types.FindAsync(id);
-            if (education_Level_Type == null)
+            var emergency_contact = await _context.emergency_Contacts.FindAsync(id);
+            if (emergency_contact == null)
             {
                 return NotFound();
             }
-            return View(education_Level_Type);
+            return View(emergency_contact);
         }
 
-        // POST: Education_Level_Type/Edit/5
+        // POST: Emergency_contact/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,name,description,created_date,updated_date")] Education_Level_Type education_Level_Type)
+        public async Task<IActionResult> Edit(int id, [Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id,created_date,updated_date")] Emergency_contact emergency_contact)
         {
-            if (id != education_Level_Type.id)
+            if (id != emergency_contact.id)
             {
                 return NotFound();
             }
@@ -102,13 +102,12 @@ namespace ERP.Models.HRMS.Types
             {
                 try
                 {
-                    education_Level_Type.updated_date = DateTime.Now.Date;
-                    _context.Update(education_Level_Type);
+                    _context.Update(emergency_contact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!Education_Level_TypeExists(education_Level_Type.id))
+                    if (!Emergency_contactExists(emergency_contact.id))
                     {
                         return NotFound();
                     }
@@ -119,49 +118,49 @@ namespace ERP.Models.HRMS.Types
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(education_Level_Type);
+            return View(emergency_contact);
         }
 
-        // GET: Education_Level_Type/Delete/5
+        // GET: Emergency_contact/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Education_Level_Types == null)
+            if (id == null || _context.emergency_Contacts == null)
             {
                 return NotFound();
             }
 
-            var education_Level_Type = await _context.Education_Level_Types
+            var emergency_contact = await _context.emergency_Contacts
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (education_Level_Type == null)
+            if (emergency_contact == null)
             {
                 return NotFound();
             }
 
-            return View(education_Level_Type);
+            return View(emergency_contact);
         }
 
-        // POST: Education_Level_Type/Delete/5
+        // POST: Emergency_contact/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Education_Level_Types == null)
+            if (_context.emergency_Contacts == null)
             {
-                return Problem("Entity set 'employee_context.Education_Level_Types'  is null.");
+                return Problem("Entity set 'employee_context.emergency_Contacts'  is null.");
             }
-            var education_Level_Type = await _context.Education_Level_Types.FindAsync(id);
-            if (education_Level_Type != null)
+            var emergency_contact = await _context.emergency_Contacts.FindAsync(id);
+            if (emergency_contact != null)
             {
-                _context.Education_Level_Types.Remove(education_Level_Type);
+                _context.emergency_Contacts.Remove(emergency_contact);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool Education_Level_TypeExists(int id)
+        private bool Emergency_contactExists(int id)
         {
-          return (_context.Education_Level_Types?.Any(e => e.id == id)).GetValueOrDefault();
+          return (_context.emergency_Contacts?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

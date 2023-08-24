@@ -1,23 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using ERP.Models.HRMS.Employee_managments;
 
-namespace ERP.Models.HRMS.Employee_managments
+namespace ERP.Models.HRMS.Emergency_contact
 {
-    public class Employee_Contact
+    public class Emergency_contact
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int id { get; set; }
+
+        [Required]
+        [StringLength(200, ErrorMessage = "The 'Full name ' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        public string full_name { get; set; }
+
         [Required(ErrorMessage = "The 'phone number' field is required.")]
         [MinLength(9, ErrorMessage = "The 'phone number' field must be a 9-digit number.")]
-        public string phonenumber { get; set; }
+        public int phonenumber { get; set; }
         [MinLength(9, ErrorMessage = "The 'alternative phone number' field must be a 9-digit number.")]
-        public string? alternative_phonenumber { get; set; }
-        public string? internal_phonenumber { get; set; }
-        [MinLength(6, ErrorMessage = "The 'home number' field must be a 6-digit number.")]
-        public string? home_phonenumber { get; set; }
+        public int? alternative_phonenumber { get; set; }
 
-        [ForeignKey("Employees")]
+        [StringLength(200, ErrorMessage = "The 'Relationship' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        public string Relationship { get; set; }
+        [ForeignKey("Employee")]
         public int employee_id { get; set; }
         public Employee Employees { get; set; }
 
@@ -28,6 +33,7 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'updated_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
+
 
     }
 }

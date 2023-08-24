@@ -1,0 +1,121 @@
+﻿@using ERP.Areas.Identity.Data
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<ERP.Areas.Identity.Data.User>
+
+@{
+    var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
+}
+
+@using (Html.BeginForm("Index", "Users", FormMethod.Get))
+{
+    <div class="form-group">
+        @Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Search by email or username" })
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(searchTerm))
+    {
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Clear</a>
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                
+                <td>
+                    <label class="switch">
+                        <a class="toggle-activate" data-userid="@user.Id" @(user.is_active ? "checked" : "") asp-action="@(user.is_active ? "ActivateUser" : "DeactivateUser")" asp-route-userId="@user.Id"></a>
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination">
+    <ul class="pagination justify-content-center">
+        @if (Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
+            </li>
+        }
+        @if (Model.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Next</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<!-- Include necessary CSS styles -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #808080;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input[type="checkbox"]:checked + .slider {
+        background-color: #00b300;
+    }
+
+        input[type="checkbox"]:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+

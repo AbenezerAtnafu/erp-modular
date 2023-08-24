@@ -2,9 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
-using ERP.Models.HRMS.Employee_managments;
 
-namespace ERP.HRMS.Employee_managment
+namespace ERP.Models.HRMS.Employee_managments
 {
     public class Employee
     {
@@ -35,17 +34,17 @@ namespace ERP.HRMS.Employee_managment
         [Required]
         [StringLength(200, ErrorMessage = "The 'gender' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string gender { get; set; }
-        
+
         [Required(ErrorMessage = "The 'date of birth' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'date of birth' field must be a valid Date.")]
         public DateTime date_of_birth { get; set; }
-        
+
         [Required(ErrorMessage = "The 'nationality' field is required.")]
         [StringLength(200, ErrorMessage = "The 'nationality' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string nationality { get; set; }
-       
+
         public string? nation { get; set; }
-        
+
         [Required(ErrorMessage = "The 'place of birth' field is required.")]
         [StringLength(200, ErrorMessage = "The 'place of birth' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_birth { get; set; }
@@ -54,13 +53,21 @@ namespace ERP.HRMS.Employee_managment
         public string religion { get; set; }
         [Required(ErrorMessage = "The 'back account number' field is required.")]
         [MinLength(4, ErrorMessage = "The 'back account number' field must be a 4-digit number.")]
-        public int back_account_number { get; set; }
+        public string back_account_number { get; set; }
         [Required(ErrorMessage = "The 'tin number' field is required.")]
         [MinLength(10, ErrorMessage = "The 'tin number' field must be a 10-digit number.")]
-        public int tin_number { get; set; }
+        public string tin_number { get; set; }
         [Required(ErrorMessage = "The 'pension number' field is required.")]
         [MinLength(4, ErrorMessage = "The 'pension number' field must be a 4-digit number.")]
-        public int pension_number { get; set; }
+        public string pension_number { get; set; }
+
+        [Required(ErrorMessage = "The 'created_date' field is required.")]
+        [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]
+        public DateTime created_date { get; set; }
+
+        [Required(ErrorMessage = "The 'updated_date' field is required.")]
+        [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
+        public DateTime updated_date { get; set; }
         [Required(ErrorMessage = "The 'place of work' field is required.")]
         [StringLength(200, ErrorMessage = "The 'place of work' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_work { get; set; }

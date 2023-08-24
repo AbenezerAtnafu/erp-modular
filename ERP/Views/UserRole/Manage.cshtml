@@ -1,0 +1,54 @@
+﻿@model List<ManageUserRolesViewModel>
+@{
+    ViewData["Title"] = "Manage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-wrapper">
+
+    <div class="card container">
+        <div class="card-header border-bottom-0">
+            <div class="card-title mb-5">
+                <h5 class="text-muted text-"> Manage Roles</h5><br />
+                Add/Remove Roles for User / @ViewBag.UserName.
+
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="card-body">
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <div class="form-check m-1">
+                                @*@if (Model[i].RoleName == "Director")
+                            {
+                            <p class="mb-0"><a href="#!" class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Director</a></p>
+
+                            <div id="collapseTwo" class="collapse card-body" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <select asp-items ="ViewBag.department_id"></select>
+                            </div>
+                            }*@
+
+                                <input type="hidden" asp-for="@Model[i].RoleId" />
+                                <input type="hidden" asp-for="@Model[i].RoleName" />
+                                <input asp-for="@Model[i].Selected" class="form-check-input" />
+                                <label class="form-check-label" asp-for="@Model[i].Selected">
+                                    @Model[i].RoleName
+                                </label>
+
+
+
+                            </div>
+                        }
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <input type="submit" value="Update" class="btn btn-glow-dark btn-primary"
+                               style="width:auto" />
+                        <a class="btn btn-glow-dark btn-secondary text-white" asp-action="Index" style="width:auto">Cancel</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
