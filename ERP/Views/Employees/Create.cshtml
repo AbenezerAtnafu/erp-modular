@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Register Employee";
-    var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address; 
+    var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address;
     var contact = ViewData["Employee_Contact"] as ERP.Models.HRMS.Employee_managments.Employee_Contact;
     var office = ViewData["Employee_Office"] as ERP.Models.HRMS.Employee_managments.Employee_Office;
     var employee = ViewData["Employee"] as ERP.Models.HRMS.Employee_managments.Employee;
@@ -30,18 +30,19 @@
             </small>
         </div>
         <div class="card-block table-border-style">
-             <div class="pb-4">
-                  <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active text-uppercase" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
-                        </li>
-                        <li class="nav-item">
+            <div class="pb-4">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active text-uppercase" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Info</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-uppercase disabled" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
-                        </li>
-                        <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-uppercase disabled" id="financial-tab" data-toggle="tab" href="#financial" role="tab" aria-controls="financial" aria-selected="false">Financial Details</a>
-                        </li>
-                        <li class="nav-item">
+                    </li>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-uppercase" id="position-tab" data-toggle="tab" href="#position" role="tab" aria-controls="position" aria-selected="false">Position Details</a>
                         </li>
                   </ul>
@@ -346,19 +347,19 @@
                                     </div>
                                 </div>
                             <div class="tab-pane fade  mt-4" id="position" role="tabpanel" aria-labelledby="contact-tab">
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
-                                            <select name="Division" class="form-control" asp-items="ViewBag.Division">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
+                                        <select name="Division" class="form-control" asp-items="ViewBag.Division">
                                             @if (office != null)
                                             {
                                                 <option value="@office.Division.id" selected>@office.Division.name</option>
                                             }
-                                            </select>
-                                          <small id="DivisionValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="DivisionValidation" class="text-danger"></small>
                                     </div>
+                                </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>

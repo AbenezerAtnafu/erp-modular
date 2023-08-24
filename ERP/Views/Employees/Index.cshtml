@@ -1,8 +1,62 @@
-﻿@{
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<ERP.Models.HRMS.Employee_managments.Employee>
+
+@{
     ViewData["Title"] = "Employee List";
 }
 
-<div class="container px-1" style="position:initial;">
+@{
+    var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
+    var sortOrder = ViewContext.HttpContext.Request.Query["sortOrder"];
+    var birthdateFilter = ViewContext.HttpContext.Request.Query["birthdateFilter"];
+    var maritalStatusFilter = ViewContext.HttpContext.Request.Query["maritalStatusFilter"];
+}
+
+@using (Html.BeginForm("Index", "Employees", FormMethod.Get))
+{
+    <div class="form-group">
+        @Html.TextBox("searchTerm", searchTerm, new { @class = "form-control", placeholder = "Search by First name or Last name" })
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+
+    <div class="form-group">
+        <label for="sortOrder">Sort By:</label>
+        <select name="sortOrder" id="sortOrder" class="form-control">
+            <option value="">None</option>
+            <option value="asc" selected="@(sortOrder == "asc")">First Name (Ascending)</option>
+            <option value="desc" selected="@(sortOrder == "desc")">First Name (Descending)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="birthdateFilter">Filter By Birthdate:</label>
+        <input type="date" name="birthdateFilter" id="birthdateFilter" class="form-control" value="@birthdateFilter" />
+    </div>
+
+    <div class="form-group">
+        <label for="maritalStatusFilter">Filter By Marital Status:</label>
+        <select name="maritalStatusFilter" id="maritalStatusFilter" class="form-control">
+
+            <option value="Single" selected="@(maritalStatusFilter == "Single" ? "selected" : null)">Single</option>
+            <option value="Married" selected="@(maritalStatusFilter == "Married" ? "selected" : null)">Married</option>
+            <option value="Divorced" selected="@(maritalStatusFilter == "Divorced" ? "selected" : null)">Divorced</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </div>
+    @if (!string.IsNullOrEmpty(searchTerm) || !string.IsNullOrEmpty(sortOrder) || !string.IsNullOrEmpty(birthdateFilter) || !string.IsNullOrEmpty(maritalStatusFilter))
+    {
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Clear Filters</a>
+    }
+}
+
+<div class="container px-1" style="position: initial;">
     <div class="card">
         <div class="card-header">
             <h5>Employee List</h5>
@@ -11,30 +65,41 @@
         <div class="card-block table-border-style">
             <div class="table-responsive">
                 <table class="table table-hover">
-                    <tbody>
-                        <tr class="unread">
-                            <td><img class="rounded-circle" style="width:40px;" src="assets/images/user/avatar-1.jpg" alt="activity-user"></td>
-                            <td>
-                                <h6 class="mb-1">Isabella Christensen</h6>
-                                <p class="m-0">Lorem Ipsum is simply…</p>
-                            </td>
-                            <td>
-                                <h6 class="text-muted"><i class="fas fa-circle text-c-green f-10 m-r-15"></i>11 MAY 12:56</h6>
-                            </td>
-                            <td>
-                                 <small class="d-block  text-danger mb-2">
-                                 <i class="feather icon-trash-2 fa-fw"></i>
-                                </small>
-                                <small class="d-block text-success">
-                                    <i class="feather icon-edit fa-fw"></i>
-                                </small>
-                             @*    <a href="#!" class="label theme-bg2 text-white f-12">Reject</a>
-                               <a href="#!" class="label theme-bg text-white f-12">Approve</a> *@
-                            </td>
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Birthdate</th>
+                            <th>Marital Status</th>
+                            <th>Action</th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var employee in Model)
+                        {
+                            <tr>
+                                <td>@employee.first_name</td>
+                                <td>@employee.father_name</td>
+                                <td>@employee.date_of_birth.ToShortDateString()</td>
+                                <td>@employee.marital_status_type_id</td>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id = employee.id })" class="btn btn-primary">Edit</a>
+                                    <a href="@Url.Action("Delete", new { id = employee.id })" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<div class="pagination">
+    <ul class="pagination justify-content-center">
+        @if (Model.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
+            </li>
+        }

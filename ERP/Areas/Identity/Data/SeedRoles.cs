@@ -9,7 +9,7 @@ namespace ERP.Areas.Identity.Data
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Expert.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Basic.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.HR.ToString()));
 
         }

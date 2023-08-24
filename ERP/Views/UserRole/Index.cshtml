@@ -1,0 +1,59 @@
+﻿@using ERP.Models
+@model List<ERP.Models.UserRolesViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-wrapper">
+
+    <div class="card container">
+        <div class="card-header border-bottom-0">
+            <div class="card-title mb-5">
+                <h5 class="text-muted text-"> Roles</h5>
+            </div>
+            <div class="card-tools">
+                <div class="row">
+                    <div class="col-4">
+                        <form asp-controller="UserRoles" asp-action="Index">
+                            <div class="input-group input-group-md">
+                                <input type="search" class="form-control float-right" name="searchTerm" placeholder="Search..." />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" type="submit"> <i class="fa fa-search"></i> </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-1">
+                        <a asp-action="Index">See All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                         
+                                <td>@user.RoleId</td>
+                               
+                                <td>
+                                    <a asp-controller="UserRole" asp-action="Manage" asp-route-userId="@user.UserId"><i class="fa fa-edit text-green fa-fw"></i></a>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -121,31 +121,34 @@ namespace ERP.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-           // ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid)
             {
                 var userName = Input.Email;
                 if (IsValidEmail(Input.Email))
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
+
                     if (user != null)
                     {
                         userName = user.UserName;
+
+                        if (!user.is_active)
+                        {
+                            // Redirect to "Deactivated" page
+                            return RedirectToPage("./DeactivatedAccount");
+                        }
                     }
                 }
 
-
                 var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
+
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -161,5 +164,6 @@ namespace ERP.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
     }
 }

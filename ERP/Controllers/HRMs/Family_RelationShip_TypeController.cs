@@ -60,6 +60,8 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                family_RelationShip_Type.created_date = DateTime.Now.Date;
+                family_RelationShip_Type.updated_date = DateTime.Now.Date;
                 _context.Add(family_RelationShip_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,6 +101,7 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    family_RelationShip_Type.updated_date = DateTime.Now.Date;
                     _context.Update(family_RelationShip_Type);
                     await _context.SaveChangesAsync();
                 }

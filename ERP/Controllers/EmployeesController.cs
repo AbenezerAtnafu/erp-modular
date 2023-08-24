@@ -6,9 +6,11 @@ using ERP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
+
     public class EmployeesController : Controller
     {
         private readonly employee_context _context;
@@ -21,13 +23,50 @@ namespace ERP.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page, string sortOrder, DateTime? birthdateFilter, string maritalStatusFilter)
         {
-            return View();
+            var users = _userManager.GetUserId(HttpContext.User);
+            var employee_list = _context.Employees.Where(q => q.user_id != users);
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            // Apply search term filter
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                employee_list = employee_list.Where(u =>
+                    u.first_name.ToLower().Contains(searchTerm) ||
+                    u.father_name.ToLower().Contains(searchTerm)
+                );
+            }
+            // Apply sorting
+            switch (sortOrder)
+            {
+                case "asc":
+                    employee_list = employee_list.OrderBy(u => u.first_name);
+                    break;
+                case "desc":
+                    employee_list = employee_list.OrderByDescending(u => u.first_name);
+                    break;
+                default:
+                    employee_list = employee_list.OrderBy(u => u.first_name);
+                    break;
+            }
+
+            var totalCount = await employee_list.CountAsync();
+            var employee_list_final = await employee_list
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
+
+            return View(pagedEmployees);
+
         }
 
         // GET: Employees
-        public  IActionResult Profile()
+        public IActionResult Profile()
         {
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees
@@ -43,7 +82,8 @@ namespace ERP.Controllers
                 .Include(e => e.Employee_Office.Position)
                 .Include(e => e.Marital_Status_Types)
                 .FirstOrDefault(a => a.user_id == users);
-            if (employee == null) {
+            if (employee == null)
+            {
                 ViewData["Employee"] = employee;
                 return View();
             }
@@ -75,7 +115,7 @@ namespace ERP.Controllers
             if (emp != null)
             {
                 ViewData["Employee"] = emp;
-                ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a=>a.employee_id==emp.id);
+                ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Contact"] = _context.Employee_Contacts.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Office"] = _context.Employee_Offices.FirstOrDefault(a => a.employee_id == emp.id);
             }
@@ -103,10 +143,10 @@ namespace ERP.Controllers
         public async Task<IActionResult> CreateorUpdate(IFormFile file)
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
             var emp = _context.Employees.FirstOrDefault(e => e.user_id == user.Id);
-           
-            if(emp == null)
+
+            if (emp == null)
             {
                 Employee employee = new Employee();
 
@@ -114,7 +154,7 @@ namespace ERP.Controllers
                 employee.father_name = Convert.ToString(HttpContext.Request.Form["FatherName"]);
                 employee.grand_father_name = Convert.ToString(HttpContext.Request.Form["GrandFatherName"]);
                 employee.first_name_am = Convert.ToString(HttpContext.Request.Form["FirstNameAm"]);
-                employee.father_name_am= Convert.ToString(HttpContext.Request.Form["FatherNameAm"]);
+                employee.father_name_am = Convert.ToString(HttpContext.Request.Form["FatherNameAm"]);
                 employee.grand_father_name_am = Convert.ToString(HttpContext.Request.Form["GrandFatherNameAm"]);
                 employee.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 employee.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
@@ -142,9 +182,9 @@ namespace ERP.Controllers
                 address.primary_address = Convert.ToString(HttpContext.Request.Form["PrimaryAddress"]);
                 address.employee_id = employee.id;
                 _context.Add(address);
-                await _context.SaveChangesAsync();  
-                
-                
+                await _context.SaveChangesAsync();
+
+
                 Employee_Contact contact = new Employee_Contact();
 
                 contact.phonenumber = Convert.ToString(HttpContext.Request.Form["PhoneNumber"]);
@@ -163,7 +203,7 @@ namespace ERP.Controllers
                 office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-               /* office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
+                /* office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
                 office.employee_id = employee.id;
                 _context.Add(office);
                 await _context.SaveChangesAsync();
@@ -224,8 +264,6 @@ namespace ERP.Controllers
                 TempData["Success"] = "Successfully Updated Employee.";
                 return RedirectToAction(nameof(Create));
             }
-
-
         }
 
         // POST: Employees/Edit/5
@@ -299,14 +337,14 @@ namespace ERP.Controllers
             {
                 _context.Employees.Remove(employee);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
-          return (_context.Employees?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Employees?.Any(e => e.id == id)).GetValueOrDefault();
         }
 
 
