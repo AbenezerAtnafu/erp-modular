@@ -1,6 +1,6 @@
 ﻿
-using ERP.HRMS.Employee_managment;
 using ERP.Models.HRMS.Address;
+using ERP.Models.HRMS.Employee_managments;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

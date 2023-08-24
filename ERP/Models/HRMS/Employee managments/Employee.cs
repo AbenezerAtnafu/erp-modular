@@ -2,10 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
-using ERP.Models.HRMS.Employee_managments;
-using System;
 
-namespace ERP.HRMS.Employee_managment
+namespace ERP.Models.HRMS.Employee_managments
 {
     public class Employee
     {
@@ -65,6 +63,8 @@ namespace ERP.HRMS.Employee_managment
         [Required(ErrorMessage = "The 'place of work' field is required.")]
         [StringLength(200, ErrorMessage = "The 'place of work' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_work { get; set; }
+        public bool? profile_status { get; set; }
+        public bool? work_status { get; set; }
 
         [ForeignKey("Marital_Status_Types")]
         public int marital_status_type_id { get; set; }
