@@ -28,17 +28,17 @@
                 <div class="card p-0">
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <div class="card-img-block bg-info" style="height:65px; width:100%;">
-
+                            <div class="card-img-block" style="height:65px; width:100%;">
+                                <img src="https://wallpapers.com/images/hd/profile-picture-background-npa9yae86g2tj6xs.jpg" class="w-100" style="height:65px; width:100%; object-fit:cover;" />
                             </div>
                             <div class="position-relative mx-auto">
                                 @if (employee.profile_picture != null)
                                 {
-                                    <img class="img-radius mx-auto d-block" width="100" id="profilePictureHolder" src="@Url.Content("~/img/" + employee.profile_picture)" alt="Employee Profile Photo" style="margin-top:-36px;" />
+                                    <img class="img-radius mx-auto d-block border" width="100" id="profilePictureHolder" src="@Url.Content("~/img/" + employee.profile_picture)" alt="Employee Profile Photo" style="margin-top:-36px;" />
                                 }
                                 else
                                 {
-                                    <img class="img-radius mx-auto d-block" width="100" src="~/img/male_img_avatar.png" alt="Employee Profile Photo" style="margin-top:-36px;" />
+                                    <img class="img-radius mx-auto d-block border" width="100" src="~/img/male_img_avatar.png" alt="Employee Profile Photo" style="margin-top:-36px;" />
                                 }
                             </div>
                             @*      <div class="certificated-badge">
@@ -231,7 +231,7 @@
             </div>
         </div>
     }
-    else
+    else if (employee == null)
     {
         <div class="text-center mt-5 text-light">
             <h2 class="font-weight-bold my-4">No Employee Profile</h2>
