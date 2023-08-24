@@ -156,14 +156,15 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,institution_name,institution_email,institution_website,filed_of_study,description,start_date,end_date,Identificationnumber,status,filestatus,feedback,created_date,updated_date,employee_id,educational_program_id,educational_level_type_id")] Education education , FileUpload FileUpload, List<IFormFile> FormFile)
         {
-            if (ModelState.IsValid)
-            {
+            
                 User users = await _userManager.GetUserAsync(User);
                 var check_employee= _context.Employees.FirstOrDefault(e => e.user_id== users.Id);
                 long file_size = FormFile.Sum(f => f.Length);
                 string syspath = @"c:\systemfilestore";
                 var randomGenerator = new Random();
                 var random_max = randomGenerator.Next(1, 1000000000);
+                education.created_date= DateTime.Now;
+                education.updated_date = DateTime.Now;
                 ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
                 ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
 
@@ -223,8 +224,8 @@ namespace ERP.Controllers.HRMs
 
                
                     
-            }
-            return RedirectToAction(nameof(Index_Personal));
+            
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
