@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using HRMS.Office;
 
 namespace ERP.Models.HRMS.Employee_managments
 {
@@ -84,6 +85,9 @@ namespace ERP.Models.HRMS.Employee_managments
         public Employee_Address Employee_Address { get; set; }
         public Employee_Contact Employee_Contact { get; set; }
         public Employee_Office Employee_Office { get; set; }
+   
+
+
 
     }
 }

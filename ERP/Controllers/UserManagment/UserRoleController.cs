@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using X.PagedList;
 
 namespace ERP.Controllers.UserManagment
 {
@@ -19,11 +20,23 @@ namespace ERP.Controllers.UserManagment
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var users = await _userManager.Users.Where(u => u.Id != currentUser.Id).ToListAsync();
+            var users = _userManager.Users.Where(u => u.Id != currentUser.Id && u.is_active);
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
             var userRolesViewModel = new List<UserRolesViewModel>();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                users = users.Where(u =>
+                    u.Email.ToLower().Contains(searchTerm) || // Search by email (case-insensitive)
+                    u.UserName.ToLower().Contains(searchTerm) // Search by username (case-insensitive)
+                );
+            }
 
             foreach (User user in users)
             {
@@ -37,7 +50,7 @@ namespace ERP.Controllers.UserManagment
                 }
                 else
                 {
-                    thisViewModel.RoleId = "No Role";
+                    thisViewModel.RoleId = "No Assigned Role";
                 }
 
                 thisViewModel.UserId = user.Id;
@@ -46,7 +59,9 @@ namespace ERP.Controllers.UserManagment
                 userRolesViewModel.Add(thisViewModel);
             }
 
-            return View(userRolesViewModel);
+            IPagedList<UserRolesViewModel> pagedUserRoles = userRolesViewModel.ToPagedList(pageNumber, pageSize);
+
+            return View(pagedUserRoles);
         }
         private async Task<List<string>> GetUserRoles(User user)
         {

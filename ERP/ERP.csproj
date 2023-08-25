@@ -49,6 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Barcoder" Version="2.0.0" />
+    <PackageReference Include="Barcoder.Renderer.Image" Version="2.0.0" />
+    <PackageReference Include="Barcoder.Renderer.Svg" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.21" />
@@ -60,6 +63,7 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="X.PagedList.Mvc.core" Version="8.4.7" />
   </ItemGroup>
 
