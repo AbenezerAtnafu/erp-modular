@@ -188,7 +188,7 @@ function submitFirstTab() {
 
 //second tab validation
 function submitSecondTab() {
-    var phonepattern = /^[0-9]{9}$/;
+    var phonepattern = /^(\d{7}|\d{9})$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
     var kebelepattern = /^[a-zA-Z\s]{2,10}$/;
 

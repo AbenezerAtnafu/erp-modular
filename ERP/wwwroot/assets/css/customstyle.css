@@ -32,24 +32,32 @@ a {
     cursor: pointer;
 }
 
+::placeholder {
+    color: #dcdcdc !important;
+}
 
-    @media (min-width: 768px) {
-        .profile-card-div {
-            margin-left: 3px;
-            margin-right: 3px;
-        }
-    }
+.nav-tabs .nav-link.active {
+    background-color: #f0eeee !important;
+}
 
-    @media (min-width: 992px) {
-        .profile-card-div {
-            margin-left: 3px;
-            margin-right: 3px;
-        }
-    }
 
-    @media (min-width: 1200px) {
-        .profile-card-div {
-            margin-left: 3px;
-            margin-right: 3px;
-        }
+@media (min-width: 768px) {
+    .profile-card-div {
+        margin-left: 3px;
+        margin-right: 3px;
     }
+}
+
+@media (min-width: 992px) {
+    .profile-card-div {
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .profile-card-div {
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+}

@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
-                                            <label for="GrandFatherName" class="control-label">GrandFather Name <span class="text-danger">*</span></label>
+                                            <label for="GrandFatherName" class="control-label">Grand Father Name <span class="text-danger">*</span></label>
                                             <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="Chala" value="@((employee != null) ? employee.grand_father_name : "")" />
                                             <small id="GrandFatherNameValidation" class="text-danger"></small>
                                         </div>
@@ -107,7 +107,7 @@
                                 <div class="row p-0 m-0">
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
-                                            <label for="FirstName" class="control-label">First Name Amharic <span class="text-danger">*</span></label>
+                                            <label for="FirstName" class="control-label">ስም <span class="text-danger">*</span></label>
                                             <input type="text"
                                                    id="FirstName"
                                                    name="FirstNameAm"
@@ -118,14 +118,14 @@
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
-                                        <label for="FatherName" class="control-label">Father Name Amharic<span class="text-danger">*</span></label>
+                                        <label for="FatherName" class="control-label">የአባት ስም <span class="text-danger">*</span></label>
                                         <input type="text" id="FatherName" name="FatherNameAm" class="form-control name-input" placeholder="ከበደ" value="@((employee != null) ? employee.father_name_am : "")" />
                                             <small id="FatherNameValidation" class="text-danger"></small>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
-                                            <label for="GrandFatherName" class="control-label">GrandFather Name Amharic<span class="text-danger">*</span></label>
+                                        <label for="GrandFatherName" class="control-label">የአያት ስም <span class="text-danger">*</span></label>
                                             <input type="text" id="GrandFatherName" name="GrandFatherNameAm" class="form-control name-input" placeholder="ጫላ" value="@((employee != null) ? employee.grand_father_name_am : "")" />
                                             <small id="GrandFatherNameValidation" class="text-danger"></small>
                                         </div>
@@ -297,7 +297,7 @@
                                     </div>
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
-                                            <label for="PrimaryAddress" class="control-label">Primary Address</label>
+                                            <label for="PrimaryAddress" class="control-label">Primary Address <span class="text-danger">*</span></label>
                                             <input type="text" id="PrimaryAddress" name="PrimaryAddress" class="form-control" placeholder="Megenagna" value="@((address != null) ? address.primary_address : "")" />
                                             <small id="PrimaryAddressValidation" class="text-danger"></small>
                                         </div>
@@ -452,7 +452,7 @@
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
                                             <label for="Employmenttype" class="control-label">Employment type <span class="text-danger">*</span></label>
-                                            <select name="Employmenttype" class="form-control thrid-dropdown" asp-items="ViewBag.EmpType">
+                                            @* <select name="Employmenttype" class="form-control thrid-dropdown" asp-items="ViewBag.EmpType">
                                                 @if (office != null)
                                                 {
                                                     <option value="@office.Employement_Type.id" selected>@office.Employement_Type.name</option>
@@ -462,7 +462,30 @@
                                                     <option value="">-- select Employement Type --</option>
 
                                                 }
-                                             </select>
+                                             </select> *@
+                                        <select name="Employmenttype" class="form-control thrid-dropdown" multiple>
+                                            @if (office != null)
+                                            {
+                                                <option value="@office.Employement_Type.id" selected>
+                                                    <label>
+                                                        <input type="checkbox" value="@office.Employement_Type.id" checked> @office.Employement_Type.name
+                                                    </label>
+                                                </option>
+                                               
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Employment Type --</option>
+                                            }
+                                            @foreach (var item in ViewBag.EmpType)
+                                            {
+                                                <option value="@item.Value">
+                                                    <label>
+                                                        <input type="checkbox" value="@item.Value"> @item.Text
+                                                    </label>
+                                                </option>
+                                            }
+                                        </select>
                                           <small id="EmploymenttypeValidation" class="text-danger"></small>
                                         </div>
                                     </div><div class="col-md-4 col-sm-12 ">
