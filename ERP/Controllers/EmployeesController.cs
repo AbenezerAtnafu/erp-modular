@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using QRCoder;
 using X.PagedList;
+using System.Drawing;
+using Barcoder.Renderer.Image;
+using Barcoder.Code128;
+using System;
+using System.Globalization;
 
 namespace ERP.Controllers
 {
@@ -15,11 +19,14 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
+        private readonly EmployeeMolsIdsController _employeeMolsIdsController;
 
-        public EmployeesController(employee_context context, UserManager<User> userManager)
+        public EmployeesController(employee_context context, UserManager<User> userManager, EmployeeMolsIdsController employeeMolsIdsController)
         {
             _context = context;
             _userManager = userManager;
+            _employeeMolsIdsController = employeeMolsIdsController;
+
         }
 
         // GET: Employees
@@ -119,7 +126,7 @@ namespace ERP.Controllers
                 ViewData["Employee_Contact"] = _context.Employee_Contacts.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Office"] = _context.Employee_Offices.FirstOrDefault(a => a.employee_id == emp.id);
             }
-            
+
 
             ViewBag.Region = new SelectList(_context.Regions, "id", "name");
             ViewBag.zone = new SelectList(_context.Zones, "id", "name");
@@ -352,7 +359,7 @@ namespace ERP.Controllers
         {
             if (file != null && file.Length > 0)
             {
-                
+
                 // Generate a unique file name
                 string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
 
@@ -371,9 +378,23 @@ namespace ERP.Controllers
             }
             else
             {
-               return "file is empty";
+                return "file is empty";
             }
         }
-        
+
+        public static string GetDataURL(string imgFile)
+        {
+            var bytes = System.IO.File.ReadAllBytes(imgFile);
+            var b64String = Convert.ToBase64String(bytes);
+            var dataUrl = "data:image/png;base64," + b64String;
+
+            return dataUrl;
+        }
+
+
+
+      
+
+
     }
 }
