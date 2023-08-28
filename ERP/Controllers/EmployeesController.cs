@@ -1,33 +1,79 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using QRCoder;
+using X.PagedList;
+using System.Drawing;
+using Barcoder.Renderer.Image;
+using Barcoder.Code128;
+using System;
+using System.Globalization;
 
 namespace ERP.Controllers
 {
+
     public class EmployeesController : Controller
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
+      /*  private readonly EmployeeMolsIdsController _employeeMolsIdsController;*/
 
-        public EmployeesController(employee_context context, UserManager<User> userManager)
+        public EmployeesController(employee_context context, UserManager<User> userManager/* EmployeeMolsIdsController employeeMolsIdsController*/)
         {
             _context = context;
             _userManager = userManager;
+       /*     _employeeMolsIdsController = employeeMolsIdsController;*/
+
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page, string sortOrder, DateTime? birthdateFilter, string maritalStatusFilter)
         {
-            return View();
+            var users = _userManager.GetUserId(HttpContext.User);
+            var employee_list = _context.Employees.Where(q => q.user_id != users);
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            // Apply search term filter
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                employee_list = employee_list.Where(u =>
+                    u.first_name.ToLower().Contains(searchTerm) ||
+                    u.father_name.ToLower().Contains(searchTerm)
+                );
+            }
+            // Apply sorting
+            switch (sortOrder)
+            {
+                case "asc":
+                    employee_list = employee_list.OrderBy(u => u.first_name);
+                    break;
+                case "desc":
+                    employee_list = employee_list.OrderByDescending(u => u.first_name);
+                    break;
+                default:
+                    employee_list = employee_list.OrderBy(u => u.first_name);
+                    break;
+            }
+
+            var totalCount = await employee_list.CountAsync();
+            var employee_list_final = await employee_list
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
+
+            return View(pagedEmployees);
+
         }
 
         // GET: Employees
-        public  IActionResult Profile()
+        public IActionResult Profile()
         {
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees
@@ -43,7 +89,8 @@ namespace ERP.Controllers
                 .Include(e => e.Employee_Office.Position)
                 .Include(e => e.Marital_Status_Types)
                 .FirstOrDefault(a => a.user_id == users);
-            if (employee == null) {
+            if (employee == null)
+            {
                 ViewData["Employee"] = employee;
                 return View();
             }
@@ -75,11 +122,11 @@ namespace ERP.Controllers
             if (emp != null)
             {
                 ViewData["Employee"] = emp;
-                ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a=>a.employee_id==emp.id);
+                ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Contact"] = _context.Employee_Contacts.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Office"] = _context.Employee_Offices.FirstOrDefault(a => a.employee_id == emp.id);
             }
-            
+
 
             ViewBag.Region = new SelectList(_context.Regions, "id", "name");
             ViewBag.zone = new SelectList(_context.Zones, "id", "name");
@@ -103,10 +150,10 @@ namespace ERP.Controllers
         public async Task<IActionResult> CreateorUpdate(IFormFile file)
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
             var emp = _context.Employees.FirstOrDefault(e => e.user_id == user.Id);
-           
-            if(emp == null)
+
+            if (emp == null)
             {
                 Employee employee = new Employee();
 
@@ -114,7 +161,7 @@ namespace ERP.Controllers
                 employee.father_name = Convert.ToString(HttpContext.Request.Form["FatherName"]);
                 employee.grand_father_name = Convert.ToString(HttpContext.Request.Form["GrandFatherName"]);
                 employee.first_name_am = Convert.ToString(HttpContext.Request.Form["FirstNameAm"]);
-                employee.father_name_am= Convert.ToString(HttpContext.Request.Form["FatherNameAm"]);
+                employee.father_name_am = Convert.ToString(HttpContext.Request.Form["FatherNameAm"]);
                 employee.grand_father_name_am = Convert.ToString(HttpContext.Request.Form["GrandFatherNameAm"]);
                 employee.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 employee.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
@@ -142,9 +189,9 @@ namespace ERP.Controllers
                 address.primary_address = Convert.ToString(HttpContext.Request.Form["PrimaryAddress"]);
                 address.employee_id = employee.id;
                 _context.Add(address);
-                await _context.SaveChangesAsync();  
-                
-                
+                await _context.SaveChangesAsync();
+
+
                 Employee_Contact contact = new Employee_Contact();
 
                 contact.phonenumber = Convert.ToString(HttpContext.Request.Form["PhoneNumber"]);
@@ -163,7 +210,7 @@ namespace ERP.Controllers
                 office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-               /* office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
+                /* office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
                 office.employee_id = employee.id;
                 _context.Add(office);
                 await _context.SaveChangesAsync();
@@ -192,7 +239,6 @@ namespace ERP.Controllers
                 emp.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
                 _context.Update(emp);
                 await _context.SaveChangesAsync();
-
 
                 emp_address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
                 emp_address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
@@ -224,45 +270,6 @@ namespace ERP.Controllers
                 TempData["Success"] = "Successfully Updated Employee.";
                 return RedirectToAction(nameof(Create));
             }
-
-
-        }
-
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,profile_picture,first_name,first_name_am,father_name,father_name_am,grand_father_name,grand_father_name_am,gender,date_of_birth,nationality,nation,place_of_birth,religion,back_account_number,tin_number,pension_number,place_of_work,marital_status_type_id,user_id")] Employee employee)
-        {
-            if (id != employee.id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["marital_status_type_id"] = new SelectList(_context.Marital_Status_Types, "id", "id", employee.marital_status_type_id);
-            ViewData["user_id"] = new SelectList(_context.Users, "Id", "Id", employee.user_id);
-            return View(employee);
         }
 
         // GET: Employees/Delete/5
@@ -299,14 +306,14 @@ namespace ERP.Controllers
             {
                 _context.Employees.Remove(employee);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
-          return (_context.Employees?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Employees?.Any(e => e.id == id)).GetValueOrDefault();
         }
 
 
@@ -315,7 +322,7 @@ namespace ERP.Controllers
         {
             if (file != null && file.Length > 0)
             {
-                
+
                 // Generate a unique file name
                 string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
 
@@ -334,9 +341,17 @@ namespace ERP.Controllers
             }
             else
             {
-               return "file is empty";
+                return "file is empty";
             }
         }
-        
+
+        public static string GetDataURL(string imgFile)
+        {
+            var bytes = System.IO.File.ReadAllBytes(imgFile);
+            var b64String = Convert.ToBase64String(bytes);
+            var dataUrl = "data:image/png;base64," + b64String;
+
+            return dataUrl;
+        }
     }
 }

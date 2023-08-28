@@ -1,5 +1,4 @@
-﻿
-using HRMS.Office;
+﻿using HRMS.Office;
 using HRMS.Types;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,6 +27,14 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'end date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The end date' field must be a valid Date.")]
         public DateTime end_date { get; set;}
+        [Required(ErrorMessage = "The 'created_date' field is required.")]
+        [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]
+        public DateTime created_date { get; set; }
+
+        [Required(ErrorMessage = "The 'updated_date' field is required.")]
+        [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
+        public DateTime updated_date { get; set; }
+
 
         [ForeignKey("Employees")]
         public int employee_id { get; set; }

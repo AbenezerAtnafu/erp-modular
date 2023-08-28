@@ -60,8 +60,8 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                marital_Status_Types.created_date = DateTime.Now;
-                marital_Status_Types.updated_date= DateTime.Now;
+                marital_Status_Types.created_date = DateTime.Now.Date;
+                marital_Status_Types.updated_date= DateTime.Now.Date;
                 _context.Add(marital_Status_Types);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "You have created successfully.";
@@ -102,6 +102,7 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    marital_Status_Types.updated_date = DateTime.Now.Date;
                     _context.Update(marital_Status_Types);
                     await _context.SaveChangesAsync();
                     TempData["Success"] = "You have Updated successfully.";

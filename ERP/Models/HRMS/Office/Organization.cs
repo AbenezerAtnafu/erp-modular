@@ -26,5 +26,7 @@ namespace HRMS.Office
         public DateTime updated_date { get; set; }
 
 
+
+
     }
 }

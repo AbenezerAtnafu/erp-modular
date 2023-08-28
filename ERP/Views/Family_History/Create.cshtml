@@ -1,0 +1,69 @@
+﻿@model HRMS.Family.Family_History
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Family_History</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="full_name" class="control-label"></label>
+                <input asp-for="full_name" class="form-control" />
+                <span asp-validation-for="full_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="job_name" class="control-label"></label>
+                <input asp-for="job_name" class="form-control" />
+                <span asp-validation-for="job_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="house_number" class="control-label"></label>
+                <input asp-for="house_number" class="form-control" />
+                <span asp-validation-for="house_number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="phonenumber" class="control-label"></label>
+                <input asp-for="phonenumber" class="form-control" />
+                <span asp-validation-for="phonenumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="alternative_phonenumber" class="control-label"></label>
+                <input asp-for="alternative_phonenumber" class="form-control" />
+                <span asp-validation-for="alternative_phonenumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="gender" class="control-label"></label>
+                <input asp-for="gender" class="form-control" />
+                <span asp-validation-for="gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="family_relationship_id" class="control-label"></label>
+                <input asp-for="family_relationship_id" class="form-control" />
+                <select asp-validation-for="family_relationship_id" class="form-control" asp-items="ViewBag.family_relationship_id"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="primary_address" class="control-label"></label>
+                <input asp-for="primary_address" class="form-control" />
+                <span asp-validation-for="primary_address" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

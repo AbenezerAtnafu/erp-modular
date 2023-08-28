@@ -73,17 +73,20 @@ function deleteConf(id) {
 
 //file upload placeholder
 const profilepicture = document.getElementById('profilePictureHolder');
-if (profilepicture) {
+const profile = document.getElementById('ProfilePicture');
+
+if (profilepicture && profile) {
+
     profilepicture.addEventListener('click', function () {
-        document.getElementById('ProfilePicture').click();
+        profile.click();
     });
 
-    document.getElementById('ProfilePicture').addEventListener('change', function () {
+    profile.addEventListener('change', function () {
         var file = this.files[0];
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            document.getElementById('profilePictureHolder').src = e.target.result;
+            profilepicture.src = e.target.result;
         };
 
         reader.readAsDataURL(file);
@@ -477,4 +480,26 @@ if (tblmenu) {
             });
         });
     }
+}
+
+function screenShot(cardelement, dwnlink) {
+
+    let card = document.getElementById(cardelement);
+    let link = document.getElementById(dwnlink);
+
+    // Get the dimensions of the card element
+    let width = card.offsetWidth;
+    let height = card.offsetHeight;
+
+    let options = {
+        width: width,
+        height: height,
+        scale: 4
+    };
+
+    html2canvas(card, options)
+        .then(canvas => {
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click(); // click on the link
+        });
 }

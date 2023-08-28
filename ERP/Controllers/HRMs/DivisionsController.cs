@@ -49,7 +49,7 @@ namespace ERP.Controllers.HRMs
         [HttpGet]
         public IActionResult Create()
         {
-            // ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
+         
             ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name");
             return View();
         }
@@ -66,13 +66,12 @@ namespace ERP.Controllers.HRMs
                 division.created_date = DateTime.Now.Date;
                 division.updated_date = DateTime.Now.Date;
                 _context.Add(division);
-               
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Divisions"); // Corrected redirection
             }
+
             ViewData["org_id"] = new SelectList(_context.Organizations, "id", "name", division.org_id);
             return View(division);
-
         }
 
         // GET: Divisions/Edit/5
