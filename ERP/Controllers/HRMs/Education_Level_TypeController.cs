@@ -48,6 +48,7 @@ namespace ERP.Models.HRMS.Types
         // GET: Education_Level_Type/Create
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -60,6 +61,8 @@ namespace ERP.Models.HRMS.Types
         {
             if (ModelState.IsValid)
             {
+                education_Level_Type.created_date = DateTime.Now.Date;
+                education_Level_Type.updated_date = DateTime.Now.Date;
                 _context.Add(education_Level_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,6 +102,7 @@ namespace ERP.Models.HRMS.Types
             {
                 try
                 {
+                    education_Level_Type.updated_date = DateTime.Now.Date;
                     _context.Update(education_Level_Type);
                     await _context.SaveChangesAsync();
                 }

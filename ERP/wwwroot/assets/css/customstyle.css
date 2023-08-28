@@ -16,8 +16,8 @@
 
 .certificated-badge{
     position: absolute;
-    top: 12px;
-    right: -5px;
+    top: 136px;
+    right: 214px;
 }
 
 #TableMenu a{
@@ -31,3 +31,25 @@
 a {
     cursor: pointer;
 }
+
+
+    @media (min-width: 768px) {
+        .profile-card-div {
+            margin-left: 3px;
+            margin-right: 3px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .profile-card-div {
+            margin-left: 3px;
+            margin-right: 3px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .profile-card-div {
+            margin-left: 3px;
+            margin-right: 3px;
+        }
+    }

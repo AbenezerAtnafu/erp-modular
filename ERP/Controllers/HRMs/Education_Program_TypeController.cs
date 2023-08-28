@@ -60,6 +60,8 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                education_Program_Type.created_date = DateTime.Now.Date;
+                education_Program_Type.updated_date = DateTime.Now.Date;
                 _context.Add(education_Program_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,6 +101,7 @@ namespace ERP.Controllers
             {
                 try
                 {
+                    education_Program_Type.updated_date = DateTime.Now.Date;
                     _context.Update(education_Program_Type);
                     await _context.SaveChangesAsync();
                 }

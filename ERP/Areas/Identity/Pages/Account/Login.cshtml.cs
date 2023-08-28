@@ -121,44 +121,59 @@ namespace ERP.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
-           // ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             if (ModelState.IsValid)
             {
                 var userName = Input.Email;
                 if (IsValidEmail(Input.Email))
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
+
                     if (user != null)
                     {
                         userName = user.UserName;
+
+                        if (!user.is_active)
+                        {
+                            if (!user.IsFirstLogin)
+                            {
+                                // Redirect to "Activate" page
+                                return RedirectToPage("./Activate");
+                            }
+                            else
+                            {
+                                // Redirect to "DeactivatedAccount" page
+                                return RedirectToPage("./DeactivatedAccount");
+                            }
+                        }
+                        else
+                        {
+                            var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+
+                            if (result.Succeeded)
+                            {
+                                user.IsFirstLogin = false;
+                                await _userManager.UpdateAsync(user);
+
+                                _logger.LogInformation("User logged in.");
+                                return LocalRedirect(returnUrl);
+                            }
+
+                            if (result.IsLockedOut)
+                            {
+                                _logger.LogWarning("User account locked out.");
+                                return RedirectToPage("./Lockout");
+                            }
+                            else
+                            {
+                                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                                return Page();
+                            }
+                        }
                     }
-                }
-
-
-                var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // If we reach this point, something went wrong, return the page
             return Page();
         }
     }

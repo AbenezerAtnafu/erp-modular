@@ -1,0 +1,95 @@
+﻿@model IEnumerable<HRMS.Family.Family_History>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.full_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.job_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.house_number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phonenumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.alternative_phonenumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.family_relationship_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.primary_address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.created_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.updated_date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.full_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.job_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.house_number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phonenumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.alternative_phonenumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.family_relationship_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.primary_address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.updated_date)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
