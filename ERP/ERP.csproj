@@ -70,6 +70,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="wwwroot\assets\animate\animate.min.css" />
     <None Include="wwwroot\assets\css\customstyle.css" />
     <None Include="wwwroot\assets\css\style.css" />

@@ -52,15 +52,15 @@ namespace HRMS.Education_management
 
         [ForeignKey("Employee")]
         public int employee_id { get; set; }
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
 
         [ForeignKey("Education_Program_Type")]
         public int educational_program_id { get; set; }
-        public Education_Program_Type Education_Program_Type { get; set; }
+        public Education_Program_Type? Education_Program_Type { get; set; }
 
         [ForeignKey("Education_Level_Type")]
         public int educational_level_type_id { get; set; }
-        public Education_Level_Type Education_Level_Type { get; set; }
+        public Education_Level_Type? Education_Level_Type { get; set; }
 
 
 
