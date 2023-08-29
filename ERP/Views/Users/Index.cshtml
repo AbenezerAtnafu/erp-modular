@@ -37,13 +37,27 @@
             <tr>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
-                
+              
                 <td>
-                    <label class="switch">
-                        <a class="toggle-activate" data-userid="@user.Id" @(user.is_active ? "checked" : "") asp-action="@(user.is_active ? "ActivateUser" : "DeactivateUser")" asp-route-userId="@user.Id"></a>
-                        <span class="slider round"></span>
-                    </label>
+                    @if (user.is_active == true)
+                    {
+
+                        <i class="fas fa-circle text-c-blue f-10 fa-fw"></i>
+
+                        <span class="ml-2 text-c-blue">Active</span>
+
+                    }
+                    else
+                    {
+                        <i class="fas fa-circle text-c-purple f-10 fa-fw"></i>
+
+                        <span class="ml-2 text-c-purple">InActive</span>
+                    }
+
                 </td>
+
+               
+               
             </tr>
         }
     </tbody>
@@ -65,6 +79,33 @@
         }
     </ul>
 </div>
+
+
+
+
+<div id="exampleModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalCenterTitle"><i class="feather icon-user-minus"></i>User</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h5> Are you sure you want to Change account status?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="DeactivateConfirmed">
+                    <input type="hidden" data-val="true" data-val-required="The DepartmentId field is required." id="UserIdDelete" name="Id" value="">
+                    <button type="submit" class="btn  btn-primary">Yes</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- Include necessary CSS styles -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
@@ -119,3 +160,12 @@
         }
 </style>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function deleteConf(id) {
+            $('#UserIdDelete').val(id);
+            $("#exampleModalCenter").modal()
+        }
+    </script>
+}

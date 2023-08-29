@@ -31,7 +31,7 @@
                             <a class="nav-link" asp-action="Create" asp-controller="Employees"><span class="pcoded-micon"></span><span class="pcoded-mtext">General Information</span></a>
                         </li>
                         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
-                            <a class="nav-link" asp-action="IndexBasic" asp-controller="Educations"><span class="pcoded-micon"></span><span class="pcoded-mtext">Education</span></a>
+                            <a class="nav-link" asp-action="Index" asp-controller="Educations"><span class="pcoded-micon"></span><span class="pcoded-mtext">Education</span></a>
                         </li>
                      </ul>
                  </li>
@@ -63,7 +63,7 @@
                     </li>
                 </ul>
             }
-            @if (Context.User.IsInRole("HR"))
+            @if (Context.User.IsInRole("HumanResource"))
             { 
                 <ul class="nav pcoded-inner-navbar">
                     <li class="nav-item pcoded-menu-caption">

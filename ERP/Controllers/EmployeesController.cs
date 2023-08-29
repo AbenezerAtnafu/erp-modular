@@ -11,6 +11,10 @@ using Barcoder.Renderer.Image;
 using Barcoder.Code128;
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System.IO;
 
 namespace ERP.Controllers
 {
@@ -19,14 +23,12 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-        private readonly EmployeeMolsIdsController _employeeMolsIdsController;
-
-        public EmployeesController(employee_context context, UserManager<User> userManager, EmployeeMolsIdsController employeeMolsIdsController)
+      
+        public EmployeesController(employee_context context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _employeeMolsIdsController = employeeMolsIdsController;
-
+         
         }
 
         // GET: Employees
@@ -60,12 +62,33 @@ namespace ERP.Controllers
                     break;
             }
 
+          
+
             var totalCount = await employee_list.CountAsync();
             var employee_list_final = await employee_list
+                .Include(q=>q.Employee_Office)
+                .Include(q=>q.Marital_Status_Types)
+                .Include(q=>q.Employee_Contact)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync()
+                ;
+            foreach (var employee in employee_list_final)
+            {
+                var employeecode = _context.employeeMolsIds.Where(q => q.employee_id == employee.id);
+                
+                if (employeecode == null)
+                {
+                    ViewData["employeecode"] = "Pending";
+                }
+                else
+                {
+                    ViewData["employeecode"] = employeecode.Select(q => q.employee_code);
+                }
 
+
+            }
+           
             var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
 
             return View(pagedEmployees);
@@ -141,6 +164,17 @@ namespace ERP.Controllers
 
             return View();
         }
+
+        public async Task<IActionResult> GetSubcity(int id)
+        {
+            var subcity = await _context.Subcitys
+               .Include(s => s.Region)
+               .FirstOrDefaultAsync(s => s.id == id);
+
+            return Ok(subcity);
+        }
+
+
 
         // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -275,6 +309,10 @@ namespace ERP.Controllers
         // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
+      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,profile_picture,first_name,first_name_am,father_name,father_name_am,grand_father_name,grand_father_name_am,gender,date_of_birth,nationality,nation,place_of_birth,religion,back_account_number,tin_number,pension_number,place_of_work,marital_status_type_id,user_id")] Employee employee)

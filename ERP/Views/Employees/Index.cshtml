@@ -69,8 +69,10 @@
                         <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Birthdate</th>
-                            <th>Marital Status</th>
+                            <th>Phone Number</th>
+                            <th>Employee Code</th>
+                            <th>Department</th>
+                            <th>Position</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -80,8 +82,11 @@
                             <tr>
                                 <td>@employee.first_name</td>
                                 <td>@employee.father_name</td>
-                                <td>@employee.date_of_birth.ToShortDateString()</td>
-                                <td>@employee.marital_status_type_id</td>
+                                <td>@employee.Employee_Contact.phonenumber </td>
+                                <td>@ViewBag.employeecode</td>
+                              @*  <td>@employee.Employee_Office.Department.name</td>
+                                <td>@employee.Employee_Office.Position.name</td>*@
+                                
                                 <td>
                                     <a href="@Url.Action("Edit", new { id = employee.id })" class="btn btn-primary">Edit</a>
                                     <a href="@Url.Action("Delete", new { id = employee.id })" class="btn btn-danger">Delete</a>

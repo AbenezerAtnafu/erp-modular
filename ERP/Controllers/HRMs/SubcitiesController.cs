@@ -59,17 +59,17 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,region_id")] Subcity subcity)
         {
-            if (ModelState.IsValid)
-            {
+           
                 subcity.created_date = DateTime.Now;
                 subcity.updated_date = DateTime.Now;
                 _context.Add(subcity);
-                await _context.SaveChangesAsync();
+            ViewData["region_id"] = new SelectList(_context.Regions, "id", "name", subcity.region_id);
+            await _context.SaveChangesAsync();
                 TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["region_id"] = new SelectList(_context.Regions, "id", "name", subcity.region_id);
-            return View(subcity);
+            
+   
+        
         }
 
         // GET: Subcities/Edit/5
