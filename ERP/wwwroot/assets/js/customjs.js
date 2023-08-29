@@ -175,8 +175,10 @@ function submitFirstTab() {
         document.getElementById("DateofBirthValidation").textContent = ""
     }
 
+    const alreadySelected = document.getElementById('FileAlreadyExist');
+    console.log("ff" + alreadySelected)
     var pp = document.getElementById('ProfilePicture').files[0];
-    if (!pp) {
+    if (!pp && !alreadySelected) {
         isppValid = false
         document.getElementById("ProfilePictureValidation").textContent = "Please insert passport size profile photo."
     } else {
@@ -193,13 +195,13 @@ function submitFirstTab() {
 function submitSecondTab() {
     var phonepattern = /^(\d{7}|\d{9})$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
-    var kebelepattern = /^[a-zA-Z\s]{2,10}$/;
+    var kebelepattern = /^[a-zA-Z\s]{2,20}$/;
 
     var dropdownfields = document.getElementsByClassName("second-dropdown");
     var phonevalid = false;
     var altphonevalid = false;
     var intphonevalid = false;
-    var addressfield = false;
+    /*var addressfield = false;*/
     var isLoopValid = false;
     var iskebeleValid = false;
 
@@ -221,14 +223,14 @@ function submitSecondTab() {
     }
 
 
-    var address = document.getElementById('PrimaryAddress').value;
+    /*var address = document.getElementById('PrimaryAddress').value;
     if (!address.match(addresspattern)) {
         addressfield = false
         document.getElementById("PrimaryAddressValidation").textContent = "Please enter between 3 and 30 alphabetic characters."
     } else {
         addressfield = true
         document.getElementById("PrimaryAddressValidation").textContent = ""
-    }
+    }*/
 
     var phone = document.getElementById('PhoneNumber').value;
     if (!phone.match(phonepattern)) {
@@ -284,7 +286,7 @@ function submitSecondTab() {
 
 
 
-    if (isLoopValid && addressfield && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
+    if (isLoopValid && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
         console.log("ggg")
         nextButton()
     }
@@ -404,6 +406,7 @@ function submitfinalTab() {
     var startdate = document.getElementById('StartDate').value;
     if (!startdate) {
         startValid = false
+        document.getElementById("StartDate").classList.add("is-invalid");
         document.getElementById("StartDateValidation").textContent = "This field is required."
     } else {
         startValid = true

@@ -4,13 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
-using QRCoder;
 using X.PagedList;
-using System.Drawing;
-using Barcoder.Renderer.Image;
-using Barcoder.Code128;
-using System;
-using System.Globalization;
 
 namespace ERP.Controllers
 {
@@ -165,14 +159,16 @@ namespace ERP.Controllers
                 employee.grand_father_name_am = Convert.ToString(HttpContext.Request.Form["GrandFatherNameAm"]);
                 employee.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 employee.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
+                employee.start_date = Convert.ToDateTime(HttpContext.Request.Form["StartDate"]);
                 employee.nationality = Convert.ToString(HttpContext.Request.Form["Nationality"]);
                 employee.gender = Convert.ToString(HttpContext.Request.Form["Gender"]);
-                employee.religion = Convert.ToString(HttpContext.Request.Form["Religion"]);
+                employee.nation = Convert.ToString(HttpContext.Request.Form["Nation"]);
                 employee.marital_status_type_id = Convert.ToInt32(HttpContext.Request.Form["maritalstatus"]);
                 employee.pension_number = Convert.ToString(HttpContext.Request.Form["PensionNumber"]);
                 employee.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
                 employee.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 employee.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
+                employee.work_status = true;
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
                 _context.Add(employee);
@@ -210,7 +206,7 @@ namespace ERP.Controllers
                 office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-                /* office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
+                office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);
                 office.employee_id = employee.id;
                 _context.Add(office);
                 await _context.SaveChangesAsync();
@@ -229,9 +225,10 @@ namespace ERP.Controllers
                 emp.grand_father_name = Convert.ToString(HttpContext.Request.Form["GrandFatherName"]);
                 emp.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 emp.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
+                emp.start_date = Convert.ToDateTime(HttpContext.Request.Form["StartDate"]);
                 emp.nationality = Convert.ToString(HttpContext.Request.Form["Nationality"]);
                 emp.gender = Convert.ToString(HttpContext.Request.Form["Gender"]);
-                emp.religion = Convert.ToString(HttpContext.Request.Form["Religion"]);
+                emp.nation = Convert.ToString(HttpContext.Request.Form["Nation"]);
                 emp.marital_status_type_id = Convert.ToInt32(HttpContext.Request.Form["maritalstatus"]);
                 emp.pension_number = Convert.ToString(HttpContext.Request.Form["PensionNumber"]);
                 emp.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
@@ -263,7 +260,7 @@ namespace ERP.Controllers
                 emp_office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 emp_office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 emp_office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-                /*emp_office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
+                emp_office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);
                 _context.Update(emp_office);
                 await _context.SaveChangesAsync();
 

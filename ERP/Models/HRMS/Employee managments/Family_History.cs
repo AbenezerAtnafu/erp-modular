@@ -3,7 +3,7 @@ using HRMS.Types;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HRMS.Family
+namespace ERP.Models.HRMS.Employee_managments
 {
     public class Family_History
     {
@@ -19,18 +19,19 @@ namespace HRMS.Family
 
         [Required(ErrorMessage = "The 'phone number' field is required.")]
         [MinLength(9, ErrorMessage = "The 'phone number' field must be a 9-digit number.")]
-        public long phonenumber { get; set; }
+        public string phonenumber { get; set; }
         [MinLength(9, ErrorMessage = "The 'alternative phone number' field must be a 9-digit number.")]
-        public int? alternative_phonenumber { get; set; }
+        public string? alternative_phonenumber { get; set; }
         public string gender { get; set; }
 
+        [Required(ErrorMessage = "Relationship is required.")]
         [ForeignKey("Family_RelationShip_Type")]
         public int family_relationship_id { get; set; }
         public string? primary_address { get; set; }
         
-        public Family_RelationShip_Type RelationshipType { get; set; }
+        public Family_RelationShip_Type? Family_RelationShip_Type { get; set; }
 
-        [ForeignKey("Employee")]
+        [ForeignKey("Employees")]
         public int employee_id { get; set; }
         public Employee Employees { get; set; }
 

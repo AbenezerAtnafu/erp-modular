@@ -1,54 +1,82 @@
-﻿@model ERP.Models.HRMS.Language.Language
+﻿@model ERP.Models.HRMS.Employee_managments.Language
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Language</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" />
-                <span asp-validation-for="name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ability_to_listen" class="control-label"></label>
-                <input asp-for="ability_to_listen" class="form-control" />
-                <span asp-validation-for="ability_to_listen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ability_to_Speak" class="control-label"></label>
-                <input asp-for="ability_to_Speak" class="form-control" />
-                <span asp-validation-for="ability_to_Speak" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ability_to_Read" class="control-label"></label>
-                <input asp-for="ability_to_Read" class="form-control" />
-                <span asp-validation-for="ability_to_Read" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ability_to_write" class="control-label"></label>
-                <input asp-for="ability_to_write" class="form-control" />
-                <span asp-validation-for="ability_to_write" class="text-danger"></span>
-            </div>
-    
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Add Language</h5>
+            <span class="d-block m-t-5">Create a new language.</span>
+        </div>
+        <div class="card-block table-border-style">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="name" class="control-label">Language </label>
+                    <input asp-for="name" class="form-control" placeholder="eg:Amharic"/>
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-5">
+                            <label for="Listening">Listening</label>
+                            <input type="range" asp-for="ability_to_listen" class="custom-range" step="10" id="Listening">
+                            <dt id="values" class="d-inline-flex w-100">
+                                <small class="flex-item border-right border-left text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Begineer</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Intermidiate</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Advanced</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Native</small>
+                            </dt>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-5">
+                            <label for="Speaking">Speaking</label>
+                            <input type="range" asp-for="ability_to_Speak" class="custom-range" step="10" id="Speaking">
+                            <dt id="values" class="d-inline-flex w-100">
+                                <small class="flex-item border-right border-left text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Begineer</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Intermidiate</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Advanced</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Native</small>
+                            </dt>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-5">
+                            <label for="Writing">Writing</label>
+                            <input type="range" asp-for="ability_to_write" class="custom-range" step="10" id="Writing">
+                            <dt id="values" class="d-inline-flex w-100">
+                                <small class="flex-item border-right border-left text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Begineer</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Intermidiate</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Advanced</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Native</small>
+                            </dt>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="mb-5">
+                            <label for="Reading">Reading</label>
+                            <input type="range" asp-for="ability_to_Read" class="custom-range" id="Reading">
+                            <dt id="values" class="d-inline-flex w-100">
+                                <small class="flex-item border-right border-left text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Begineer</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Intermidiate</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Advanced</small>
+                                <small class="flex-item border-right text-center flex-grow-1" style="color:#b2bac1 !important; font-size:70% !important;">Native</small>
+                            </dt>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+         </div>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

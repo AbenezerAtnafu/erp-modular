@@ -1,43 +1,42 @@
-﻿@model ERP.Models.HRMS.Emergency_contact.Emergency_contact
+﻿@model ERP.Models.HRMS.Employee_managments.Emergency_contact
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Emergency_contact</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.full_name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.full_name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.phonenumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.phonenumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.alternative_phonenumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.alternative_phonenumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Relationship)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Relationship)
-        </dd>
-
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Emergency contact Detail</h5>
+            <span class="d-block m-t-5">Full Emergency contact Information.</span>
+        </div>
+        <div class="card-block table-border-style">
+            <dl class="row">
+                <dt class = "col-sm-2">
+                    Full name
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.full_name)
+                </dd>
+                <dt class = "col-sm-2">
+                    Phone number
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.phonenumber)
+                </dd>
+                <dt class = "col-sm-2">
+                    Alternative Phone number
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.alternative_phonenumber)
+                </dd>
+                <dt class = "col-sm-2">
+                    Relationship
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Relationship)
+                </dd>
+            </dl>
+        </div>
+     </div>
+  </div>

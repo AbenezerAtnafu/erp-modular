@@ -104,7 +104,7 @@ p {
     justify-content: space-between;
 }
 
-.card {
+.idcard {
     border-radius: 19px;
     margin: 30px 20px 40px 20px;
     height: 310px;
@@ -130,6 +130,7 @@ p {
 .main-container {
     display: flex;
     justify-content: space-between;
+    background-image: url('~/img/mask-front.png');
     background-size: cover;
     background-position: bottom;
     height: 320px;
@@ -143,6 +144,7 @@ p {
 
 .back-head {
     background-size: cover;
+    background-image: url('~/img/mask-back.png');
     background-position: top;
     border-top-right-radius: 19px;
     border-top-left-radius: 19px;

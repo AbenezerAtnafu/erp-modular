@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Models.HRMS.Employee_managments;
 
-namespace ERP.Models.HRMS.Emergency_contact
+namespace ERP.Models.HRMS.Employee_managments
 {
     public class Emergency_contact
     {
@@ -22,7 +22,8 @@ namespace ERP.Models.HRMS.Emergency_contact
 
         [StringLength(200, ErrorMessage = "The 'Relationship' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string Relationship { get; set; }
-        [ForeignKey("Employee")]
+
+        [ForeignKey("Employees")]
         public int employee_id { get; set; }
         public Employee Employees { get; set; }
 

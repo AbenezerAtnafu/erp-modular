@@ -3,27 +3,31 @@
     var employee = ViewData["Employee"] as ERP.Models.HRMS.Employee_managments.Employee;
 }
 
-
 <section class="mx-4">
     @if (employee != null)
     {
         <h5 class="mt-4">Employee Profile</h5>
         <hr>
-         <div class="row">
+        <div class="row">
             <div class="col-lg-3 col-sm-12">
                 <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="padding-left: 15px;">
                     <li><a class="nav-link text-left active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">General</a></li>
                     <li><a class="nav-link text-left" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Address</a></li>
                     <li><a class="nav-link text-left" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Contact</a></li>
                     <li><a class="nav-link text-left" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Employment</a></li>
-                    <li><a class="nav-link text-left" id="v-pills-ids-tab" data-toggle="pill" href="#v-pills-ids" role="tab" aria-controls="v-pills-ids" aria-selected="false">Id</a></li>
+                    @if (Context.User.IsInRole("HR"))
+                    {
+                        <li><a class="nav-link text-left" id="v-pills-ids-tab" data-toggle="pill" href="#v-pills-ids" role="tab" aria-controls="v-pills-ids" aria-selected="false">Id</a></li>
+                    }
                 </ul>
-                <div class="nav flex-column mt-4 nav-pills list-group list-group-flush list-pills" id="user-set-tab" role="tablist" aria-orientation="vertical">
-                    <button type="button" class="btn btn-info py-1 px-2 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
-                        Change Status
-                    </button>
-
-                </div>
+                @if (Context.User.IsInRole("HR"))
+                {
+                    <div class="nav flex-column mt-4 nav-pills list-group list-group-flush list-pills" id="user-set-tab" role="tablist" aria-orientation="vertical">
+                        <button type="button" class="btn btn-info py-1 px-2 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
+                             Change Status
+                        </button>
+                    </div>
+                }
             </div>
             <div class="col-lg-9 col-sm-12">
                 <div class="bg-white rounded p-0">
@@ -227,38 +231,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade p-4" id="v-pills-ids" role="tabpanel" aria-labelledby="v-pills-ids-tab">
-                             <div class="row">
+                        @if (Context.User.IsInRole("HR"))
+                        {
+                            <div class="tab-pane fade p-4" id="v-pills-ids" role="tabpanel" aria-labelledby="v-pills-ids-tab">
+                                <div class="row">
                                     <div class="col-sm col-md-12">
-                                        <div class="card" id="front-face">
+                                        <div class="idcard" id="front-face">
                                             <div class="head px-3">
                                                 <img src="~/img/efdre.png"
-                                                     alt="efdre" class="efdre my-auto" width="50" height="50">
+                                                alt="efdre" class="efdre my-auto" width="50" height="50">
                                                 <img src="~/img/new-logo.png"
-                                                     alt="MOls-logo" class="mols" width="200">
+                                                alt="MOls-logo" class="mols" width="200">
                                             </div>
 
-                                            <div class="main-container" style="background-image: url('~/img/mask-front.png');">
+                                            <div class="main-container" style="background-image: src(~/wwwroot/img/mask-back.png);">
                                                 <div class="text-center" style="width: 200px;">
                                                     @if (employee.profile_picture != null)
                                                     {
                                                         <img src="~/img/male_img_avatar.png"
-                                                             class="thumbnail"
-                                                             alt="John">
+                                                        class="thumbnail"
+                                                        alt="John">
                                                     }
                                                     else
                                                     {
                                                         <img src="~/img/male_img_avatar.png"
-                                                             class="thumbnail"
-                                                             alt="John">
+                                                        class="thumbnail"
+                                                        alt="John">
                                                     }
 
                                                     <p class="font-weight-bold" style="font-size:12px;">
                                                         @employee.first_name_am @employee.father_name_am @employee.grand_father_name_am
-                                                     </p>
-                                                     <p class="font-weight-bold" style="font-size:12px;">
+                                                    </p>
+                                                    <p class="font-weight-bold" style="font-size:12px;">
                                                         @employee.first_name @employee.father_name @employee.grand_father_name
-                                                     </p>
+                                                    </p>
                                                     <p class="font-weight-bold" style="font-size:10px;"></p>
 
                                                 </div>
@@ -269,7 +275,7 @@
                                                             ID NO<br> የመ.ቁ
                                                         </span>
                                                         <span class="blue font-weight-bold my-auto id"
-                                                              style="letter-spacing: 0.7px; font-size: 15px; margin-bottom: -41px; color:#000000;">
+                                                        style="letter-spacing: 0.7px; font-size: 15px; margin-bottom: -41px; color:#000000;">
                                                             @employee.id
                                                         </span>
                                                     </div>
@@ -279,8 +285,8 @@
                                                             <p>የተሰጠበት ቀን</p>
                                                         </div>
                                                         <div class="ml-5">
-                                                         @*    <p class="pb-1 font-weight-bold">@employee.IssuedMonth/@employee.IssuedYear G.C </p>
-                                                            <p class="font-weight-bold">@employee.monthinamh/2015 ዓ.ም</p> *@
+                                                            @*    <p class="pb-1 font-weight-bold">@employee.IssuedMonth/@employee.IssuedYear G.C </p>
+                                                        <p class="font-weight-bold">@employee.monthinamh/2015 ዓ.ም</p> *@
                                                         </div>
                                                     </div>
                                                     <div class="side-ban">
@@ -296,15 +302,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                         <a href="#" class="mt-4" id="DownloadLink" download="@employee.first_name ID Front.png"></a>
+                                        <a href="#" class="mt-4" id="DownloadLink" download="@employee.first_name ID Front.png"></a>
                                         <button class="btn btn-primary download-btn" onclick="screenShot('front-face','DownloadLink')">
                                             Download
                                         </button>
                                     </div>
                                     <div class="col-sm col-md-12">
                                         <!-- back face -->
-                                         <div class="card back-face" id="backFace" style="background-image: url('~/img/mask-back.png');">
-                                            <div class="back-head relative">
+                                        <div class="idcard back-face" id="backFace" style="background-image: url('~/img/mask-back.png');">
+                                            <div class="back-head position-relative">
                                                 <div class="py-3" style="background-color:#235ba4; border-top-right-radius: 19px; border-top-left-radius: 19px; z-index: -1">
                                                 </div>
                                                 <div class="py-3 px-4">
@@ -315,9 +321,9 @@
                                                     @employee.Employee_Address.Woreda.name
                                                 </div>
                                                 <img src="~/img/stampp.png"
-                                                     style="width: 155px; height: 159px;"
-                                                     class="stamp"
-                                                     alt="Mols authority stamp" />
+                                                style="width: 155px; height: 159px;"
+                                                class="stamp"
+                                                alt="Mols authority stamp" />
                                             </div>
                                             <div class="back">
                                                 <div class="py-3">
@@ -354,7 +360,7 @@
                                             <div class="my-2">
                                                 <div style="display: flex; justify-content:center; height:80px;">
 
-                                                   @*  <img src="@employee.first_name"
+                                                    @*  <img src="@employee.first_name"
                                                          alt=""
                                                          style="width: 70px;" /> *@
                                                     <div style="display: flex; position:relative;">
@@ -364,15 +370,15 @@
                                                             የባለስልጣኑ ፊርማ
                                                         </p>
                                                         <img src="~/img/menen.png"
-                                                             alt="sign"
-                                                             style="width: 70px;" />
+                                                        alt="sign"
+                                                        style="width: 70px;" />
                                                         <img src="~/img/ttr.png"
-                                                             alt="sign"
-                                                             style="width: 200px; position:absolute;" />
+                                                        alt="sign"
+                                                        style="width: 200px; position:absolute;" />
                                                     </div>
                                                     <img src="@employee.first_name"
-                                                         alt=""
-                                                         style="width: 200px;">
+                                                    alt=""
+                                                    style="width: 200px;">
                                                 </div>
                                                 <div class="mt-2 px-4">
                                                     <p style="font-size: 10px; color:; line-height:10px;">
@@ -391,11 +397,12 @@
                                         </div>
                                     </div>
                                 </div>
-                             </div>
-                        </div>
-                     </div>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
+        </div>
     }
     else if (employee == null)
     {
@@ -405,10 +412,6 @@
         </div>
      }
 </section>
-
-@* @section Scripts { 
-    <script src="~/assets//js//html2canvas.js"></script>
-} *@
    
 
 

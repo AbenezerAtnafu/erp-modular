@@ -3,6 +3,7 @@
 @inject SignInManager<ERP.Areas.Identity.Data.User> SignInManager
 @inject UserManager<ERP.Areas.Identity.Data.User> UserManager
 @inject UserDbContext userDbContext
+
 @if (SignInManager.IsSignedIn(User))
 {
     <!DOCTYPE html>
@@ -28,7 +29,6 @@
         <!-- custom css -->
         <link rel="stylesheet" href="~/assets/css/customstyle.css">
         @RenderSection("links", required: false)
-        @RenderSection("Scripts", false)
     </head>
     <body style="background-color:#f4f7fa">
 
@@ -76,7 +76,9 @@
         <script src="~/assets/js/pcoded.min.js"></script>
         <!-- pcoded css -->
         <script src="~/assets/js/customjs.js"></script>
+        <!-- For id download -->
         <script src="~/assets/js/html2canvas.min.js"></script>
+        @RenderSection("Scripts", false)
 
 
     </body>
