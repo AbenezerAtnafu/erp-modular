@@ -13,13 +13,11 @@ namespace ERP.Models.HRMS.Employee_id
         [Required]
 
         public string employee_code  { get; set; }
-
-
         public int id_tracker { get; set; }  
 
         public bool is_generated { get; set; }
 
-        [ForeignKey("Employee")]
+        [ForeignKey("Employees")]
         public int employee_id { get; set; }
 
         public Employee Employees { get; set; }
@@ -31,10 +29,5 @@ namespace ERP.Models.HRMS.Employee_id
         [Required(ErrorMessage = "The 'updated_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
-
-        
-
-
-
     }
 }

@@ -1,162 +1,101 @@
 ﻿@model HRMS.Education_management.Education
 
-<ul class="breadcrumb">
-    <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-    <li class="breadcrumb-item"><a asp-action="Index">Employee</a></li>
-    <li class="breadcrumb-item"><a href="#!">Profile</a></li>
-    <span class="float-right">
-        @*    @if (Context.User.IsInRole("HR-Admin"))
-        {*@
-        <button type="button" class="btn btn-primary py-1 px-2 ml-2" data-toggle="modal" data-target="#exampleModalLive">
-            Change Status
-        </button>
-        @*  }*@
-    </span>
-</ul>
-<h1>Education Details</h1>
-<p>Institution Name: @Model.institution_name</p>
-<p>Institution Email: @Model.institution_email</p>
-<p>Institution Website: @Model.institution_website</p>
-<p>Field of Study: @Model.filed_of_study</p>
-<p>Description: @Model.description</p>
-<p>Start Date: @Model.start_date.ToShortDateString()</p>
-<p>End Date: @Model.end_date.ToShortDateString()</p>
+@{
+    ViewData["Title"] = "Details";
+}
 
-<div id="pdfViewerContainer">
+<div class="card-body">
+    <dl class="row">
+        
+        
+        <dt class="col-sm-2">
+            Full Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.father_name) @Html.DisplayFor(model => model.Employee.father_name)
+        </dd>
+        <dt class="col-sm-2">
+            Institution Name
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.institution_name)
+        </dd>
+        <dt class="col-sm-2">
+            Filed of study
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.filed_of_study)
+        </dd>
+        <dt class="col-sm-2">
+            Education Program
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Education_Program_Type.name)
+        </dd>
+        <dt class="col-sm-2">
+            Education Level Type
+        <dd class="col-sm-10">
+                @Html.Raw(Model.Education_Level_Type.name)
+        </dd>
+        <dt class="col-sm-2">
+            Files
+        </dt>
+        <dd class="col-sm-10">
+            @if (ViewBag.identify == 1)
+            {
+                <a asp-controller="EducationFiles" asp-action="Download" asp-route-filename="@ViewBag.fileEntriess" style="line-height:1px;">
+                    <img src="~/img/png-transparent-file-manager-android-file-explorer-computer-icons-android-thumbnail.png" alt="file" width="30" height="25" />  @ViewBag.fileEntriess
+                </a>
+            }
+            else
+            {
+                @for (int i = 0; i < ViewBag.identify; i++)
+                {
+                    <li>
+                        <a asp-controller="EducationFiles" asp-action="Download" asp-route-filename="@ViewBag.fileEntriess[i]">
+                            <img src="~/img/png-transparent-file-manager-android-file-explorer-computer-icons-android-thumbnail.png" alt="file" width="45" height="40" />  @ViewBag.fileEntriess[i]
+                        </a>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Education Document Paths:</th>
-                <td>
-                    @if (Model.EducationDocumentPaths != null && Model.EducationDocumentPaths.Length > 0)
-                    {
-                        foreach (var path in Model.EducationDocumentPaths)
-                        {
-                            <div >
-                                @{
-                                    var fileName = System.IO.Path.GetFileName(path);
-                                    var url = Url.Content(path);
-                                    
-                                }
-                                <div onclick="loadPDF('/pdfs/Education%0E89649699138.pdf')">@fileName</div>
+                    </li>
+                }
+            }
+        </dd>
+        <div>
+          
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLive">
+                Change Status
+            </button>
+         
+         
 
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <p>No documents available.</p>
-                    }
-                </td>
-            </tr>
-       
-        </tbody>
-    </table>
+
+
 </div>
+    </dl>
+
+    <div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLiveLabel">Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <form asp-controller="Educations" method="post">
+                    <div class="modal-body">
+                        <textarea type="text" name="feedback" placeholder="Enter Feedback..." class="form-control"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" asp-action="Reject" asp-route-id="@Model.id" class="btn btn-danger">Reject</button>
 
 
+                        <button type="submit" asp-action="Approve" asp-route-id="@Model.id" class="btn btn-success">Approve</button>
 
-<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLiveLabel">Feedback</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                </form>
             </div>
-            <form asp-controller="Tasks" method="post">
-                <div class="modal-body">
-                    <textarea type="text" name="Feedback" placeholder="Enter Feedback..." class="form-control"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" asp-action="Reject" asp-route-id="@Model.id" class="btn btn-danger">Reject</button>
-                    <button type="submit" asp-action="Approve" asp-route-id="@Model.id" class="btn btn-success">Approve</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
+    </div>
+</div>
 
-<div id="pdfViewerContainer"></div>
-
-@section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"></script>
-    <script>
-        var pdfViewerContainer = document.getElementById('pdfViewerContainer');
-        var pdfViewer;
-        var currentPage = 0;
-        var educationDocumentPaths = @Html.Raw(Json.Serialize(Model.EducationDocumentPaths));
-        var totalPages = educationDocumentPaths.length;
-        var pdfLoadingTask;
-
-        function loadPDF(pdfPath) {
-            pdfLoadingTask = pdfjsLib.getDocument(pdfPath);
-            pdfLoadingTask.promise.then(function (pdf) {
-                renderPDF(pdf);
-            });
-        }
-
-        function renderPDF(pdf) {
-            pdf.getPage(1).then(function (page) {
-                var canvas = document.createElement('canvas');
-                var canvasContext = canvas.getContext('2d');
-                var viewport = page.getViewport({ scale: 1 });
-
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                var renderContext = {
-                    canvasContext: canvasContext,
-                    viewport: viewport
-                };
-
-                page.render(renderContext).promise.then(function () {
-                    pdfViewerContainer.innerHTML = '';
-                    pdfViewerContainer.appendChild(canvas);
-
-                    // Add navigation buttons
-                    var prevButton = document.createElement('button');
-                    prevButton.innerText = 'Previous';
-                    prevButton.addEventListener('click', goToPreviousPage);
-                    pdfViewerContainer.appendChild(prevButton);
-
-                    var nextButton = document.createElement('button');
-                    nextButton.innerText = 'Next';
-                    nextButton.addEventListener('click', goToNextPage);
-                    pdfViewerContainer.appendChild(nextButton);
-                });
-
-                // Update current page and load the next page
-                currentPage++;
-                loadPDF();
-            });
-        }
-
-        function goToPreviousPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                loadPDF();
-            }
-        }
-
-        function goToNextPage() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                loadPDF();
-            }
-        }
-
-        // Attach click event handler to PDF links
-        var pdfLinks = document.querySelectorAll('#pdfViewerContainer div');
-        pdfLinks.forEach(function (link) {
-            link.addEventListener('click', function (event) {
-                event.preventDefault();
-                var pdfPath = link.getAttribute('data-pdfpath');
-                loadPDF(pdfPath);
-            });
-        });
-
-        // Start loading the PDF
-        loadPDF();
-    </script>
-}

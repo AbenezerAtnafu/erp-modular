@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
-using QRCoder;
 using X.PagedList;
 using System.Drawing;
 using Barcoder.Renderer.Image;
@@ -165,17 +164,6 @@ namespace ERP.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetSubcity(int id)
-        {
-            var subcity = await _context.Subcitys
-               .Include(s => s.Region)
-               .FirstOrDefaultAsync(s => s.id == id);
-
-            return Ok(subcity);
-        }
-
-
-
         // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -199,14 +187,16 @@ namespace ERP.Controllers
                 employee.grand_father_name_am = Convert.ToString(HttpContext.Request.Form["GrandFatherNameAm"]);
                 employee.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 employee.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
+                employee.start_date = Convert.ToDateTime(HttpContext.Request.Form["StartDate"]);
                 employee.nationality = Convert.ToString(HttpContext.Request.Form["Nationality"]);
                 employee.gender = Convert.ToString(HttpContext.Request.Form["Gender"]);
-                employee.religion = Convert.ToString(HttpContext.Request.Form["Religion"]);
+                employee.nation = Convert.ToString(HttpContext.Request.Form["Nation"]);
                 employee.marital_status_type_id = Convert.ToInt32(HttpContext.Request.Form["maritalstatus"]);
                 employee.pension_number = Convert.ToString(HttpContext.Request.Form["PensionNumber"]);
                 employee.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
                 employee.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 employee.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
+                employee.work_status = true;
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
                 _context.Add(employee);
@@ -244,7 +234,7 @@ namespace ERP.Controllers
                 office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-                /* office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
+                office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);
                 office.employee_id = employee.id;
                 _context.Add(office);
                 await _context.SaveChangesAsync();
@@ -263,9 +253,10 @@ namespace ERP.Controllers
                 emp.grand_father_name = Convert.ToString(HttpContext.Request.Form["GrandFatherName"]);
                 emp.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 emp.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
+                emp.start_date = Convert.ToDateTime(HttpContext.Request.Form["StartDate"]);
                 emp.nationality = Convert.ToString(HttpContext.Request.Form["Nationality"]);
                 emp.gender = Convert.ToString(HttpContext.Request.Form["Gender"]);
-                emp.religion = Convert.ToString(HttpContext.Request.Form["Religion"]);
+                emp.nation = Convert.ToString(HttpContext.Request.Form["Nation"]);
                 emp.marital_status_type_id = Convert.ToInt32(HttpContext.Request.Form["maritalstatus"]);
                 emp.pension_number = Convert.ToString(HttpContext.Request.Form["PensionNumber"]);
                 emp.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
@@ -297,54 +288,13 @@ namespace ERP.Controllers
                 emp_office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 emp_office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 emp_office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-                /*emp_office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);*/
+                emp_office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);
                 _context.Update(emp_office);
                 await _context.SaveChangesAsync();
 
                 TempData["Success"] = "Successfully Updated Employee.";
                 return RedirectToAction(nameof(Create));
             }
-        }
-
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-
-      
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,profile_picture,first_name,first_name_am,father_name,father_name_am,grand_father_name,grand_father_name_am,gender,date_of_birth,nationality,nation,place_of_birth,religion,back_account_number,tin_number,pension_number,place_of_work,marital_status_type_id,user_id")] Employee employee)
-        {
-            if (id != employee.id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["marital_status_type_id"] = new SelectList(_context.Marital_Status_Types, "id", "id", employee.marital_status_type_id);
-            ViewData["user_id"] = new SelectList(_context.Users, "Id", "Id", employee.user_id);
-            return View(employee);
         }
 
         // GET: Employees/Delete/5
@@ -428,11 +378,5 @@ namespace ERP.Controllers
 
             return dataUrl;
         }
-
-
-
-      
-
-
     }
 }

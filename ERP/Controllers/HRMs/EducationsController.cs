@@ -56,80 +56,83 @@ namespace ERP.Controllers.HRMs
         }
         // GET: Educations/Details/5
         // shows file uploaded by specific user
-        /*  public async Task<IActionResult> Details(int? id)
-          {
-              if (id == null)
-              {
-                  return NotFound();
-              }
-              var check_user = _context.Educations.Include(e => e.Employee.User).FirstOrDefault(e => e.id == id);
-              var identify = _context.FileUploads.Where(e => e.Identificationnumbers == check_user.Identificationnumber).ToList().Count();
-
-              if (identify == 0)
-              {
-                  return NotFound();
-              }
-
-              if (identify == 1)
-              {
-                  var filepath = _context.FileUploads.FirstOrDefault(e => e.Identificationnumbers == check_user.Identificationnumber);
-                  string fileEntries = Path.GetFileName(filepath.name);
-                  ViewBag.fileEntriess = fileEntries;
-                  ViewBag.identify = identify;
-              }
-              else
-              {
-                  var filepath = _context.FileUploads.Where(e => e.Identificationnumbers == check_user.Identificationnumber).ToList();
-                  List<string> file_upload = new List<string>();
-                  foreach (var cons in filepath)
-                  {
-
-                      string fileEntries = Path.GetFileName(cons.name);
-                      file_upload.Add(fileEntries);
-
-                  }
-
-                  ViewBag.fileEntriess = file_upload;
-                  ViewBag.identify = identify;
-              }
-
-              var education = await _context.Educations.Include(e => e.Employee)
-                .Include(e => e.Employee.User)
-                .FirstOrDefaultAsync(m => m.id == id);
-
-
-              if (education == null)
-              {
-                  return NotFound();
-              }
-
-              return View(education);
-
-          }
-  */
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            var education = await _context.Educations.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var check_user = _context.Educations.Include(e => e.Employee.User).FirstOrDefault(e => e.id == id);
+            var identify = _context.FileUploads.Where(e => e.Identificationnumbers == check_user.Identificationnumber).ToList().Count();
+
+            if (identify == 0)
+            {
+                return NotFound();
+            }
+
+            if (identify == 1)
+            {
+                var filepath = _context.FileUploads.FirstOrDefault(e => e.Identificationnumbers == check_user.Identificationnumber);
+                string fileEntries = Path.GetFileName(filepath.name);
+                ViewBag.fileEntriess = fileEntries;
+                ViewBag.identify = identify;
+            }
+            else
+            {
+                var filepath = _context.FileUploads.Where(e => e.Identificationnumbers == check_user.Identificationnumber).ToList();
+                List<string> file_upload = new List<string>();
+                foreach (var cons in filepath)
+                {
+
+                    string fileEntries = Path.GetFileName(cons.name);
+                    file_upload.Add(fileEntries);
+
+                }
+
+                ViewBag.fileEntriess = file_upload;
+                ViewBag.identify = identify;
+            }
+
+            var education = await _context.Educations.Include(e => e.Employee)
+              .Include(e => e.Employee.User)
+              .Include(a=> a.Education_Level_Type)
+              .Include(a => a.Education_Program_Type)
+
+              .FirstOrDefaultAsync(m => m.id == id);
+
 
             if (education == null)
             {
                 return NotFound();
             }
-            int currentPage = 1;
-
-            // Pass the currentPage variable to the view
-            /*  ViewData["CurrentPage"] = currentPage;
-              education.EducationDocumentPaths = education.EducationDocumentPathsField?
-                  .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)?
-                  .Select(path => path.Trim())
-                  .Where(path => !string.IsNullOrEmpty(path))
-                  .ToArray();
-
-              return View(education);*/
 
             return View(education);
+
         }
 
+        /* public async Task<IActionResult> Details(int id)
+         {
+             var education = await _context.Educations.FindAsync(id);
+
+             if (education == null)
+             {
+                 return NotFound();
+             }
+             int currentPage = 1;
+
+             // Pass the currentPage variable to the view
+             ViewData["CurrentPage"] = currentPage;
+             education.EducationDocumentPaths = education.EducationDocumentPathsField?
+                 .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)?
+                 .Select(path => path.Trim())
+                 .Where(path => !string.IsNullOrEmpty(path))
+                 .ToArray();
+
+             return View(education);
+
+
+         }
+ */
         // download file uploaded 
         public async Task<IActionResult> Download(string filename)
         {
@@ -186,82 +189,86 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,institution_name,institution_email,institution_website,filed_of_study,description,start_date,end_date,Identificationnumber,status,filestatus,feedback,created_date,updated_date,employee_id,educational_program_id,educational_level_type_id")] Education education, FileUpload fileUpload, List<IFormFile> FormFile)
+        public async Task<IActionResult> Create([Bind("id,institution_name,institution_email,institution_website,filed_of_study,description,start_date,end_date,Identificationnumber,status,filestatus,feedback,created_date,updated_date,employee_id,educational_program_id,educational_level_type_id")] Education education, FileUpload FileUpload, List<IFormFile> FormFile)
         {
-            User user = await _userManager.GetUserAsync(User);
-            Employee employee = _context.Employees.FirstOrDefault(e => e.user_id == user.Id);
 
-            if (employee == null)
+            User users = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(e => e.user_id == users.Id);
+            long file_size = FormFile.Sum(f => f.Length);
+            string syspath = @"c:\systemfilestore";
+            var randomGenerator = new Random();
+            var random_max = randomGenerator.Next(1, 1000000000);
+            education.created_date = DateTime.Now;
+            education.updated_date = DateTime.Now;
+            ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
+            ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
+
+            if (check_employee != null)
+            {
+                education.status = null;
+                if (FormFile == null)
+                {
+                    education.filestatus = false;
+                    education.employee_id = check_employee.id;
+                    _context.Add(education);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    if (file_size < 524288000)
+                    {
+                        education.filestatus = true;
+                        education.employee_id = check_employee.id;
+                        education.Identificationnumber = random_max;
+                        _context.Add(education);
+                        await _context.SaveChangesAsync();
+
+                        foreach (var formFile in FormFile)
+                        {
+
+                            if (formFile.Length > 0)
+                            {
+
+                                var filePath = Path.Combine(
+                                  Directory.GetCurrentDirectory(), syspath, formFile.FileName);
+                                var files = new FileUpload
+                                {
+                                    id = 0,
+                                    created_at = DateTime.Now.Date,
+                                    name = filePath,
+                                    Identificationnumbers = random_max
+                                };
+
+                                _context.Add(files);
+                                await _context.SaveChangesAsync();
+
+                                using (var stream = System.IO.File.Create(filePath))
+                                {
+                                    await formFile.CopyToAsync(stream);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
             {
                 TempData["Warning"] = "Fill in your information first";
                 return View();
             }
 
-            string sysPath = @"c:\systemfilestore\Education";
-            if (education.start_date.Year < education.end_date.Year)
-            {
-                education.created_date = DateTime.Now;
-                education.updated_date = DateTime.Now;
-                education.status = null;
-                education.employee_id = employee.id;
 
 
 
-                if (FormFile != null && FormFile.Count > 0)
-                {
-                    const long maxFileSize = 524288000;
-                    long totalFileSize = FormFile.Sum(f => f.Length);
-
-                    if (totalFileSize < maxFileSize)
-                    {
-                        education.filestatus = true;
-
-                        List<string> documentPaths = new List<string>();
-
-                        foreach (var formFile in FormFile)
-                        {
-                            if (formFile.Length > 0)
-                            {
-                                string fileName = Path.Combine(sysPath, Path.GetFileName(formFile.FileName));
-                                string filePath = Path.GetDirectoryName(fileName);
-
-                                Directory.CreateDirectory(filePath);
-
-                                using (var stream = System.IO.File.Create(fileName))
-                                {
-                                    await formFile.CopyToAsync(stream);
-                                }
-
-                                documentPaths.Add(fileName);
-                            }
-                        }
-
-                        education.EducationDocumentPaths = documentPaths.ToArray();
-                    }
-                    else
-                    {
-                        education.filestatus = false;
-                    }
-                }
-
-                // Map the EducationDocumentPaths to a database field manually
-                education.EducationDocumentPathsField = string.Join(",", education.EducationDocumentPaths);
-
-                _context.Educations.Add(education);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                TempData["warning"] = "The start date should be  lessthan the end date ";
-            }
             return RedirectToAction(nameof(Index));
         }
 
 
-          
-    
 
-    [HttpPost]
+
+
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Approve(int id)
         {
@@ -276,6 +283,7 @@ namespace ERP.Controllers.HRMs
                 try
                 {
                     ef.status = true;
+                    ef.feedback = Convert.ToString(HttpContext.Request.Form["feedback"]);
                     _context.Update(ef);
                     await _context.SaveChangesAsync();
                 }
@@ -308,6 +316,7 @@ namespace ERP.Controllers.HRMs
                 try
                 {
                     ef.status = false;
+                    ef.feedback = Convert.ToString(HttpContext.Request.Form["feedback"]);
                     _context.Update(ef);
                     await _context.SaveChangesAsync();
                 }

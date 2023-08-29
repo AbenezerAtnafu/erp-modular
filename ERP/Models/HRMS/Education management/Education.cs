@@ -39,8 +39,8 @@ namespace HRMS.Education_management
         public double Identificationnumber { get; set; }
         
         [NotMapped]
-        public string[] EducationDocumentPaths { get; set; }
-        public string EducationDocumentPathsField { get; set; }
+        public string[]? EducationDocumentPaths { get; set; }
+        public string? EducationDocumentPathsField { get; set; }
         public bool? status { get; set; }
         public bool? filestatus { get; set; }
 

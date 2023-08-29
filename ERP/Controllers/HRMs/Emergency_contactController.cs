@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
-using ERP.Models.HRMS.Emergency_contact;
-using HRMS.Types;
+using ERP.Models.HRMS.Employee_managments;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 
 namespace ERP.Controllers.HRMs
 {
     public class Emergency_contactController : Controller
     {
         private readonly employee_context _context;
+        private readonly UserManager<User> _userManager;
 
-        public Emergency_contactController(employee_context context)
+
+        public Emergency_contactController(employee_context context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Emergency_contact
@@ -49,6 +48,7 @@ namespace ERP.Controllers.HRMs
         // GET: Emergency_contact/Create
         public IActionResult Create()
         {
+            ViewData["Relationship"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
             return View();
         }
 
@@ -61,13 +61,29 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
-                emergency_contact.created_date = DateTime.Now.Date;
-                emergency_contact.updated_date = DateTime.Now.Date;
-                _context.Add(emergency_contact);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var users = _userManager.GetUserId(HttpContext.User);
+                var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
+
+                if (employee != null)
+                {
+                    emergency_contact.created_date = DateTime.Now.Date;
+                    emergency_contact.updated_date = DateTime.Now.Date;
+                    _context.Add(emergency_contact);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "New Emergency contact is added.";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["Warning"] = "You should First fill in Your detail.";
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            return View(emergency_contact);
+            else
+            {
+                return View(emergency_contact);
+            }
         }
 
         // GET: Emergency_contact/Edit/5
@@ -93,32 +109,39 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id,created_date,updated_date")] Emergency_contact emergency_contact)
         {
-            if (id != emergency_contact.id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
+                if (id != emergency_contact.id)
+                {
+                    return NotFound();
+                }
+
                 try
                 {
+                    emergency_contact.updated_date = DateTime.Now;
                     _context.Update(emergency_contact);
                     await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "Language is Updated.";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!Emergency_contactExists(emergency_contact.id))
                     {
-                        return NotFound();
+                        TempData["Warning"] = "Something went wrong.";
+                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(emergency_contact);
+            else
+            {
+                return View(emergency_contact);
+            }
         }
 
         // GET: Emergency_contact/Delete/5

@@ -228,7 +228,7 @@ namespace ERP.Controllers
             }
         }
     }
-        public static class BitmapExtension
+    public static class BitmapExtension
     {
         public static byte[] BitmapToByteArray(this Bitmap bitmap)
         {
