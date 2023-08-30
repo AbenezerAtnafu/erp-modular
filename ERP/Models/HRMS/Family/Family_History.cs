@@ -19,20 +19,18 @@ namespace HRMS.Family
 
         [Required(ErrorMessage = "The 'phone number' field is required.")]
         [MinLength(9, ErrorMessage = "The 'phone number' field must be a 9-digit number.")]
-        public long phonenumber { get; set; }
+        public string? phonenumber { get; set; }
         [MinLength(9, ErrorMessage = "The 'alternative phone number' field must be a 9-digit number.")]
-        public int? alternative_phonenumber { get; set; }
+        public string? alternative_phonenumber { get; set; }
         public string gender { get; set; }
-
-        [ForeignKey("Family_RelationShip_Type")]
-        public int family_relationship_id { get; set; }
+        [ForeignKey("Family_Relationship_Type")]
+        public int Family_Relationship_Types { get; set; }
         public string? primary_address { get; set; }
-        
-        public Family_RelationShip_Type RelationshipType { get; set; }
+        public Family_RelationShip_Type Family_RelationShip_Type { get; set; }
 
         [ForeignKey("Employee")]
         public int employee_id { get; set; }
-        public Employee Employees { get; set; }
+        public Employee? Employee { get; set; }
 
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]

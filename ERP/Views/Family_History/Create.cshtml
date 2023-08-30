@@ -3,67 +3,100 @@
 @{
     ViewData["Title"] = "Create";
 }
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Create Family History</h5>
+            <span class="d-block m-t-5">Create a new Family History.</span>
+        </div>
+        <div class="card-block table-border-style">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h1>Create</h1>
+                <div class="row p-0 m-0">
+                    <div class="col-md-6 col-sm-12 ">
+                        <label asp-for="full_name" class="control-label">Full Name <span class="text-danger">*</span></label>
+                        <input asp-for="full_name" class="form-control" placeholder="Alemu Taye" />
+                        <small><span asp-validation-for="full_name" class="text-danger"></span></small>
+                    </div>
+                    <div class="col-md-6 col-sm-12 ">
+                        <label asp-for="job_name" class="control-label">Occupation <span class="text-danger"></span></label>
+                        <input asp-for="job_name" class="form-control" placeholder="IT officer" />
+                        <small><span asp-validation-for="job_name" class="text-danger"></span></small>
+                    </div>
+                   
+                </div>
+                <br />
+                <div class="row p-0 m-0">
+                    <div class="col-md-6 col-sm-12 ">
+                        <div class="form-group p-2">
+                            <label asp-for="gender" class="control-label">Gender <span class="text-danger">*</span></label>
+                            <div class="form-check pt-2">
+                                <span class="mx-2">
+                                    <input id="gender" asp-for="gender" type="radio" value="Female" class="mx-1" />
+                                    <label class="form-check-label">Female</label>
+                                </span>
+                                <span class="mx-2">
 
-<h4>Family_History</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="full_name" class="control-label"></label>
-                <input asp-for="full_name" class="form-control" />
-                <span asp-validation-for="full_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="job_name" class="control-label"></label>
-                <input asp-for="job_name" class="form-control" />
-                <span asp-validation-for="job_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="house_number" class="control-label"></label>
-                <input asp-for="house_number" class="form-control" />
-                <span asp-validation-for="house_number" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="phonenumber" class="control-label"></label>
-                <input asp-for="phonenumber" class="form-control" />
-                <span asp-validation-for="phonenumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="alternative_phonenumber" class="control-label"></label>
-                <input asp-for="alternative_phonenumber" class="form-control" />
-                <span asp-validation-for="alternative_phonenumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="gender" class="control-label"></label>
-                <input asp-for="gender" class="form-control" />
-                <span asp-validation-for="gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="family_relationship_id" class="control-label"></label>
-                <input asp-for="family_relationship_id" class="form-control" />
-                <select asp-validation-for="family_relationship_id" class="form-control" asp-items="ViewBag.family_relationship_id"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="primary_address" class="control-label"></label>
-                <input asp-for="primary_address" class="form-control" />
-                <span asp-validation-for="primary_address" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                                    <input id="gender"  asp-for="gender" type="radio" value="Male" class="mx-1" />
+                                    <label class="form-check-label">Male</label>
+                                </span>
+                            </div>
+                            <span asp-validation-for="gender" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 ">
+                        <label asp-for="Family_Relationship_Types" class="control-label">Relationship <span class="text-danger">*</span></label>
+                        <select asp-for="Family_Relationship_Types" class="form-control" asp-items="ViewBag.Family_Relationship_Types"></select>
+                        <span asp-validation-for="Family_Relationship_Types" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="row p-0 m-0">
+                    <div class="col-md-6 col-sm-12 ">
+
+                        <label asp-for="phonenumber" class="control-label">Phone number <span class="text-danger"></span></label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">+251</span>
+                            </div>
+                            <input asp-for="phonenumber" class="form-control" placeholder="920124578" aria-label="phonenumber" aria-describedby="phonenumber" />
+                            <small id="PhoneNumberValidation" class="text-danger bg-white"></small>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 ">
+                       
+                            <label asp-for="alternative_phonenumber" class="control-label">Alternative phone number <span class="text-danger"></span></label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">+251</span>
+                                </div>
+                                <input asp-for="alternative_phonenumber" class="form-control" placeholder="920124578" aria-label="alternative_phonenumber" aria-describedby="alternative_phonenumber" />
+                                <small id="PhoneNumberValidation" class="text-danger bg-white"></small>
+                        
+                        </div>
+                    </div>
+                </div>
+          
+                <div class="row p-0 m-0">
+                    <div class="col-md-6 col-sm-12 ">
+                        <label asp-for="primary_address" class="control-label">Primary Address <span class="text-danger"></span></label>
+                        <input asp-for="primary_address" class="form-control" placeholder="Saris" />
+                        <small><span asp-validation-for="primary_address" class="text-danger"></span></small>
+                    </div>
+                    <div class="col-md-6 col-sm-12 ">
+                        <label asp-for="house_number" class="control-label">House Number<span class="text-danger"></span></label>
+                        <input asp-for="house_number" class="form-control" placeholder="1528" />
+                        <small><span asp-validation-for="house_number" class="text-danger"></span></small>
+                    </div>
+
+                </div>
+             
+                <br />
+                <div class="row px-3 m-0">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
