@@ -13,6 +13,8 @@
         </div>
         <div class="card-block table-border-style">
             <form asp-action="Create">
+                <input type="hidden" asp-for="id" />
+                <input type="hidden" asp-for="employee_id" />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
@@ -25,7 +27,7 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="Relationship" class="control-label">Relationship  <span class="text-danger">*</span></label>
-                            <select name="Relationship" class="form-control" asp-items="ViewBag.Relationship">
+                            <select name="Relationship" class="form-control" asp-items="ViewBag.family_relationship_id">
                                 <option value="">-- select Relationship --</option>
                             </select>
                             <span asp-validation-for="Relationship" class="text-danger"></span>

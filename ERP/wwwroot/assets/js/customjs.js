@@ -176,7 +176,6 @@ function submitFirstTab() {
     }
 
     const alreadySelected = document.getElementById('FileAlreadyExist');
-    console.log("ff" + alreadySelected)
     var pp = document.getElementById('ProfilePicture').files[0];
     if (!pp && !alreadySelected) {
         isppValid = false
@@ -458,33 +457,6 @@ function submitApproveModal() {
 }
 
 
-// show table actions
-function showTableMenu() {
-    const tbl = document.getElementById("TableMenu");
-    if (tbl.classList.contains("d-none")) {
-        tbl.classList.remove("d-none");
-    } else {
-        tbl.classList.add("d-none");
-    }
-}
-
-const tblmenu = document.getElementById("TableMenu");
-if (tblmenu) {
-        console.log("vlid here")
-    if (tblmenu.classList.contains("d-none")) {
-        console.log("yes here")
-    } else {
-        console.log("no here")
-        document.addEventListener('mousedown', function (event) {
-            tblmenu.addEventListener('mousedown', function (event) {
-                if (!event.target === box) {
-                    tblmenu.classList.add("d-none");
-                }
-            });
-        });
-    }
-}
-
 function screenShot(cardelement, dwnlink) {
 
     let card = document.getElementById(cardelement);
@@ -505,4 +477,20 @@ function screenShot(cardelement, dwnlink) {
             link.href = canvas.toDataURL('image/png', 1.0);
             link.click(); // click on the link
         });
+}
+
+
+function submitRejectModal() {
+    var rejnote = document.getElementById("EmpRejectMessage").value;
+    var pattern = /^[a-zA-Z\s]{10,300}$/;
+
+    if (!rejnote.match(pattern)) {
+        document.getElementById("EmpRejectMessage").classList.add("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = "Please enter between 10 and 300 alphabetic characters."
+    } else {
+        document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = ""
+        document.getElementById("EmployeeApproveForm").submit();
+
+    }
 }

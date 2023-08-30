@@ -48,7 +48,7 @@ namespace ERP.Controllers.HRMs
         // GET: Emergency_contact/Create
         public IActionResult Create()
         {
-            ViewData["Relationship"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
             return View();
         }
 
@@ -82,6 +82,7 @@ namespace ERP.Controllers.HRMs
             }
             else
             {
+                ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", emergency_contact.Relationship);
                 return View(emergency_contact);
             }
         }
@@ -99,6 +100,7 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", emergency_contact.Relationship);
             return View(emergency_contact);
         }
 

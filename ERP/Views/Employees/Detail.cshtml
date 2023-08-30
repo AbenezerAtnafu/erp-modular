@@ -546,46 +546,18 @@
                                 <h5 class="py-5 font-weight-bold">Not Found</h5>
                             }
                         </div>
-                        <div class="tab-pane fade p-4" id="v-pills-emergency" role="tabpanel" aria-labelledby="v-pills-emergency-tab">
-                            @if (employee.Emergency_contact != null)
-                            {
-                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Emergency Contact Information</h5>
-                                @foreach (var item in employee.Emergency_contact)
-                                {
-                                    <div class="d-flex">
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <h5>@item.full_name</h5><span>@item.phonenumber</span>
-                                            </div>
-                                        </div>
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <span>Occupation</span>
-                                            </div>
-                                            <div class="col-sm-9 border-start">
-                                                <span class="text-muted">@item.alternative_phonenumber</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                <h5 class="py-5 font-weight-bold">Not Found</h5>
-                            }
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     }
-    else
+    else if (employee == null)
     {
         <div class="text-center mt-5 text-light">
             <h2 class="font-weight-bold my-4">No Employee Profile</h2>
             <i class="feather icon-file" style="font-size:40px;"></i>
         </div>
-    }
+     }
 </section>
    
 

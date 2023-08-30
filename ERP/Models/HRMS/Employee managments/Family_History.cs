@@ -33,7 +33,7 @@ namespace ERP.Models.HRMS.Employee_managments
 
         [ForeignKey("Employees")]
         public int employee_id { get; set; }
-        public Employee Employees { get; set; }
+        public Employee? Employees { get; set; }
 
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]

@@ -27,7 +27,10 @@ namespace ERP.Controllers
         public async Task<IActionResult> Index(string searchTerm, int? page, string sortOrder, DateTime? birthdateFilter, string maritalStatusFilter)
         {
             var users = _userManager.GetUserId(HttpContext.User);
-            var employee_list = _context.Employees.Where(q => q.user_id != users);
+            var employee_list = _context.Employees
+                .Include(e => e.Employee_Office.Department)
+                .Where(q => q.user_id != null); 
+           // var employee_list = _context.Employees.Where(q => q.user_id != users);
             var pageSize = 10;
             var pageNumber = page ?? 1;
 
@@ -67,25 +70,28 @@ namespace ERP.Controllers
         }
 
         // GET: Employees
-        public IActionResult Profile()
+        public  IActionResult Profile()
         {
-            var users = _userManager.GetUserId(HttpContext.User);
+            var users =  _userManager.GetUserId(HttpContext.User);
+            
             var employee = _context.Employees
-                .Include(e => e.Employee_Address.Region)
-                .Include(e => e.Employee_Address.Zone)
-                .Include(e => e.Employee_Address.Subcity)
-                .Include(e => e.Employee_Address.Woreda)
-                .Include(e => e.Employee_Contact)
-                .Include(e => e.Employee_Office.Division)
-                .Include(e => e.Employee_Office.Department)
-                .Include(e => e.Employee_Office.Team)
-                .Include(e => e.Employee_Office.Employement_Type)
-                .Include(e => e.Employee_Office.Position)
-                .Include(e => e.Marital_Status_Types)
-                .FirstOrDefault(a => a.user_id == users);
+            .Include(e => e.Employee_Address.Region)
+            .Include(e => e.Employee_Address.Zone)
+            .Include(e => e.Employee_Address.Subcity)
+            .Include(e => e.Employee_Address.Woreda)
+            .Include(e => e.Employee_Contact)
+            .Include(e => e.Employee_Office.Division)
+            .Include(e => e.Employee_Office.Department)
+            .Include(e => e.Employee_Office.Team)
+            .Include(e => e.Employee_Office.Employement_Type)
+            .Include(e => e.Employee_Office.Position)
+            .Include(e => e.Emergency_contact)
+            .Include(e => e.Family_History)
+            .Include(e => e.Language)
+            .Include(e => e.Marital_Status_Types)
+            .FirstOrDefault(a => a.user_id == users);
             if (employee == null)
             {
-                ViewData["Employee"] = employee;
                 return View();
             }
             else
@@ -93,8 +99,41 @@ namespace ERP.Controllers
                 ViewData["Employee"] = employee;
                 return View();
             }
+            
         }
 
+        //Hr employee Detail
+        public IActionResult Detail(int? id)
+        {
+            var employee = _context.Employees
+            .Include(e => e.Employee_Address.Region)
+            .Include(e => e.Employee_Address.Zone)
+            .Include(e => e.Employee_Address.Subcity)
+            .Include(e => e.Employee_Address.Woreda)
+            .Include(e => e.Employee_Contact)
+            .Include(e => e.Employee_Office.Division)
+            .Include(e => e.Employee_Office.Department)
+            .Include(e => e.Employee_Office.Team)
+            .Include(e => e.Employee_Office.Employement_Type)
+            .Include(e => e.Employee_Office.Position)
+            .Include(e => e.Emergency_contact)
+            .Include(e => e.Family_History)
+            .Include(e => e.Language)
+            .Include(e => e.Marital_Status_Types)
+            .FirstOrDefault(e=> e.id == id);
+
+            if (employee == null)
+            {
+                ViewData["Employee"] = null;
+                return View();
+            }
+            else
+            {
+                ViewData["Employee"] = employee;
+                return View();
+            }
+            
+        }
 
         // GET: Employees/Create
         public IActionResult Create()
@@ -119,6 +158,7 @@ namespace ERP.Controllers
                 ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Contact"] = _context.Employee_Contacts.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Office"] = _context.Employee_Offices.FirstOrDefault(a => a.employee_id == emp.id);
+
             }
 
 
