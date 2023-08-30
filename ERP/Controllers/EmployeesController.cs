@@ -410,6 +410,40 @@ namespace ERP.Controllers
             }
         }
 
+        // approve employee and set mols id
+        public async Task<IActionResult> Approve(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if(employee != null)
+            {
+               employee.profile_status = true;
+                /* employee.employee_code = Convert.ToString(HttpContext.Request.Form["EmpRejectMessage"]);*/
+                employee.updated_date = DateTime.Now;
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = id });
+        }
+        
+        // reject employee and set feedback
+        public async Task<IActionResult> Reject(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if(employee != null)
+            {
+               employee.profile_status = false;
+             //  employee.feed = molds_id.
+               employee.updated_date = DateTime.Now;
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = id });
+        }
+
+
+
         public static string GetDataURL(string imgFile)
         {
             var bytes = System.IO.File.ReadAllBytes(imgFile);
