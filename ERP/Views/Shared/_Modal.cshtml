@@ -11,7 +11,7 @@
             <div class="pt-3 text-center">
                 <h5> Are you sure you want to delete?</h5>
                 <div class="py-4">
-                    <button type="button" class="btn btn-sm btn- d-inline" data-bs-dismiss="DeleteModalCenter"><i class="feather icon-info"></i>No</button>
+                    <button type="button" class="btn btn-sm btn- d-inline" data-dismiss="modal"><i class="feather icon-info"></i>No</button>
                     <form asp-action="Delete" class="d-inline">
                         <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="RecordIdDelete" name="id" value="">
                         <button type="submit" class="btn btn-sm btn-danger"><i class="feather icon-slash"></i>Yes</button>
@@ -28,32 +28,52 @@
 <div class="modal fade" id="ApproveModalCenter" tabindex="-1" role="dialog" aria-labelledby="ApproveModalCenterLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Employee Information Status</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="text-center pt-5">
+                <i class="feather icon-check font-weight-bold" style="color:green; font-size:40px;"></i>
+                <h5 class="font-weight-bold pt-3" id="exampleModalCenterTitle">
+                    Approve Employee
+                </h5>
             </div>
-            <div class="modal-body">
-                <form id="EmployeeApproveForm">
-                    <div class="form-group mb-2">
-                        <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="ApproveEmployee" onclick="hideMessagInput()">
-                            <label for="ApproveEmployee" class="cr">I Approve this Employee.</label>
-                        </div>
-                    </div>
-                    <div class="form-group p-2" id="EmpRejectMessageInput">
-                        <label for="EmpRejectMessage" class="control-label">Feedback</label>
-                        <textarea type="text" id="EmpRejectMessage" name="EmpRejectMessage" class="form-control" placeholder="Please revise and update Your Position information."></textarea>
-                        <small id="EmpRejectMessageValidation" class="text-danger"></small>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="submitApproveModal()">Send</button>
+            <div class="pt-3 text-center">
+                <small> Are you sure you want to Approve employee information?</small>
+                <div class="py-4">
+                    <button type="button" class="btn btn-sm d-inline" data-dismiss="modal">No</button>
+                    <form asp-action="Approve" class="d-inline">
+                        <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="ApproveId" name="id" value="">
+                        <button type="submit" class="btn btn-sm btn-success">Yes</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @*Approve Model*@
+
+@*Reject Model*@
+<div class="modal fade" id="RejectModalCenter" tabindex="-1" role="dialog" aria-labelledby="RejectModalCenterLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="RejectModalCenterLabel">Reject Employee Information!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Reject" id="RejectForm">
+                    <div class="form-group p-2" id="EmpRejectMessageInput">
+                        <label for="EmpRejectMessage" class="control-label">Feedback</label>
+                        <textarea type="text" data-val="true" id="EmpRejectMessage" name="EmpRejectMessage" class="form-control" placeholder="eg:Please revise and update Your Position information."></textarea>
+                        <input type="text" id="RejectId" class="form-control d-none" />
+                        <small id="EmpRejectMessageValidation" class="text-danger"></small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="submitRejectModal()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*Reject Model*@

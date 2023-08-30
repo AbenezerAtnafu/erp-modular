@@ -15,22 +15,25 @@
                     <li><a class="nav-link text-left" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Address</a></li>
                     <li><a class="nav-link text-left" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Contact</a></li>
                     <li><a class="nav-link text-left" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Employment</a></li>
-               @*     @if (Context.User.IsInRole("HR"))
-                    {*@
+                    <li><a class="nav-link text-left" id="v-pills-family-tab" data-toggle="pill" href="#v-pills-family" role="tab" aria-controls="v-pills-family" aria-selected="false">Family</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Language</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Emergency</a></li>
+                    @if (Context.User.IsInRole("HR"))
+                    {
                         <li><a class="nav-link text-left" id="v-pills-ids-tab" data-toggle="pill" href="#v-pills-ids" role="tab" aria-controls="v-pills-ids" aria-selected="false">Id</a></li>
-                   @* }*@
+                    }
                 </ul>
-               @* @if (Context.User.IsInRole("HR"))
-                {*@
-                    <div class="nav flex-column mt-4 nav-pills list-group list-group-flush list-pills" id="user-set-tab" role="tablist" aria-orientation="vertical">
-                        <button type="button" class="btn btn-info py-1 px-2 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
-                             Change Status
-                        </button>
-                        <button type="button" class="btn btn-danger w-full py-1 px-3" data-toggle="modal" data-target="#RejectModalCenter">
-                        Reject
-                        </button>
+              @*   @if (Context.User.IsInRole("HR"))
+                { *@
+                    <div class="nav nav-pills d-flex mt-4" id="user-set-tab" role="tablist" aria-orientation="vertical">
+                        <a onclick="approveModal(@employee.id)" class="btn btn-success text-white w-full py-1 px-3 ml-2">
+                             Approve
+                        </a>
+                    <a onclick="rejectModal(@employee.id)" class="btn btn-danger text-white w-full py-1 px-3">
+                             Reject
+                        </a>
                     </div>
-                @*}*@
+               @*  } *@
             </div>
             <div class="col-lg-9 col-sm-12">
                 <div class="bg-white rounded p-0">
@@ -231,8 +234,8 @@
                                 </div>
                             </div>
                         </div>
-                  @*      @if (Context.User.IsInRole("HR"))
-                        {*@
+                        @if (Context.User.IsInRole("HR"))
+                        {
                             <div class="tab-pane fade p-4" id="v-pills-ids" role="tabpanel" aria-labelledby="v-pills-ids-tab">
                                 <div class="row">
                                     <div class="col-sm col-md-12">
@@ -248,8 +251,9 @@
                                                 <div class="text-center" style="width: 200px;">
                                                     @if (employee.profile_picture != null)
                                                     {
-                                               
-                                                    <img class="thumbnail"  src="@Url.Content("~/img/" + employee.profile_picture)" alt="Employee Profile Photo" />
+                                                        <img src="~/img/male_img_avatar.png"
+                                                        class="thumbnail"
+                                                        alt="John">
                                                     }
                                                     else
                                                     {
@@ -275,7 +279,7 @@
                                                         </span>
                                                         <span class="blue font-weight-bold my-auto id"
                                                         style="letter-spacing: 0.7px; font-size: 15px; margin-bottom: -41px; color:#000000;">
-                                                        @ViewBag.employeecode
+                                                            @employee.id
                                                         </span>
                                                     </div>
                                                     <div class="side-ban">
@@ -284,8 +288,8 @@
                                                             <p>የተሰጠበት ቀን</p>
                                                         </div>
                                                         <div class="ml-5">
-                                                        <p class="pb-1 font-weight-bold">@ViewBag.IssuedMonth/@ViewBag.IssuedYear G.C </p>
-                                                        <p class="font-weight-bold">@ViewBag.monthinamh/2015 ዓ.ም</p>
+                                                            @*    <p class="pb-1 font-weight-bold">@employee.IssuedMonth/@employee.IssuedYear G.C </p>
+                                                        <p class="font-weight-bold">@employee.monthinamh/2015 ዓ.ም</p> *@
                                                         </div>
                                                     </div>
                                                     <div class="side-ban">
@@ -359,11 +363,11 @@
                                             <div class="my-2">
                                                 <div style="display: flex; justify-content:center; height:80px;">
 
-                                                <img src="@ViewBag.QrCodeUri"
-                                                     alt=""
-                                                     style="width: 70px;" />
-                                              
+                                                    @*  <img src="@employee.first_name"
+                                                         alt=""
+                                                         style="width: 70px;" /> *@
                                                     <div style="display: flex; position:relative;">
+
                                                         <p class="my-3 pl-1" style="font-size: 12px; font-weight: 500;">
                                                             <span class="pb-2">Authorized Signature</span>  <br>
                                                             የባለስልጣኑ ፊርማ
@@ -374,12 +378,6 @@
                                                         <img src="~/img/ttr.png"
                                                         alt="sign"
                                                         style="width: 200px; position:absolute;" />
-
-
-                                                    <img src="@ViewBag.BarCodeUri"
-                                                         alt=""
-                                                         style="width: 200px;">
-                                                
                                                     </div>
                                                     <img src="@employee.first_name"
                                                     alt=""
@@ -403,7 +401,151 @@
                                     </div>
                                 </div>
                             </div>
-                       @* }*@
+                        }
+                        <div class="tab-pane fade p-4" id="v-pills-family" role="tabpanel" aria-labelledby="v-pills-family-tab">
+                            @if (employee.Family_History != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Family Information</h5>
+                                @foreach (var item in employee.Family_History)
+                                {
+                                    <div class="d-flex">
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-sm-3">
+                                                <h5>@item.full_name</h5><span>@item.gender</span>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-sm-3">
+                                                <span>Occupation</span>
+                                            </div>
+                                            <div class="col-sm-9 border-start">
+                                                <span class="text-muted">@item.job_name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
+                        <div class="tab-pane fade p-4" id="v-pills-language" role="tabpanel" aria-labelledby="v-pills-language-tab">
+                            @if (employee.Language != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Language Information</h5>
+                                <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Language
+                                                </th>
+                                                <th>
+                                                    Speaking
+                                                </th>
+                                                <th>
+                                                    Listening
+                                                </th>
+                                                <th>
+                                                    Reading
+                                                </th>
+                                                <th>
+                                                    Writing
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var item in employee.Language)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.name)
+                                                </td>
+                                                <td>
+                                                    @if (item.ability_to_Speak >= 0 && item.ability_to_Speak <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_Speak >= 26 && item.ability_to_Speak <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_Speak >= 51 && item.ability_to_Speak <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.ability_to_listen >= 0 && item.ability_to_listen <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_listen >= 26 && item.ability_to_listen <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_listen >= 51 && item.ability_to_listen <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td><td>
+                                                    @if (item.ability_to_Speak >= 0 && item.ability_to_Speak <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_Speak >= 26 && item.ability_to_Speak <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_Speak >= 51 && item.ability_to_Speak <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.ability_to_write >= 0 && item.ability_to_write <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_write >= 26 && item.ability_to_write <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_write >= 51 && item.ability_to_write <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -415,7 +557,7 @@
             <h2 class="font-weight-bold my-4">No Employee Profile</h2>
             <i class="feather icon-file" style="font-size:40px;"></i>
         </div>
-    }
+     }
 </section>
    
 

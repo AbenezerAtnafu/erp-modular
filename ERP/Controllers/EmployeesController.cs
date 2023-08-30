@@ -37,7 +37,10 @@ namespace ERP.Controllers
         public async Task<IActionResult> Index(string searchTerm, int? page, string sortOrder, DateTime? birthdateFilter, string maritalStatusFilter)
         {
             var users = _userManager.GetUserId(HttpContext.User);
-            var employee_list = _context.Employees.Where(q => q.user_id != users);
+            var employee_list = _context.Employees
+                .Include(e => e.Employee_Office.Department)
+                .Where(q => q.user_id != null); 
+           // var employee_list = _context.Employees.Where(q => q.user_id != users);
             var pageSize = 10;
             var pageNumber = page ?? 1;
 
@@ -98,9 +101,10 @@ namespace ERP.Controllers
         }
 
         // GET: Employees
-        public IActionResult Profile()
+        public  IActionResult Profile()
         {
-            var users = _userManager.GetUserId(HttpContext.User);
+            var users =  _userManager.GetUserId(HttpContext.User);
+            
             var employee = _context.Employees
                 .Include(e => e.Employee_Address.Region)
                 .Include(e => e.Employee_Address.Zone)
@@ -133,13 +137,46 @@ namespace ERP.Controllers
                 ViewBag.ExpairyYear = DateTime.Now.Year + 14;
                 ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
                 ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
+                
 
 
 
 
             if (employee == null)
             {
+                return View();
+            }
+            else
+            {
                 ViewData["Employee"] = employee;
+                return View();
+            }
+            
+        }
+
+        //Hr employee Detail
+        public IActionResult Detail(int? id)
+        {
+            var employee = _context.Employees
+            .Include(e => e.Employee_Address.Region)
+            .Include(e => e.Employee_Address.Zone)
+            .Include(e => e.Employee_Address.Subcity)
+            .Include(e => e.Employee_Address.Woreda)
+            .Include(e => e.Employee_Contact)
+            .Include(e => e.Employee_Office.Division)
+            .Include(e => e.Employee_Office.Department)
+            .Include(e => e.Employee_Office.Team)
+            .Include(e => e.Employee_Office.Employement_Type)
+            .Include(e => e.Employee_Office.Position)
+            .Include(e => e.Emergency_contact)
+            .Include(e => e.Family_History)
+            .Include(e => e.Language)
+            .Include(e => e.Marital_Status_Types)
+            .FirstOrDefault(e=> e.id == id);
+
+            if (employee == null)
+            {
+                ViewData["Employee"] = null;
                 return View();
             }
             else
@@ -179,6 +216,7 @@ namespace ERP.Controllers
                 ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Contact"] = _context.Employee_Contacts.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Office"] = _context.Employee_Offices.FirstOrDefault(a => a.employee_id == emp.id);
+
             }
 
 
@@ -402,6 +440,40 @@ namespace ERP.Controllers
                 return "file is empty";
             }
         }
+
+        // approve employee and set mols id
+        public async Task<IActionResult> Approve(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if(employee != null)
+            {
+               employee.profile_status = true;
+                /* employee.employee_code = Convert.ToString(HttpContext.Request.Form["EmpRejectMessage"]);*/
+                employee.updated_date = DateTime.Now;
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = id });
+        }
+        
+        // reject employee and set feedback
+        public async Task<IActionResult> Reject(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if(employee != null)
+            {
+               employee.profile_status = false;
+             //  employee.feed = molds_id.
+               employee.updated_date = DateTime.Now;
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Detail), new { id = id });
+        }
+
+
 
         public static string GetDataURL(string imgFile)
         {

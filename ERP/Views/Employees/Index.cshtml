@@ -14,7 +14,7 @@
     var maritalStatusFilter = ViewContext.HttpContext.Request.Query["maritalStatusFilter"];
 }
 
-@using (Html.BeginForm("Index", "Employees", FormMethod.Get))
+@* @using (Html.BeginForm("Index", "Employees", FormMethod.Get))
 {
     <div class="form-group">
         @Html.TextBox("searchTerm", searchTerm, new { @class = "form-control", placeholder = "Search by First name or Last name" })
@@ -54,7 +54,7 @@
     {
         <a href="@Url.Action("Index")" class="btn btn-secondary">Clear Filters</a>
     }
-}
+} *@
 
 <div class="container px-1" style="position: initial;">
     <div class="card">
@@ -62,34 +62,67 @@
             <h5>Employee List</h5>
             <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
         </div>
+            <form asp-action="Index">
+                <div class="d-flex justify-content-end">
+                   @*<div class="mr-3">Flex item 1</div>
+                    <div class="mr-3">Flex item 2</div>*@
+                    <div class="input-group mb-3 w-25">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="feather icon-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search.." name="searchTerm" id="Search" />
+                    </div>
+                    @if (string.IsNullOrEmpty(searchTerm))
+                    {
+                        <a href="@Url.Action("Index")" class="btn btn-light">Clear</a>
+                    }
+                </div>
+            </form>
         <div class="card-block table-border-style">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Employee Code</th>
+                            <th>Name</th>
+                            <th>Birth Date</th>
+                            <th>Gender</th>
                             <th>Department</th>
-                            <th>Position</th>
-                            <th>Action</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var employee in Model)
                         {
                             <tr>
-                                <td>@employee.first_name</td>
-                                <td>@employee.father_name</td>
-                                <td>@employee.Employee_Contact.phonenumber </td>
-                                <td>@ViewBag.employeecode</td>
-                              @*  <td>@employee.Employee_Office.Department.name</td>
-                                <td>@employee.Employee_Office.Position.name</td>*@
-                                
+                                <td>@employee.first_name @employee.father_name</td>
+                                <td>@employee.date_of_birth.ToShortDateString()</td>
+                                <td>@employee.gender</td>
+                                <td>@employee.Employee_Office.Department.name</td>
                                 <td>
-                                    <a href="@Url.Action("Edit", new { id = employee.id })" class="btn btn-primary">Edit</a>
-                                    <a href="@Url.Action("Delete", new { id = employee.id })" class="btn btn-danger">Delete</a>
+                                    @if (employee.profile_status == true)
+                                    {
+                                        <p class="badge badge-success">Approved</p>
+                                    }
+                                    else if (employee.profile_status == false)
+                                    {
+                                        <p class="badge badge-danger">Rejected</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="badge badge-warning">Pending</p>
+                                    }
+                                </td>
+                                <td class="float-right">
+                                    @* <a onclick="deleteConf(@employee.id)" class="text-danger ml-2" id="DeleteLink">
+                                        <i class="feather icon-trash-2 fa-fw"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@employee.id" class="text-success ml-2">
+                                        <i class="feather icon-edit fa-fw"></i>
+                                    </a> *@
+                                    <a asp-action="Detail" asp-route-id="@employee.id" class="btn btn-outline-info ml-2">
+                                        View
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -108,3 +141,5 @@
                 <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
             </li>
         }
+    </ul>
+</div>
