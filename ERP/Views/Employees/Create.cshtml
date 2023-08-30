@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Register Employee";
     var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address;
     var contact = ViewData["Employee_Contact"] as ERP.Models.HRMS.Employee_managments.Employee_Contact;
@@ -54,9 +54,9 @@
                                         @if (employee.profile_picture == null)
                                         {
                                         <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" class="border" />
-                                        }
-                                        else
-                                        {
+                                    }
+                                    else
+                                    {
                                         <img id="profilePictureHolder" src="@Url.Content("~/img/" + @employee.profile_picture)" alt="Avatar" class="border" />
                                         <p id="FileAlreadyExist"></p>
                                         }
@@ -166,16 +166,16 @@
                                     </div>
                                 </div>
 
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12">
-                                        <div class="form-group p-2">
-                                            <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
-                                            <div class="form-check pt-2">
-                                                <span class="mx-2">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
+                                        <div class="form-check pt-2">
+                                            <span class="mx-2">
                                                 <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
-                                                    <label for="Female" class="form-check-label">Female</label>
-                                                </span>
-                                                <span class="mx-2">
+                                                <label for="Female" class="form-check-label">Female</label>
+                                            </span>
+                                            <span class="mx-2">
 
                                                 <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
                                                     <label for="Male" class="form-check-label">Male</label>
@@ -198,47 +198,47 @@
                                             @if (employee != null)
                                             {
                                                 <option value="@employee.Marital_Status_Types.id" selected>@employee.Marital_Status_Types.name</option>
-                                            } else
+                                            }
+                                            else
                                             {
                                                 <option value="">-- select Marital Status --</option>
 
                                             }
-                                             </select>
-                                            <small id="maritalstatusValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="maritalstatusValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-
-                                <div class="px-3 py-4 mt-2">
-                                    <button id="nexttab" class="btn btn-info float-right" onclick="submitFirstTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
-                                </div>
-                                
                             </div>
-                            <div class="tab-pane fade mt-4" id="address" role="tabpanel" aria-labelledby="profile-tab">
-                                <h6 class="mt-4">Location</h6>
-                                <hr>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Region" class="control-label">Region <span class="text-danger">*</span></label>
-                                            <select name="Region" class="form-control second-dropdown" asp-items="ViewBag.Region">
-                                            @if(address != null)
+
+                            <div class="px-3 py-4 mt-2">
+                                <button id="nexttab" class="btn btn-info float-right" onclick="submitFirstTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade mt-4" id="address" role="tabpanel" aria-labelledby="profile-tab">
+                            <h6 class="mt-4">Location</h6>
+                            <hr>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="Region" class="control-label">Region <span class="text-danger">*</span></label>
+                                        <select name="Region" class="form-control second-dropdown" asp-items="ViewBag.Region" id="RegionSelect">
+                                            @if (address != null)
                                             {
                                                 <option value="@address.Region.id" selected>@address.Region.name</option>
                                             }
                                             else
                                             {
                                                 <option value="">-- select Region --</option>
-
                                             }
-                                            </select>
-                                            <small id="RegionValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="RegionValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
-                                        <select name="Zone" class="form-control  second-dropdown" asp-items="ViewBag.Zone">
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
+                                        <select name="Zone" class="form-control second-dropdown" asp-items="ViewBag.zone" id="ZoneSelect">
                                             @if (address != null)
                                             {
                                                 <option value="@address.Zone.id">@address.Zone.name</option>
@@ -246,16 +246,15 @@
                                             else
                                             {
                                                 <option value="">-- select Zone --</option>
-
                                             }
-                                            </select>
-                                            <small id="ZoneValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="ZoneValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
-                                        <select name="Subcity" class="form-control  second-dropdown" asp-items="ViewBag.Subcity">
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
+                                        <select name="Subcity" class="form-control second-dropdown" asp-items="ViewBag.subcity" id="SubcitySelect">
                                             @if (address != null)
                                             {
                                                 <option value="@address.Subcity.id">@address.Subcity.name</option>
@@ -263,25 +262,26 @@
                                             else
                                             {
                                                 <option value="">-- select Subcity --</option>
-
                                             }
-                                            </select>
-                                            <small id="SubcityValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="SubcityValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
-                                            <select name="Woreda" class="form-control  second-dropdown" asp-items="ViewBag.Woreda">
-                                                @if (address != null)
-                                                {
-                                                    <option value="@address.Woreda.id">@address.Woreda.name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="">-- select Woreda --</option>
+                            </div>
+
+                           
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
+                                        <select name="Woreda" class="form-control  second-dropdown" asp-items="ViewBag.Woreda">
+                                            @if (address != null)
+                                            {
+                                                <option value="@address.Woreda.id">@address.Woreda.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Woreda --</option>
 
                                                 }
                                             </select>
@@ -392,13 +392,13 @@
                                                 <option value="">-- select Division --</option>
 
                                             }
-                                            </select>
-                                          <small id="DivisionValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="DivisionValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
                                         <select name="Department" class="form-control thrid-dropdown" asp-items="ViewBag.Department">
                                             @if (office != null)
                                             {
@@ -409,23 +409,23 @@
                                                 <option value="">-- select Department --</option>
 
                                             }
-                                            </select>
-                                            <small id="DepartmentValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="DepartmentValidation" class="text-danger"></small>
                                     </div>
+                                </div>
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
                                         <select name="Team" class="form-control thrid-dropdown" asp-items="ViewBag.Team">
-                                        @if (office != null)
-                                        {
+                                            @if (office != null)
+                                            {
                                                 <option value="@office.Team.id" selected>@office.Team.name</option>
-                                        }
-                                        else
-                                        {
+                                            }
+                                            else
+                                            {
                                                 <option value="">-- select Team --</option>
 
-                                        }
+                                            }
                                         </select>
                                         <small id="TeamtValidation" class="text-danger"></small>
                                     </div>
@@ -444,22 +444,22 @@
                                                 {
                                                     <option value="">-- select Position --</option>
 
-                                                }
-                                            </select>
-                                            <small id="PositionValidation" class="text-danger"></small>
-                                        </div>
+                                            }
+                                        </select>
+                                        <small id="PositionValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Employmenttype" class="control-label">Employment type <span class="text-danger">*</span></label>
-                                            <select name="Employmenttype" class="form-control thrid-dropdown" asp-items="ViewBag.EmpType">
-                                                @if (office != null)
-                                                {
-                                                    <option value="@office.Employement_Type.id" selected>@office.Employement_Type.name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="">-- select Employement Type --</option>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Employmenttype" class="control-label">Employment type <span class="text-danger">*</span></label>
+                                        <select name="Employmenttype" class="form-control thrid-dropdown" asp-items="ViewBag.EmpType">
+                                            @if (office != null)
+                                            {
+                                                <option value="@office.Employement_Type.id" selected>@office.Employement_Type.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Employement Type --</option>
 
                                                 }
                                              </select>

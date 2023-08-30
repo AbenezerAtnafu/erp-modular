@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRMS.Office
@@ -29,7 +30,7 @@ namespace HRMS.Office
         [Required(ErrorMessage = "The 'Organization' field is required.")]
         public int org_id { get; set; }
 
-        public Organization Organization { get; set; }
+        public Organization? Organization { get; set; }
 
     }
 }

@@ -5,6 +5,15 @@ using ERP.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using ERP.Models.HRMS.Employee_managments;
 using X.PagedList;
+using System.Drawing;
+using Barcoder.Renderer.Image;
+using Barcoder.Code128;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System.IO;
 
 namespace ERP.Controllers
 {
@@ -13,14 +22,12 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-      /*  private readonly EmployeeMolsIdsController _employeeMolsIdsController;*/
-
-        public EmployeesController(employee_context context, UserManager<User> userManager/* EmployeeMolsIdsController employeeMolsIdsController*/)
+      
+        public EmployeesController(employee_context context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
-       /*     _employeeMolsIdsController = employeeMolsIdsController;*/
-
+         
         }
 
         // GET: Employees
@@ -57,12 +64,33 @@ namespace ERP.Controllers
                     break;
             }
 
+          
+
             var totalCount = await employee_list.CountAsync();
             var employee_list_final = await employee_list
+                .Include(q=>q.Employee_Office)
+                .Include(q=>q.Marital_Status_Types)
+                .Include(q=>q.Employee_Contact)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync()
+                ;
+            foreach (var employee in employee_list_final)
+            {
+                var employeecode = _context.employeeMolsIds.Where(q => q.employee_id == employee.id);
+                
+                if (employeecode == null)
+                {
+                    ViewData["employeecode"] = "Pending";
+                }
+                else
+                {
+                    ViewData["employeecode"] = employeecode.Select(q => q.employee_code);
+                }
 
+
+            }
+           
             var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
 
             return View(pagedEmployees);

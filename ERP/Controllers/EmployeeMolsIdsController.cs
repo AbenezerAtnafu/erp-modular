@@ -12,6 +12,7 @@ using Barcoder.Renderer.Image;
 using QRCoder;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 
 namespace ERP.Controllers
 {

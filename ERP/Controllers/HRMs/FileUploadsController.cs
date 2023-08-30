@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ERP.Areas.Identity.Data;
 using ERP.Models.HRMS.File_managment;
+using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
+using System.Linq;
+using System.IO;
+using System;
 
 namespace Erp.Controllers
 {

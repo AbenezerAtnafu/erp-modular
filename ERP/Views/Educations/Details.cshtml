@@ -2,108 +2,100 @@
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Education</h4>
-    <hr />
+<div class="card-body">
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.institution_name)
+        
+        
+        <dt class="col-sm-2">
+            Full Name
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.institution_name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Employee.father_name) @Html.DisplayFor(model => model.Employee.father_name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.institution_email)
+        <dt class="col-sm-2">
+            Institution Name
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.institution_email)
+        <dd class="col-sm-10">
+            @Html.Raw(Model.institution_name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.institution_website)
+        <dt class="col-sm-2">
+            Filed of study
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.institution_website)
+        <dd class="col-sm-10">
+            @Html.Raw(Model.filed_of_study)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.filed_of_study)
+        <dt class="col-sm-2">
+            Education Program
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.filed_of_study)
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Education_Program_Type.name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.description)
+        <dt class="col-sm-2">
+            Education Level Type
+        <dd class="col-sm-10">
+                @Html.Raw(Model.Education_Level_Type.name)
+        </dd>
+        <dt class="col-sm-2">
+            Files
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.description)
+        <dd class="col-sm-10">
+            @if (ViewBag.identify == 1)
+            {
+                <a asp-controller="EducationFiles" asp-action="Download" asp-route-filename="@ViewBag.fileEntriess" style="line-height:1px;">
+                    <img src="~/img/png-transparent-file-manager-android-file-explorer-computer-icons-android-thumbnail.png" alt="file" width="30" height="25" />  @ViewBag.fileEntriess
+                </a>
+            }
+            else
+            {
+                @for (int i = 0; i < ViewBag.identify; i++)
+                {
+                    <li>
+                        <a asp-controller="EducationFiles" asp-action="Download" asp-route-filename="@ViewBag.fileEntriess[i]">
+                            <img src="~/img/png-transparent-file-manager-android-file-explorer-computer-icons-android-thumbnail.png" alt="file" width="45" height="40" />  @ViewBag.fileEntriess[i]
+                        </a>
+
+                    </li>
+                }
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.start_date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.start_date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.end_date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.end_date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Identificationnumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Identificationnumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.feedback)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.feedback)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.created_date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.created_date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.updated_date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.updated_date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Employee.back_account_number)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Education_Program_Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Education_Program_Type.name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Education_Level_Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Education_Level_Type.name)
-        </dd>
+        <div>
+          
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLive">
+                Change Status
+            </button>
+         
+         
+
+
+
+</div>
     </dl>
+
+    <div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLiveLabel">Feedback</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <form asp-controller="Educations" method="post">
+                    <div class="modal-body">
+                        <textarea type="text" name="feedback" placeholder="Enter Feedback..." class="form-control"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" asp-action="Reject" asp-route-id="@Model.id" class="btn btn-danger">Reject</button>
+
+
+                        <button type="submit" asp-action="Approve" asp-route-id="@Model.id" class="btn btn-success">Approve</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    </div>
 </div>
+
