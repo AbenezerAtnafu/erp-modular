@@ -23,17 +23,17 @@
                         <li><a class="nav-link text-left" id="v-pills-ids-tab" data-toggle="pill" href="#v-pills-ids" role="tab" aria-controls="v-pills-ids" aria-selected="false">Id</a></li>
                     }
                 </ul>
-                @if (Context.User.IsInRole("HR"))
-                {
+              @*   @if (Context.User.IsInRole("HR"))
+                { *@
                     <div class="nav nav-pills d-flex mt-4" id="user-set-tab" role="tablist" aria-orientation="vertical">
-                        <button type="button" class="btn btn-success w-full py-1 px-3 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
-                        Approve
-                        </button>
-                        <button type="button" class="btn btn-danger w-full py-1 px-3" data-toggle="modal" data-target="#RejectModalCenter">
-                        Reject
-                        </button>
+                        <a onclick="approveModal(@employee.id)" class="btn btn-success text-white w-full py-1 px-3 ml-2">
+                             Approve
+                        </a>
+                    <a onclick="rejectModal(@employee.id)" class="btn btn-danger text-white w-full py-1 px-3">
+                             Reject
+                        </a>
                     </div>
-                }
+               @*  } *@
             </div>
             <div class="col-lg-9 col-sm-12">
                 <div class="bg-white rounded p-0">

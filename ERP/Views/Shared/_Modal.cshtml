@@ -37,9 +37,9 @@
             <div class="pt-3 text-center">
                 <small> Are you sure you want to Approve employee information?</small>
                 <div class="py-4">
-                    <button type="button" class="btn btn-sm btn- d-inline" data-dismiss="modal">No</button>
-                    <form asp-action="Delete" class="d-inline">
-                        <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="RecordIdDelete" name="id" value="">
+                    <button type="button" class="btn btn-sm d-inline" data-dismiss="modal">No</button>
+                    <form asp-action="Approve" class="d-inline">
+                        <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="ApproveId" name="id" value="">
                         <button type="submit" class="btn btn-sm btn-success">Yes</button>
                     </form>
                 </div>
@@ -60,16 +60,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="EmployeeApproveForm">
+                <form asp-action="Reject" id="RejectForm">
                     <div class="form-group p-2" id="EmpRejectMessageInput">
                         <label for="EmpRejectMessage" class="control-label">Feedback</label>
-                        <textarea type="text" id="EmpRejectMessage" name="EmpRejectMessage" class="form-control" placeholder="eg:Please revise and update Your Position information."></textarea>
+                        <textarea type="text" data-val="true" id="EmpRejectMessage" name="EmpRejectMessage" class="form-control" placeholder="eg:Please revise and update Your Position information."></textarea>
+                        <input type="text" id="RejectId" class="form-control d-none" />
                         <small id="EmpRejectMessageValidation" class="text-danger"></small>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-danger" onclick="submitRejectModal()">Send</button>
             </div>
         </div>

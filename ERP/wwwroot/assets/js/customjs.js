@@ -69,6 +69,18 @@ function deleteConf(id) {
     $("#DeleteModalCenter").modal()
 }
 
+//approve action from modal
+function approveModal(id) {
+    $('#ApproveId').val(id);
+    $("#ApproveModalCenter").modal()
+}
+
+//reject action from modal
+function rejectModal(id) {
+    $('RejectId').val(id);
+    $("#RejectModalCenter").modal()
+}
+
 
 
 //file upload placeholder
@@ -439,7 +451,7 @@ function submitApproveModal() {
     var pattern = /^[a-zA-Z\s]{2,30}$/;
 
     if (document.getElementById("ApproveEmployee").checked) {
-        document.getElementById("EmployeeApproveForm").submit();
+        document.getElementById("RejectForm").submit();
 
     } else {
         if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
@@ -451,7 +463,7 @@ function submitApproveModal() {
             document.getElementById("EmpRejectMessageValidation").textContent = ""
             isbankValid = true
         }
-        isbankValid ? setTimeout(() => { document.getElementById("EmployeeApproveForm").submit() }, 400)  : '';
+        isbankValid ? setTimeout(() => { document.getElementById("RejectForm").submit() }, 400)  : '';
     }
     
 }
