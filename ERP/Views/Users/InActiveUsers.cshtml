@@ -31,7 +31,7 @@
                             <td><h6 class="m-0"> @user.Email</h6></td>
 
                             <td>
-                                @if (user.is_active == true)
+                                @if (user.is_active == false)
                                 {
 
                                     <i class="fas fa-circle text-c-blue f-10 fa-fw"></i>
@@ -48,7 +48,7 @@
 
                             </td>
                             <td>
-                                @if (user.is_active == true)
+                                @if (user.is_active == false)
                                 {
 
                                     <a onclick="deleteConf('@user.Id')">
@@ -90,7 +90,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form asp-action="DeactivateConfirmed">
+                <form asp-action="ActivateUser">
                     <input type="hidden" data-val="true" data-val-required="The DepartmentId field is required." id="UserIdDelete" name="Id" value="">
 
                     <button type="submit" class="btn  btn-primary">Yes</button>

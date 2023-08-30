@@ -24,25 +24,112 @@
     }
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>UserName</th>
-            <th>Email</th>
-            <!-- Add other user properties as needed -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <!-- Display other user properties as needed -->
-            </tr>
+<div class="page-wrapper">
+
+
+    <div class="card container">
+        <div class="card-header border-bottom-0">
+            <div class="card-title mb-5">
+                <h5 class="text-muted text-"> Users</h5>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+
+                            <td><h6 class="m-0"> @user.Email</h6></td>
+
+                            <td>
+                                @if (user.is_active == true)
+                                {
+
+                                    <i class="fas fa-circle text-c-blue f-10 fa-fw"></i>
+
+                                    <span class="ml-2 text-c-blue">Active</span>
+
+                                }
+                                else
+                                {
+                                    <i class="fas fa-circle text-c-purple f-10 fa-fw"></i>
+
+                                    <span class="ml-2 text-c-purple">InActive</span>
+                                }
+
+                            </td>
+                            <td>
+                                @if (user.is_active == true)
+                                {
+
+                                    <a onclick="deleteConf('@user.Id')">
+                                        <i class="fas fa-power-off text-c-blue f-15"></i>
+
+                                    </a>
+
+                                }
+                                else
+                                {
+                                    <a onclick="deleteConf('@user.Id')">
+                                        <i class="fas fa-power-off text-c-purple f-15"></i>
+
+                                    </a>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+<div id="exampleModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalCenterTitle"><i class="feather icon-user-minus"></i>User</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h5> Are you sure you want to Change account status?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="DeactivateUser">
+                    <input type="hidden" data-val="true" data-val-required="The DepartmentId field is required." id="UserIdDelete" name="Id" value="">
+
+                    <button type="submit" class="btn  btn-primary">Yes</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function deleteConf(id) {
+            $('#UserIdDelete').val(id);
+            $("#exampleModalCenter").modal()
         }
-    </tbody>
-</table>
+    </script>
+}
 
 <div class="pagination">
     <ul class="pagination justify-content-center">

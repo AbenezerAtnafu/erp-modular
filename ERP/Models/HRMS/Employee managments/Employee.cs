@@ -75,6 +75,7 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'place of work' field is required.")]
         [StringLength(200, ErrorMessage = "The 'place of work' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_work { get; set; }
+        public string employee_code { get; set; }
         public bool? profile_status { get; set; }
         public bool? work_status { get; set; }
 

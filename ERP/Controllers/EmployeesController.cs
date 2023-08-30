@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.IO;
+using QRCoder;
+
+
 
 namespace ERP.Controllers
 {
@@ -111,6 +114,29 @@ namespace ERP.Controllers
                 .Include(e => e.Employee_Office.Position)
                 .Include(e => e.Marital_Status_Types)
                 .FirstOrDefault(a => a.user_id == users);
+
+                employee.employee_code = GenerateEmployeeID(true);
+                int gregorianMonth = DateTime.Now.Month;
+                int ethiopianYear = (gregorianMonth < 9) ? DateTime.Now.Year - 8 : DateTime.Now.Year - 7;
+                int ethiopianMonth = (gregorianMonth - 8 <= 0) ? gregorianMonth - 8 + 12 : gregorianMonth - 8;
+                string[] monthNames = { "መስከረም", "ትቅምት", "ሂዳር", "ታህሳስ", "ጥር", "Yekatit", "የካቲት", "መጋቢት", "ግንቦት", "ሰኔ", "ሃምሌ", "ነሃሴ", "ጳጉሜ" };
+                string monthinamh = monthNames[ethiopianMonth - 1];
+
+                string sex_amh_after = (employee.gender == "Male") ? "ወንድ" : "ሴት";
+                ViewBag.employeecode = employee.employee_code;
+                ViewBag.name = $"{employee.first_name} {employee.father_name} {employee.grand_father_name}";
+                ViewBag.nameam = $"{employee.first_name_am} {employee.father_name_am} {employee.grand_father_name_am}";
+                ViewBag.sex_amh = sex_amh_after;
+                ViewBag.IssuedMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+                ViewBag.monthinamh = monthinamh;
+                ViewBag.IssuedYear = DateTime.Now.Year;
+                ViewBag.ExpairyYear = DateTime.Now.Year + 14;
+                ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
+                ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
+
+
+
+
             if (employee == null)
             {
                 ViewData["Employee"] = employee;
@@ -121,6 +147,10 @@ namespace ERP.Controllers
                 ViewData["Employee"] = employee;
                 return View();
             }
+
+           
+           
+
         }
 
 
@@ -377,6 +407,115 @@ namespace ERP.Controllers
             var dataUrl = "data:image/png;base64," + b64String;
 
             return dataUrl;
+        }
+        public int IDtracker()
+        {
+            if (_context.employeeMolsIds.Count() == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                var employeelast = _context.employeeMolsIds.OrderByDescending(e => e.id_tracker).FirstOrDefault()?.id_tracker ?? 0;
+                return employeelast;
+            }
+        }
+
+
+
+
+
+
+
+        public string GenerateEmployeeID(bool isApproved)
+        {
+            if (!isApproved)
+            {
+                return string.Empty;
+            }
+
+            /* int lastID = IDtracker();*/
+            int lastID = 450;
+
+            string idTracker = (lastID + 1).ToString("D4");
+            string employeeID = $"Mols-{idTracker}-15";
+
+            return employeeID;
+        }
+        public string GenerateQRCode(string employeeCode)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(employeeCode, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrBitmap = qrCode.GetGraphic(60);
+            byte[] bitmapArray = qrBitmap.BitmapToByteArray();
+            string qrUri = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(bitmapArray));
+
+            return qrUri;
+        }
+        public string GenerateBarCode(string employeeCode)
+        {
+            var barcode = Code128Encoder.Encode(employeeCode);
+            var renderer = new ImageRenderer(new ImageRendererOptions { ImageFormat = Barcoder.Renderer.Image.ImageFormat.Png });
+            var convobarcode = barcode.Content;
+
+            using (var stream = new FileStream("C:\\systemfilestore\\Barcodegemerated\\" + employeeCode + ".png", FileMode.Create))
+            {
+                renderer.Render(barcode, stream);
+            }
+
+
+            string BarUri = GetDataURL("C:\\systemfilestore\\Barcodegemerated\\" + employeeCode + ".png");
+
+            return BarUri;
+
+        }
+
+
+        public IActionResult LoadDepartments(int divisionId)
+        {
+
+            var departments = _context.Departments.Where(a => a.division_id == divisionId);
+            var departmentList = departments.Select(department => new
+            {
+                id = department.id,
+                name = department.name
+            });
+
+            return Json(departmentList);
+        }
+
+
+        public IActionResult LoadTeams(int departmentId)
+        {
+
+            var teams = _context.Teams.Where(a => a.department_id == departmentId);
+            var teamstList = teams.Select(department => new
+            {
+                id = department.id,
+                name = department.name
+            });
+
+            return Json(teamstList);
+        }
+
+
+
+
+
+
+    }
+
+
+    public static class BitmapExtension
+    {
+        public static byte[] BitmapToByteArray(this Bitmap bitmap)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
         }
     }
 }

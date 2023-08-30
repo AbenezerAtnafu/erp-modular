@@ -380,57 +380,52 @@
                             <div class="tab-pane fade  mt-4" id="position" role="tabpanel" aria-labelledby="contact-tab">
                                 <div class="row p-0 m-0">
                                     <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
-                                            <select name="Division" class="form-control thrid-dropdown" asp-items="ViewBag.Division">
-                                            @if (office != null)
+                                    <!-- Division Dropdown -->
+                                    <div class="form-group">
+                                        <label for="Division" class="control-label">Division<span class="text-danger">*</span></label>
+                                        <select name="Division" class="form-control thrid-dropdown" asp-items="ViewBag.Division" onchange="loadDepartments()">
+                                            @if (Model != null && Model.Division != null)
                                             {
-                                                <option value="@office.Division.id" selected>@office.Division.name</option>
+                                                <option value="@Model.Division.Id" selected>@Model.Division.Name</option>
                                             }
                                             else
                                             {
                                                 <option value="">-- select Division --</option>
-
                                             }
                                         </select>
                                         <small id="DivisionValidation" class="text-danger"></small>
                                     </div>
-                                </div>
-                                <div class="col-md-4 col-sm-12 ">
-                                    <div class="form-group p-2">
+
+                                    <div class="form-group">
                                         <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
                                         <select name="Department" class="form-control thrid-dropdown" asp-items="ViewBag.Department">
-                                            @if (office != null)
+                                            @if (Model != null && Model.Department != null)
                                             {
-                                                <option value="@office.Department.id" selected>@office.Department.name</option>
+                                                <option value="@Model.Department.Id" selected>@Model.Department.Name</option>
                                             }
                                             else
                                             {
                                                 <option value="">-- select Department --</option>
-
                                             }
                                         </select>
                                         <small id="DepartmentValidation" class="text-danger"></small>
                                     </div>
-                                </div>
-                                <div class="col-md-4 col-sm-12 ">
-                                    <div class="form-group p-2">
+
+                                    <div class="form-group">
                                         <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
                                         <select name="Team" class="form-control thrid-dropdown" asp-items="ViewBag.Team">
-                                            @if (office != null)
+                                            @if (Model != null && Model.Team != null)
                                             {
-                                                <option value="@office.Team.id" selected>@office.Team.name</option>
+                                                <option value="@Model.Team.Id" selected>@Model.Team.Name</option>
                                             }
                                             else
                                             {
                                                 <option value="">-- select Team --</option>
-
                                             }
                                         </select>
-                                        <small id="TeamtValidation" class="text-danger"></small>
+                                        <small id="TeamValidation" class="text-danger"></small>
                                     </div>
-                                </div>
-                                </div>
+                               </div>
                                 <div class="row p-0 m-0">
                                     <div class="col-md-4 col-sm-12 ">
                                         <div class="form-group p-2">
@@ -513,3 +508,67 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        loadDepartments();
+        loadTeams();
+
+        $("select[name='Division']").change(loadDepartments);
+        $("select[name='Department']").change(loadTeams);
+    });
+
+    function loadDepartments() {
+        var selectedDivisionId = $("select[name='Division']").val();
+        var selectedDepartmentId = $("select[name='Department']").val();
+        var departmentDropdown = $("select[name='Department']");
+        departmentDropdown.empty();
+
+        if (selectedDivisionId) {
+            $.ajax({
+                url: "/Employees/LoadDepartments",
+                data: { divisionId: selectedDivisionId },
+                dataType: "json",
+                success: function (data) {
+                    departmentDropdown.append($('<option>').val('').text('-- select Department --'));
+                    $.each(data, function (index, department) {
+                        departmentDropdown.append($('<option>').val(department.Id).text(department.Name));
+                    });
+                    if (selectedDepartmentId) {
+                        departmentDropdown.val(selectedDepartmentId);
+                    }
+                }
+            });
+        }
+        else {
+            departmentDropdown.val('');
+        }
+    }
+
+    function loadTeams() {
+        var selectedDepartmentId = $("select[name='Department']").val();
+        var selectedTeamId = $("select[name='Team']").val();
+        var teamDropdown = $("select[name='Team']");
+        teamDropdown.empty();
+
+        if (selectedDepartmentId) {
+            $.ajax({
+                url: "/Employees/LoadTeams",
+                data: { departmentId: selectedDepartmentId },
+                dataType: "json",
+                success: function (data) {
+                    teamDropdown.append($('<option>').val('').text('-- select Team --'));
+                    $.each(data, function (index, team) {
+                        teamDropdown.append($('<option>').val(team.id).text(team.name));
+                    });
+                    if (selectedTeamId) {
+                        teamDropdown.val(selectedTeamId);
+                    }
+                }
+            });
+        }
+        else {
+            teamDropdown.val('');
+        }
+    }
+</script>
