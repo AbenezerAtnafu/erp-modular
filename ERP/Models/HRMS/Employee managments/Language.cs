@@ -24,7 +24,7 @@ namespace ERP.Models.HRMS.Employee_managments
         public int ability_to_write { get; set; }
 
 
-        [ForeignKey("Employees")]
+        [ForeignKey("Employee")]
         public int employee_id { get; set; }
         public Employee? Employees { get; set; }
 

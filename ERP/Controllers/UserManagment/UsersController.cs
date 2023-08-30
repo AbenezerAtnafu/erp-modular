@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
+
 using X.PagedList;
 
 namespace ERP.Controllers.AccountManagment
@@ -123,13 +122,14 @@ namespace ERP.Controllers.AccountManagment
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound();
+                TempData["Warning"]="no founf";
+                return RedirectToAction(nameof(InActiveUsers));
             }
 
             user.is_active = true;
             _userManager.UpdateAsync(user).Wait();
 
-            return Ok();
+            return RedirectToAction(nameof(InActiveUsers));
         }
 
         [HttpPost]
@@ -146,7 +146,7 @@ namespace ERP.Controllers.AccountManagment
             user.is_active = false;
             _userManager.UpdateAsync(user).Wait();
 
-            return Ok();
+            return RedirectToAction(nameof(ActiveUsers));
         }
 
 

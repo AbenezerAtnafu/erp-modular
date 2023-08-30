@@ -89,9 +89,13 @@ namespace ERP.Models.HRMS.Employee_managments
         public Employee_Address Employee_Address { get; set; }
         public Employee_Contact Employee_Contact { get; set; }
         public Employee_Office Employee_Office { get; set; }
-        public Language Language { get; set; }
-        public Family_History Family_History { get; set; }
-        public Emergency_contact Emergency_contact { get; set; }
+
+        public ICollection<Language> Language { get; set; }
+        public ICollection<Family_History> Family_History { get; set; }
+        public ICollection<Emergency_contact> Emergency_contact { get; set; }
+
+
+
 
     }
 }

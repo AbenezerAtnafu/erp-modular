@@ -171,6 +171,8 @@ namespace ERP.Controllers
                 .Include(e => e.Marital_Status_Types)
                 .FirstOrDefault(a => a.user_id == users);
 
+          
+
             if (emp != null)
             {
                 ViewData["Employee"] = emp;
@@ -229,13 +231,14 @@ namespace ERP.Controllers
                 employee.work_status = true;
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
+                employee.employee_code = "mols1234";
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
 
 
                 Employee_Address address = new Employee_Address();
-
-                address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
+              
+;                address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
                 address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
                 address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
                 address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
