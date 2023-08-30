@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
-using HRMS.Office;
 
 namespace ERP.Models.HRMS.Employee_managments
 {
@@ -38,7 +37,11 @@ namespace ERP.Models.HRMS.Employee_managments
 
         [Required(ErrorMessage = "The 'date of birth' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'date of birth' field must be a valid Date.")]
-        public DateTime date_of_birth { get; set; }
+        public DateTime date_of_birth { get; set; } 
+        
+        [Required(ErrorMessage = "The Start date field is required.")]
+        [DataType(DataType.Date, ErrorMessage = "The 'date of birth' field must be a valid Date.")]
+        public DateTime start_date { get; set; }
 
         [Required(ErrorMessage = "The 'nationality' field is required.")]
         [StringLength(200, ErrorMessage = "The 'nationality' field must be between {2} and {1} characters long.", MinimumLength = 0)]
@@ -49,9 +52,9 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'place of birth' field is required.")]
         [StringLength(200, ErrorMessage = "The 'place of birth' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_birth { get; set; }
-        [Required(ErrorMessage = "The 'religion' field is required.")]
-        [StringLength(200, ErrorMessage = "The 'religion' field must be between {2} and {1} characters long.", MinimumLength = 0)]
-        public string religion { get; set; }
+        
+        
+        public string? religion { get; set; }
         [Required(ErrorMessage = "The 'back account number' field is required.")]
         [MinLength(4, ErrorMessage = "The 'back account number' field must be a 4-digit number.")]
         public string back_account_number { get; set; }
@@ -85,9 +88,9 @@ namespace ERP.Models.HRMS.Employee_managments
         public Employee_Address Employee_Address { get; set; }
         public Employee_Contact Employee_Contact { get; set; }
         public Employee_Office Employee_Office { get; set; }
-   
-
-
+        public Language Language { get; set; }
+        public Family_History Family_History { get; set; }
+        public Emergency_contact Emergency_contact { get; set; }
 
     }
 }

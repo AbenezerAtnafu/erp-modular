@@ -22,6 +22,7 @@ namespace ERP.Areas.Identity.Data
                 UserName = "superadmin",
                 Email = "superadmin@gmail.com",
                 EmailConfirmed = true,
+                is_active = true,
                 PhoneNumberConfirmed = true,
                 PasswordHash= "Error1@1"
 

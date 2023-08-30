@@ -73,17 +73,20 @@ function deleteConf(id) {
 
 //file upload placeholder
 const profilepicture = document.getElementById('profilePictureHolder');
-if (profilepicture) {
+const profile = document.getElementById('ProfilePicture');
+
+if (profilepicture && profile) {
+
     profilepicture.addEventListener('click', function () {
-        document.getElementById('ProfilePicture').click();
+        profile.click();
     });
 
-    document.getElementById('ProfilePicture').addEventListener('change', function () {
+    profile.addEventListener('change', function () {
         var file = this.files[0];
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            document.getElementById('profilePictureHolder').src = e.target.result;
+            profilepicture.src = e.target.result;
         };
 
         reader.readAsDataURL(file);
@@ -172,8 +175,10 @@ function submitFirstTab() {
         document.getElementById("DateofBirthValidation").textContent = ""
     }
 
+    const alreadySelected = document.getElementById('FileAlreadyExist');
+    console.log("ff" + alreadySelected)
     var pp = document.getElementById('ProfilePicture').files[0];
-    if (!pp) {
+    if (!pp && !alreadySelected) {
         isppValid = false
         document.getElementById("ProfilePictureValidation").textContent = "Please insert passport size profile photo."
     } else {
@@ -188,15 +193,15 @@ function submitFirstTab() {
 
 //second tab validation
 function submitSecondTab() {
-    var phonepattern = /^[0-9]{9}$/;
+    var phonepattern = /^(\d{7}|\d{9})$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
-    var kebelepattern = /^[a-zA-Z\s]{2,10}$/;
+    var kebelepattern = /^[a-zA-Z\s]{2,20}$/;
 
     var dropdownfields = document.getElementsByClassName("second-dropdown");
     var phonevalid = false;
     var altphonevalid = false;
     var intphonevalid = false;
-    var addressfield = false;
+    /*var addressfield = false;*/
     var isLoopValid = false;
     var iskebeleValid = false;
 
@@ -218,14 +223,14 @@ function submitSecondTab() {
     }
 
 
-    var address = document.getElementById('PrimaryAddress').value;
+    /*var address = document.getElementById('PrimaryAddress').value;
     if (!address.match(addresspattern)) {
         addressfield = false
         document.getElementById("PrimaryAddressValidation").textContent = "Please enter between 3 and 30 alphabetic characters."
     } else {
         addressfield = true
         document.getElementById("PrimaryAddressValidation").textContent = ""
-    }
+    }*/
 
     var phone = document.getElementById('PhoneNumber').value;
     if (!phone.match(phonepattern)) {
@@ -281,7 +286,7 @@ function submitSecondTab() {
 
 
 
-    if (isLoopValid && addressfield && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
+    if (isLoopValid && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
         console.log("ggg")
         nextButton()
     }
@@ -401,6 +406,7 @@ function submitfinalTab() {
     var startdate = document.getElementById('StartDate').value;
     if (!startdate) {
         startValid = false
+        document.getElementById("StartDate").classList.add("is-invalid");
         document.getElementById("StartDateValidation").textContent = "This field is required."
     } else {
         startValid = true
@@ -477,4 +483,26 @@ if (tblmenu) {
             });
         });
     }
+}
+
+function screenShot(cardelement, dwnlink) {
+
+    let card = document.getElementById(cardelement);
+    let link = document.getElementById(dwnlink);
+
+    // Get the dimensions of the card element
+    let width = card.offsetWidth;
+    let height = card.offsetHeight;
+
+    let options = {
+        width: width,
+        height: height,
+        scale: 4
+    };
+
+    html2canvas(card, options)
+        .then(canvas => {
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click(); // click on the link
+        });
 }

@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ERP.Models.HRMS.Address;
-using HRMS.Family;
 using ERP.Models.HRMS.Employee_managments;
 using HRMS.Office;
 using HRMS.Types;
 using HRMS.Education_management;
 using ERP.Models.HRMS.File_managment;
-using ERP.Models.HRMS.Emergency_contact;
-using ERP.Models.HRMS.Language;
 using ERP.Models.HRMS.Employee_id;
 
 namespace ERP.Areas.Identity.Data
@@ -42,12 +39,9 @@ namespace ERP.Areas.Identity.Data
         public DbSet<Marital_Status_Types> Marital_Status_Types { get; set; }
         public DbSet<Violation_Types> Violation_Typess { get; set; }
         public DbSet<Education> Educations { get; set; }
-
         public DbSet<FileUpload> FileUploads {get; set; }
-
         public DbSet<Family_History> family_Histories { get; set; }
         public DbSet<Emergency_contact> emergency_Contacts { get; set; }
-
         public DbSet<Language> languages { get; set; }
         public DbSet<EmployeeMolsId> employeeMolsIds { get; set; }
        

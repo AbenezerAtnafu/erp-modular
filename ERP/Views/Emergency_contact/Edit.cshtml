@@ -1,50 +1,77 @@
-﻿@model ERP.Models.HRMS.Emergency_contact.Emergency_contact
+﻿@model ERP.Models.HRMS.Employee_managments.Emergency_contact
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Emergency contact Update";
 }
 
-<h1>Edit</h1>
 
-<h4>Emergency_contact</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="id" />
-            <div class="form-group">
-                <label asp-for="full_name" class="control-label"></label>
-                <input asp-for="full_name" class="form-control" />
-                <span asp-validation-for="full_name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="phonenumber" class="control-label"></label>
-                <input asp-for="phonenumber" class="form-control" />
-                <span asp-validation-for="phonenumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="alternative_phonenumber" class="control-label"></label>
-                <input asp-for="alternative_phonenumber" class="form-control" />
-                <span asp-validation-for="alternative_phonenumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Relationship" class="control-label"></label>
-                <input asp-for="Relationship" class="form-control" />
-                <span asp-validation-for="Relationship" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Update Emergency contact</h5>
+            <span class="d-block m-t-5">Update Emergency contact.</span>
+        </div>
+        <div class="card-block table-border-style">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="full_name" class="control-label">Name <span class="text-danger">*</span></label>
+                            <input asp-for="full_name" class="form-control" placeholder="eg:Abebe Kebede"0  value="@Model.full_name"/>
+                            <span asp-validation-for="full_name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group p-2">
+                            <label asp-for="phonenumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">+251</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="920124578" asp-for="phonenumber" aria-label="PhoneNumber" aria-describedby="Phone-Number" value="@Model.phonenumber"/>
+                                <span asp-validation-for="phonenumber" class="text-danger bg-white"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group p-2">
+                            <label asp-for="alternative_phonenumber" class="control-label">Alternative Phone Number</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">+251</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="920124578" asp-for="alternative_phonenumber" aria-label="alternative_phonenumber" aria-describedby="Phone-Number" value="@Model.alternative_phonenumber" />
+                                <span asp-validation-for="alternative_phonenumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Relationship" class="control-label">Relationship  <span class="text-danger">*</span></label>
+                            <select name="Relationship" class="form-control first-dropdown" asp-items="ViewBag.Relationship">
+                                @if (Model.Relationship != null)
+                                {
+                                    <option value="@Model.Relationship" selected>@Model.Relationship</option>
+                                }
+                                else
+                                {
+                                    <option value="">-- select Relationship --</option>
+
+                                }
+                            </select>
+                            <span asp-validation-for="Relationship" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

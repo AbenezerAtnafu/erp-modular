@@ -6,6 +6,13 @@ using HRMS.Education_management;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using ERP.Models.HRMS.File_managment;
+using ERP.Models.HRMS.Employee_managments;
+using X.PagedList;
+using System.Threading.Tasks;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
+using System;
 using Microsoft.AspNetCore.Http;
 
 namespace ERP.Controllers.HRMs
@@ -85,6 +92,9 @@ namespace ERP.Controllers.HRMs
 
             var education = await _context.Educations.Include(e => e.Employee)
               .Include(e => e.Employee.User)
+              .Include(a=> a.Education_Level_Type)
+              .Include(a => a.Education_Program_Type)
+
               .FirstOrDefaultAsync(m => m.id == id);
 
 
@@ -96,6 +106,30 @@ namespace ERP.Controllers.HRMs
             return View(education);
 
         }
+
+        /* public async Task<IActionResult> Details(int id)
+         {
+             var education = await _context.Educations.FindAsync(id);
+
+             if (education == null)
+             {
+                 return NotFound();
+             }
+             int currentPage = 1;
+
+             // Pass the currentPage variable to the view
+             ViewData["CurrentPage"] = currentPage;
+             education.EducationDocumentPaths = education.EducationDocumentPathsField?
+                 .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)?
+                 .Select(path => path.Trim())
+                 .Where(path => !string.IsNullOrEmpty(path))
+                 .ToArray();
+
+             return View(education);
+
+
+         }
+ */
         // download file uploaded 
         public async Task<IActionResult> Download(string filename)
         {
@@ -708,94 +742,92 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Education education , FileUpload FileUpload, List<IFormFile> FormFile)
+        public async Task<IActionResult> Create([Bind("id,institution_name,institution_email,institution_website,filed_of_study,description,start_date,end_date,Identificationnumber,status,filestatus,feedback,created_date,updated_date,employee_id,educational_program_id,educational_level_type_id")] Education education, FileUpload FileUpload, List<IFormFile> FormFile)
         {
-            if (ModelState.IsValid)
+
+            User users = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(e => e.user_id == users.Id);
+            long file_size = FormFile.Sum(f => f.Length);
+            string syspath = @"c:\systemfilestore";
+            var randomGenerator = new Random();
+            var random_max = randomGenerator.Next(1, 1000000000);
+            education.created_date = DateTime.Now;
+            education.updated_date = DateTime.Now;
+            ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
+            ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
+
+            if (check_employee != null)
             {
-                User users = await _userManager.GetUserAsync(User);
-                var check_employee = _context.Employees.FirstOrDefault(e => e.user_id == users.Id);
                 education.status = null;
-                long size = FormFile.Sum(f => f.Length);
-                string syspath = @"C:\systemfilestore";
-                var randomGenerator = new Random();
-                var random_max = randomGenerator.Next(1, 1000000000);
-                education.created_date = DateTime.Now;
-                education.updated_date = DateTime.Now;
-                ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
-                ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
-
-                if (check_employee != null)
+                if (FormFile == null)
                 {
-
-                    if (FormFile == null)
-                    {
-                        education.filestatus = false;
-                        education.employee_id = check_employee.id;
-                        _context.Add(education);
-                        await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        if (size < 524288000)
-                        {
-                            education.filestatus = true;
-                            education.employee_id = check_employee.id;
-
-                            education.Identificationnumber = random_max;
-                            
-                            _context.Add(education);
-                            await _context.SaveChangesAsync();
-
-                            foreach (var formFile in FormFile)
-                            {
-                                if (formFile != null)
-                                {
-                                    if (formFile.Length == 0)
-                                    {
-                                        var filePath = Path.Combine(
-                                          Directory.GetCurrentDirectory(), syspath, formFile.FileName);
-                                        var files = new FileUpload
-                                        {
-                                            id = 0,
-                                            created_at = DateTime.Now.Date,
-                                            name = filePath,
-                                            Identificationnumbers = random_max
-                                        };
-
-                                        _context.Add(files);
-                                        await _context.SaveChangesAsync();
-
-                                        using (var stream = System.IO.File.Create(filePath))
-                                        {
-                                            await formFile.CopyToAsync(stream);
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-                    }
+                    education.filestatus = false;
+                    education.employee_id = check_employee.id;
+                    _context.Add(education);
+                    await _context.SaveChangesAsync();
                 }
                 else
                 {
-                    TempData["Warning"] = "Fill in your information first";
-                    return View();
-                }
+                    if (file_size < 524288000)
+                    {
+                        education.filestatus = true;
+                        education.employee_id = check_employee.id;
+                        education.Identificationnumber = random_max;
+                        _context.Add(education);
+                        await _context.SaveChangesAsync();
 
-            }  
-                    
-            
+                        foreach (var formFile in FormFile)
+                        {
+
+                            if (formFile.Length > 0)
+                            {
+
+                                var filePath = Path.Combine(
+                                  Directory.GetCurrentDirectory(), syspath, formFile.FileName);
+                                var files = new FileUpload
+                                {
+                                    id = 0,
+                                    created_at = DateTime.Now.Date,
+                                    name = filePath,
+                                    Identificationnumbers = random_max
+                                };
+
+                                _context.Add(files);
+                                await _context.SaveChangesAsync();
+
+                                using (var stream = System.IO.File.Create(filePath))
+                                {
+                                    await formFile.CopyToAsync(stream);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                TempData["Warning"] = "Fill in your information first";
+                return View();
+            }
+
+
+
+
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Approved(int id)
+        public async Task<IActionResult> Approve(int id)
         {
+            var ef = await _context.Educations.FindAsync(id);
 
-            var education = await _context.Educations.FindAsync(id);
-
-            if (education == null)
+            if (ef == null)
             {
                 return NotFound();
             }
@@ -803,13 +835,14 @@ namespace ERP.Controllers.HRMs
             {
                 try
                 {
-                    education.status = true;
-                    _context.Update(education);
+                    ef.status = true;
+                    ef.feedback = Convert.ToString(HttpContext.Request.Form["feedback"]);
+                    _context.Update(ef);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EducationExists(education.id))
+                    if (!EducationExists(ef.id))
                     {
                         return NotFound();
                     }
@@ -825,9 +858,9 @@ namespace ERP.Controllers.HRMs
 
         public async Task<IActionResult> Reject(int id)
         {
-            var education = await _context.Educations.FindAsync(id);
+            var ef = await _context.Educations.FindAsync(id);
 
-            if (education == null)
+            if (ef == null)
             {
                 return NotFound();
             }
@@ -835,13 +868,14 @@ namespace ERP.Controllers.HRMs
             {
                 try
                 {
-                    education.status = false;
-                    _context.Update(education);
+                    ef.status = false;
+                    ef.feedback = Convert.ToString(HttpContext.Request.Form["feedback"]);
+                    _context.Update(ef);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EducationExists(education.id))
+                    if (!EducationExists(ef.id))
                     {
                         return NotFound();
                     }
