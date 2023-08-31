@@ -138,10 +138,6 @@ namespace ERP.Controllers
                 ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
                 ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
                 
-
-
-
-
             if (employee == null)
             {
                 return View();
@@ -184,9 +180,6 @@ namespace ERP.Controllers
                 ViewData["Employee"] = employee;
                 return View();
             }
-
-           
-           
 
         }
 
@@ -498,8 +491,6 @@ namespace ERP.Controllers
                 return RedirectToAction(nameof(Detail), new { id = id });
             }
         }
-
-
 
         public static string GetDataURL(string imgFile)
         {

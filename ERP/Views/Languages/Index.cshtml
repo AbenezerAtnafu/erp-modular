@@ -28,6 +28,12 @@
                             <th>
                                 Listening
                             </th>
+                            <th>
+                                Reading
+                            </th>
+                            <th>
+                                Writing
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -66,6 +72,43 @@
 
                                     }
                                     else if (item.ability_to_listen >= 51 && item.ability_to_listen <= 75)
+                                    {
+                                        <span>Advanced</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Native</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.ability_to_Read >= 0 && item.ability_to_Read <= 25)
+                                    {
+                                        <span>Beginner</span>
+                                    }
+                                    else if (item.ability_to_Read >= 26 && item.ability_to_Read <= 50)
+                                    {
+                                        <span>Intermidiate</span>
+
+                                    }else if (item.ability_to_Read >= 51 && item.ability_to_Read <= 75)
+                                    {
+                                        <span>Advanced</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Native</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.ability_to_write >= 0 && item.ability_to_write <= 25)
+                                    {
+                                        <span>Beginner</span>
+                                    }
+                                    else if (item.ability_to_write >= 26 && item.ability_to_write <= 50)
+                                    {
+                                        <span>Intermidiate</span>
+
+                                    }
+                                    else if (item.ability_to_write >= 51 && item.ability_to_write <= 75)
                                     {
                                         <span>Advanced</span>
                                     }

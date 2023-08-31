@@ -354,11 +354,16 @@
                                         <small id="BankNumberValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12 ">
+                                <div class="col-md-4 col-sm-12">
                                     <div class="form-group p-2">
-                                        <label for="PensionNumber" class="control-label">Pension Number</label>
-                                        <input type="number" id="PensionNumber" name="PensionNumber" class="form-control" placeholder="eg:1245" value="@((employee != null) ? employee.pension_number : "")" />
-                                        <small id="PensionNumberValidation" class="text-danger"></small>
+                                        <label for="PensionNumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">ሰ/</span>
+                                            </div>
+                                            <input type="number" class="form-control" placeholder="eg:1245" name="PensionNumber" id="PensionNumber" aria-label="PensionNumber" aria-describedby="Phone-Number" value="@((employee != null) ? employee.pension_number : "")" />
+                                            <small id="PensionNumberValidation" class="text-danger bg-white"></small>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12 ">

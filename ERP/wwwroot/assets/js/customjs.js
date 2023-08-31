@@ -187,9 +187,9 @@ function submitFirstTab() {
 
     var dob = new Date(document.getElementById('DateofBirth').value);
     var age = currentDate.getFullYear() - dob.getFullYear();
-    if (!(age >=18)) {
+    if (!(age >= 18 && age <= 60)) {
         isdobValid = false
-        document.getElementById("DateofBirthValidation").textContent = "Please select date >= 18."
+        document.getElementById("DateofBirthValidation").textContent = "Please select date >= 18 and <= 60."
     } else {
         isdobValid = true
         document.getElementById("DateofBirthValidation").textContent = ""
