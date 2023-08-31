@@ -13,15 +13,22 @@
             <div class="card-title mb-5">
                 <h5 class="text-muted text-">Manage Roles</h5>
             </div>
-            @using (Html.BeginForm("Index", "Roles", FormMethod.Get))
-            {
-                <div class="form-group">
-                    @Html.TextBox("searchTerm", searchTerm, new { @class = "form-control", placeholder = "Search by role name" })
+            <form asp-action="Index">
+                <div class="d-flex justify-content-end">
+                    @*<div class="mr-3">Flex item 1</div>
+                    <div class="mr-3">Flex item 2</div>*@
+                    <div class="input-group mb-3 w-25">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="feather icon-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search.." name="searchTerm" id="Search" />
+                    </div>
+                    @if (string.IsNullOrEmpty(searchTerm))
+                    {
+                        <a href="@Url.Action("Index")" class="btn btn-light">Clear</a>
+                    }
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            }
+            </form>
 
             <table class="table table-striped table-bordered">
                 <thead>

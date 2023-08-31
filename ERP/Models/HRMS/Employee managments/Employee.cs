@@ -77,7 +77,7 @@ namespace ERP.Models.HRMS.Employee_managments
         public string place_of_work { get; set; }
         public bool? profile_status { get; set; }
         public bool? work_status { get; set; }
-
+        public string? feedback { get; set; }
         [ForeignKey("Marital_Status_Types")]
         public int marital_status_type_id { get; set; }
 

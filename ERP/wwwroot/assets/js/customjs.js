@@ -77,11 +77,19 @@ function approveModal(id) {
 
 //reject action from modal
 function rejectModal(id) {
-    $('RejectId').val(id);
+    $('#RejectEmpId').val(id);
     $("#RejectModalCenter").modal()
 }
-
-
+//
+function inactivemodal(id) {
+    $('#inactiveid').val(id);
+    $("#InActiveuserModal").modal()
+}
+function activemodal(id) {
+    console.log("ddd "+id)
+    $('#activeid').val(id);
+    $("#ActiveuserModal").modal()
+}
 
 //file upload placeholder
 const profilepicture = document.getElementById('profilePictureHolder');
@@ -447,27 +455,23 @@ function submitfinalTab() {
 }
 
 //submit modal
-function submitApproveModal() {
+/*function submitApproveModal() {
     var pattern = /^[a-zA-Z\s]{2,30}$/;
+    var validation = false;
 
-    if (document.getElementById("ApproveEmployee").checked) {
-        document.getElementById("RejectForm").submit();
-
+    if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
+        validation = false
+        document.getElementById("EmpRejectMessage").classList.add("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = "Account number should at least be 4 or max 30 digits."
     } else {
-        if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
-            isbankValid = false
-            document.getElementById("EmpRejectMessage").classList.add("is-invalid");
-            document.getElementById("EmpRejectMessageValidation").textContent = "Account number should at least be 4 or max 30 digits."
-        } else {
-            document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
-            document.getElementById("EmpRejectMessageValidation").textContent = ""
-            isbankValid = true
-        }
-        isbankValid ? setTimeout(() => { document.getElementById("RejectForm").submit() }, 400)  : '';
+        document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = ""
+        validation = true
     }
+    validation ? document.getElementById("RejectForm").submit()  : '';
     
 }
-
+*/
 
 function screenShot(cardelement, dwnlink) {
 
@@ -493,16 +497,14 @@ function screenShot(cardelement, dwnlink) {
 
 
 function submitRejectModal() {
-    var rejnote = document.getElementById("EmpRejectMessage").value;
-    var pattern = /^[a-zA-Z\s]{10,300}$/;
+    var pattern = /^[a-zA-Z\s]{2,30}$/;
 
-    if (!rejnote.match(pattern)) {
+    if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
         document.getElementById("EmpRejectMessage").classList.add("is-invalid");
         document.getElementById("EmpRejectMessageValidation").textContent = "Please enter between 10 and 300 alphabetic characters."
     } else {
         document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
         document.getElementById("EmpRejectMessageValidation").textContent = ""
-        document.getElementById("EmployeeApproveForm").submit();
-
+        document.getElementById("RejectFormModal").submit()
     }
 }

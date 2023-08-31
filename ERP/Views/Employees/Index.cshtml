@@ -60,7 +60,7 @@
     <div class="card">
         <div class="card-header">
             <h5>Employee List</h5>
-            <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
+            <span class="d-block m-t-5">List of Mols employees.</span>
         </div>
             <form asp-action="Index">
                 <div class="d-flex justify-content-end">
@@ -95,10 +95,28 @@
                         @foreach (var employee in Model)
                         {
                             <tr>
-                                <td>@employee.first_name @employee.father_name</td>
+                                <td>
+                                    @if ((@employee.first_name != null && @employee.father_name != null) && (@employee.first_name.Length > 10 || @employee.first_name.Length > 10))
+                                    {
+                                        <p class="m-0">@employee.first_name.Substring(0, 10) @employee.father_name.Substring(0, 10)...</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="m-0">@employee.first_name @employee.father_name</p>
+                                    }
+                                </td>
                                 <td>@employee.date_of_birth.ToShortDateString()</td>
                                 <td>@employee.gender</td>
-                                <td>@employee.Employee_Office.Department.name</td>
+                                <td>
+                                    @if (@employee.Employee_Office.Department.name != null && @employee.Employee_Office.Department.name.Length > 10)
+                                    {
+                                        <p class="m-0">@employee.Employee_Office.Department.name.Substring(0, 10)...</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="m-0">@employee.Employee_Office.Department.name</p>
+                                    }
+                                </td>
                                 <td>
                                     @if (employee.profile_status == true)
                                     {

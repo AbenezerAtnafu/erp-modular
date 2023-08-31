@@ -60,11 +60,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Reject" id="RejectForm">
+                <form asp-action="RejectEmployee" id="RejectFormModal">
                     <div class="form-group p-2" id="EmpRejectMessageInput">
                         <label for="EmpRejectMessage" class="control-label">Feedback</label>
                         <textarea type="text" data-val="true" id="EmpRejectMessage" name="EmpRejectMessage" class="form-control" placeholder="eg:Please revise and update Your Position information."></textarea>
-                        <input type="text" id="RejectId" class="form-control d-none" />
+                        <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="RejectEmpId" name="RejectEmpId" />
                         <small id="EmpRejectMessageValidation" class="text-danger"></small>
                     </div>
                 </form>
@@ -77,3 +77,55 @@
     </div>
 </div>
 @*Reject Model*@
+
+
+
+@*User Model*@
+<div class="modal fade" id="ActiveuserModal" tabindex="-1" role="dialog" aria-labelledby="ActiveuserModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="text-center pt-5">
+                <i class="feather icon-check font-weight-bold" style="color:green; font-size:40px;"></i>
+                <h5 class="font-weight-bold pt-3" id="exampleModalCenterTitle">
+                    Change User Status
+                </h5>
+            </div>
+            <div class="pt-3 text-center">
+                <small> Are you sure you want to <b>Activate</b> user?</small>
+                <div class="py-4">
+                    <button type="button" class="btn btn-sm d-inline" data-dismiss="modal">No</button>
+                    <form asp-action="ActivateUser" class="d-inline">
+                        <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="activeid" name="activeid" value="">
+                        <button type="submit" class="btn btn-sm btn-success">Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*User Model*@
+
+@*User Model*@
+<div class="modal fade" id="InActiveuserModal" tabindex="-1" role="dialog" aria-labelledby="InActiveuserModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="text-center pt-5">
+                <i class="feather icon-check font-weight-bold" style="color:green; font-size:40px;"></i>
+                <h5 class="font-weight-bold pt-3" id="exampleModalCenterTitle">
+                    Change User Status
+                </h5>
+            </div>
+            <div class="pt-3 text-center">
+                <small> Are you sure you want to <b>Deactivate</b> user?</small>
+                <div class="py-4">
+                    <button type="button" class="btn btn-sm d-inline" data-dismiss="modal">No</button>
+                    <form asp-action="DeactivateUser" class="d-inline">
+                        <input type="hidden" data-val="true" data-val-required="The Record Id is required." id="inactiveid" name="inactiveid" value="">
+                        <button type="submit" class="btn btn-sm btn-success">Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*User Model*@

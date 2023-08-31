@@ -416,30 +416,56 @@ namespace ERP.Controllers
             var employee = await _context.Employees.FindAsync(id);
             if(employee != null)
             {
-               employee.profile_status = true;
-                /* employee.employee_code = Convert.ToString(HttpContext.Request.Form["EmpRejectMessage"]);*/
-                employee.updated_date = DateTime.Now;
-                _context.Update(employee);
-                await _context.SaveChangesAsync();
+                if (employee.profile_status == true) {
+                    TempData["Warning"] = "Employee Profile is Already Approved.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+                else
+                {
+                    employee.profile_status = true;
+                    employee.updated_date = DateTime.Now;
+                    _context.Update(employee);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Employee Profile is Approved.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
             }
-
-            return RedirectToAction(nameof(Detail), new { id = id });
+            else
+            {
+                TempData["Warning"] = "Employee not found.";
+                return RedirectToAction(nameof(Detail), new { id = id });
+            }
         }
         
         // reject employee and set feedback
-        public async Task<IActionResult> Reject(int id)
+        public async Task<IActionResult> RejectEmployee()
         {
+            var id = Convert.ToInt32(HttpContext.Request.Form["RejectEmpId"]);
             var employee = await _context.Employees.FindAsync(id);
-            if(employee != null)
-            {
-               employee.profile_status = false;
-             //  employee.feed = molds_id.
-               employee.updated_date = DateTime.Now;
-                _context.Update(employee);
-                await _context.SaveChangesAsync();
-            }
 
-            return RedirectToAction(nameof(Detail), new { id = id });
+            if (employee != null)
+            {
+                if (employee.profile_status == false)
+                {
+                    TempData["Warning"] = "Employee Profile is Already Rejected.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+                else
+                {
+                    employee.profile_status = false;
+                    employee.feedback = Convert.ToString(HttpContext.Request.Form["EmpRejectMessage"]);
+                    employee.updated_date = DateTime.Now;
+                    _context.Update(employee);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Employee Profile is Rejected.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+            }
+            else
+            {
+                TempData["Warning"] = "Employee not found.";
+                return RedirectToAction(nameof(Detail), new { id = id });
+            }
         }
 
 

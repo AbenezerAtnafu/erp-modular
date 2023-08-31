@@ -114,43 +114,42 @@ namespace ERP.Controllers.AccountManagment
         }
 
 
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Users/Activate/{userId}")]
-        public async Task<IActionResult> ActivateUser(string userId)
+        public async Task<IActionResult> DeactivateUser()
         {
+            var userId = Convert.ToString(HttpContext.Request.Form["inactiveid"]);
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound();
+                TempData["Warning"] = "User not found.";
+               return RedirectToAction(nameof(ActiveUsers));
             }
+            else
+            {
+                user.is_active = false;
+                _userManager.UpdateAsync(user).Wait();
 
-            user.is_active = true;
-            _userManager.UpdateAsync(user).Wait();
-
-            return Ok();
+                TempData["Success"] = "User is InActive.";
+                return RedirectToAction(nameof(ActiveUsers));
+            }
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Users/Deactivate/{userId}")]
-        public async Task<IActionResult> DeactivateUser(string userId)
+        
+        public async Task<IActionResult> ActivateUser()
         {
+            var userId = Convert.ToString(HttpContext.Request.Form["activeid"]);
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return NotFound();
+                TempData["Warning"] = "User not found. You can find it in inactive users.";
+                return RedirectToAction(nameof(InActiveUsers));
             }
+            else
+            {
+                user.is_active = true;
+                _userManager.UpdateAsync(user).Wait();
 
-            user.is_active = false;
-            _userManager.UpdateAsync(user).Wait();
-
-            return Ok();
+                TempData["Success"] = "User is Active. You can find it in active users.";
+                return RedirectToAction(nameof(InActiveUsers));
+            }
         }
-
-
-
-
     }
 }
