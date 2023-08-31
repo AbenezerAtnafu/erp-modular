@@ -49,7 +49,7 @@
                     <div class="col-md-4 col-sm-12">
                         <div class="form-group">
                             <label asp-for="family_relationship_id" class="control-label">Relation  <span class="text-danger">*</span></label>
-                            <select asp-validation-for="family_relationship_id" class="form-control" asp-items="ViewBag.family_relationship_id">
+                            <select asp-for="family_relationship_id" class="form-control" asp-items="ViewBag.family_relationship_id">
                                <option value="">-- select Relation --</option>
                             </select>
                             <span asp-validation-for="family_relationship_id" class="text-danger"></span>

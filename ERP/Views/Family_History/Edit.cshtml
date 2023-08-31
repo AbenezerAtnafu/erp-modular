@@ -53,7 +53,7 @@
                             <select asp-validation-for="family_relationship_id" class="form-control" asp-items="ViewBag.family_relationship_id">
                                 @if (Model != null)
                                 {
-                                    <option value="@Model.Family_RelationShip_Type.id" selected>@Model.Family_RelationShip_Type.name</option>
+                                    <option value="@Model.Family_RelationShip_Type" selected>@Model.Family_RelationShip_Type</option>
                                 }
                                 else
                                 {

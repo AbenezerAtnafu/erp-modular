@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using ERP.Models.HRMS.Employee_managments;
+using Microsoft.AspNetCore.Identity;
 
 namespace ERP.Controllers.HRMs
 {
@@ -31,7 +32,7 @@ namespace ERP.Controllers.HRMs
 
             if (check_employee != null)
             {
-                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(a=>a.Family_Relationship_Types);
+                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(a=>a.Family_RelationShip_Type);
                 return View(assign_family_history);
             }
             else
@@ -61,7 +62,7 @@ namespace ERP.Controllers.HRMs
         // GET: Family_History/Create
         public IActionResult Create()
         {
-            ViewData["Family_Relationship_Types"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
             return View();
         }
 
@@ -80,10 +81,11 @@ namespace ERP.Controllers.HRMs
                     family_History.employee_id = check_employee.id;
                     family_History.created_date = DateTime.Now.Date;
                     family_History.updated_date = DateTime.Now.Date;
-                    ViewData["Family_Relationship_Types"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.Family_Relationship_Types);
-                    _context.Add(family_History);
-                }
-                await _context.SaveChangesAsync();
+                    ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
+                    _context.family_Histories.Add(family_History);
+                    _context.SaveChanges();
+            }
+
                 return RedirectToAction(nameof(Index));
             
         
