@@ -23,9 +23,9 @@ namespace ERP.Models.HRMS.Employee_managments
         [StringLength(200, ErrorMessage = "The 'Relationship' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string Relationship { get; set; }
 
-        [ForeignKey("Employees")]
+        [ForeignKey("Employee")]
         public int employee_id { get; set; }
-        public Employee? Employees { get; set; }
+        public Employee Employee { get; set; }
 
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]

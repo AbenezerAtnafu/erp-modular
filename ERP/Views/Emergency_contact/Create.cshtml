@@ -27,9 +27,9 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
                             <label asp-for="Relationship" class="control-label">Relationship  <span class="text-danger">*</span></label>
-                            <select name="Relationship" class="form-control" asp-items="ViewBag.family_relationship_id">
-                                <option value="">-- select Relationship --</option>
-                            </select>
+
+                            <input asp-for="Relationship" class="form-control" placeholder="eg: select relationship" />
+                          
                             <span asp-validation-for="Relationship" class="text-danger"></span>
                         </div>
                     </div>

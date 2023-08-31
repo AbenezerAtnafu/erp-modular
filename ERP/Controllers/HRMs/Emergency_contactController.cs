@@ -57,15 +57,15 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id,created_date,updated_date")] Emergency_contact emergency_contact)
+        public async Task<IActionResult> Create([Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id")] Emergency_contact emergency_contact)
         {
-            if (ModelState.IsValid)
-            {
+         
                 var users = _userManager.GetUserId(HttpContext.User);
                 var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
 
                 if (employee != null)
                 {
+                    emergency_contact.employee_id= employee.id; 
                     emergency_contact.created_date = DateTime.Now.Date;
                     emergency_contact.updated_date = DateTime.Now.Date;
                     _context.Add(emergency_contact);
@@ -79,12 +79,8 @@ namespace ERP.Controllers.HRMs
                     TempData["Warning"] = "You should First fill in Your detail.";
                     return RedirectToAction(nameof(Index));
                 }
-            }
-            else
-            {
-                ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", emergency_contact.Relationship);
-                return View(emergency_contact);
-            }
+            
+          
         }
 
         // GET: Emergency_contact/Edit/5
