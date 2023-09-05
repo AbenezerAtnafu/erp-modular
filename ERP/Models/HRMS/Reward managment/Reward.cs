@@ -14,48 +14,31 @@ namespace ERP.Models.HRMS.Reward_managment
         [StringLength(100, MinimumLength = 2, ErrorMessage = "The 'training name' field must be between 2 and 100 characters.")]
         public string reward_name { get; set; }
 
-        [StringLength(200, ErrorMessage = "The 'description' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        [StringLength(200, ErrorMessage = "Description field must be between {5} and {200} characters long.", MinimumLength = 5)]
         public string? description { get; set; }
+        
+        [StringLength(200, ErrorMessage = "Reason of reward field must be between {5} and {200} characters long.", MinimumLength = 5)]
+        public string? reason_of_reward { get; set; }
 
-        [Required(ErrorMessage = "The 'start_date' field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The 'start_date' field must be a valid Date.")]
-        public DateTime start_date { get; set; }
-
-        [Required(ErrorMessage = "The 'end_date' field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The 'end_date' field must be a valid Date.")]
-        public DateTime end_date { get; set; }
-        [NotMapped]
-        public string[]? reward_document_path { get; set; }
-        public string? rewarddocumentPathsField { get; set; }
+        [Required(ErrorMessage = "Reward given date is required.")]
+        [DataType(DataType.Date)]
+        public DateTime given_date { get; set; }
         public bool? status { get; set; }
-        public bool? filestatus { get; set; }
-
         public string? feedback { get; set; }
 
-        [Required(ErrorMessage = "The 'created_date' field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime created_date { get; set; }
 
-        [Required(ErrorMessage = "The 'updated_date' field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime updated_date { get; set; }
 
         [ForeignKey("Employee")]
         public int employee_id { get; set; }
         public int Created_by { get; set; }
         public int Updated_by { get; set; }
-        public int deleted_by { get; set; }
-
         public int? approved_by { get; set; }
-        public int? rejected_by { get; set; }
-
-
         public Employee Employee { get; set; }
-
-  
-      
-
-
-
     }
 }
