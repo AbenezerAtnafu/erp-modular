@@ -263,6 +263,7 @@ namespace ERP.Controllers
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
                 employee.employee_code = "mols1234";
+                employee.salary = Convert.ToDouble(HttpContext.Request.Form["salary"]);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
 
@@ -514,10 +515,65 @@ namespace ERP.Controllers
         }
 
 
+            /* int lastID = IDtracker();*/
+            int lastID = 450;
+
+            string idTracker = (lastID + 1).ToString("D4");
+            string employeeID = $"Mols-{idTracker}-15";
+
+            return employeeID;
+        }
+        public string GenerateQRCode(string employeeCode)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(employeeCode, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrBitmap = qrCode.GetGraphic(60);
+            byte[] bitmapArray = qrBitmap.BitmapToByteArray();
+            string qrUri = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(bitmapArray));
+
+            return qrUri;
+        }
+        public string GenerateBarCode(string employeeCode)
+        {
+            var barcode = Code128Encoder.Encode(employeeCode);
+            var renderer = new ImageRenderer(new ImageRendererOptions { ImageFormat = Barcoder.Renderer.Image.ImageFormat.Png });
+            var convobarcode = barcode.Content;
+
+            using (var stream = new FileStream("C:\\systemfilestore\\Barcodegemerated\\" + employeeCode + ".png", FileMode.Create))
+            {
+                renderer.Render(barcode, stream);
+            }
+
+
+            string BarUri = GetDataURL("C:\\systemfilestore\\Barcodegemerated\\" + employeeCode + ".png");
+
+            return BarUri;
+
+        }
+
+
+        public IActionResult LoadDepartments(int divisionId)
+        {
+
+            var departments = _context.Departments.Where(a => a.division_id == divisionId);
+            var departmentList = departments.Select(department => new
+            {
+                id = department.id,
+                name = department.name
+            });
+
+            return Json(departmentList);
+        }
 
 
 
-
+            var teams = _context.Teams.Where(a => a.department_id == departmentId);
+            var teamstList = teams.Select(department => new
+            {
+                id = department.id,
+                name = department.name
+            });
 
         public string GenerateEmployeeID(bool isApproved)
         {

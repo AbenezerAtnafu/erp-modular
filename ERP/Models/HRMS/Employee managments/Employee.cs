@@ -53,6 +53,7 @@ namespace ERP.Models.HRMS.Employee_managments
         [StringLength(200, ErrorMessage = "The 'place of birth' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_birth { get; set; }
         
+        public double? salary { get; set; }
         
         public string? religion { get; set; }
         [Required(ErrorMessage = "The 'back account number' field is required.")]
