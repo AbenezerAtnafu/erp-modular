@@ -79,7 +79,7 @@ namespace ERP.Controllers.UserManagment
             var userrole = _context.Users.FirstOrDefault(a => a.Id == userId);
             if (user == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                TempData["Warning"] = "User with Id = {userId} cannot be found";
                 return View("NotFound");
             }
             ViewBag.UserName = user.UserName;
@@ -90,9 +90,6 @@ namespace ERP.Controllers.UserManagment
                 {
                     RoleId = role.Id,
                     RoleName = role.Name,
-
-
-
                 };
 
                 if (await _userManager.IsInRoleAsync(user, role.Name))
@@ -102,19 +99,15 @@ namespace ERP.Controllers.UserManagment
                          userRolesViewModel.DepartmentId = userEmp.DepartmentId;
 
                      }*/
-
                     userRolesViewModel.Selected = true;
                 }
                 else
                 {
                     userRolesViewModel.Selected = false;
                 }
-
-
                 model.Add(userRolesViewModel);
 
             }
-
             return View(model);
         }
         [HttpPost]
@@ -132,7 +125,7 @@ namespace ERP.Controllers.UserManagment
             var result = await _userManager.RemoveFromRolesAsync(user, roles);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Cannot remove user existing roles");
+                TempData["Success"] = "Cannot remove user existing roles.";
                 return View(model);
             }
 
@@ -140,19 +133,16 @@ namespace ERP.Controllers.UserManagment
             result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName));
             var userAsp = _context.UserRoles.FirstOrDefault(a => a.UserId == user.Id);
 
-  
-
-
-
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Cannot add selected roles to user");
+                TempData["Success"] = "Cannot add selected roles to user.";
                 return View(model);
             }
 
 
             //_context.Users.Update(userrole);
             //await _context.SaveChangesAsync();
+            TempData["Success"] = "User is assigned role.";
             return RedirectToAction("Index");
         }
     }

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using HRMS.Types;
 using ERP.Models.HRMS.Employee_managments;
+using System;
 
 namespace HRMS.Education_management
 {
@@ -36,7 +37,10 @@ namespace HRMS.Education_management
         public DateTime end_date { get; set; }
 
         public double Identificationnumber { get; set; }
-
+        
+        [NotMapped]
+        public string[]? EducationDocumentPaths { get; set; }
+      /*  public string? EducationDocumentPathsField { get; set; }*/
         public bool? status { get; set; }
         public bool? filestatus { get; set; }
 

@@ -61,18 +61,18 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,subcity_id,zone_id")] Woreda woreda)
         {
-            if (ModelState.IsValid)
-            {
+   
                 woreda.created_date = DateTime.Now;
                 woreda.updated_date = DateTime.Now;
                 _context.Add(woreda);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "You have created successfully.";
+                ViewData["subcity_id"] = new SelectList(_context.Subcitys, "id", "name", woreda.subcity_id);
+                ViewData["zone_id"] = new SelectList(_context.Zones, "id", "name", woreda.zone_id);
+
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["subcity_id"] = new SelectList(_context.Subcitys, "id", "name", woreda.subcity_id);
-            ViewData["zone_id"] = new SelectList(_context.Zones, "id", "name", woreda.zone_id);
-            return View(woreda);
+           
+      
         }
 
         // GET: Woredas/Edit/5

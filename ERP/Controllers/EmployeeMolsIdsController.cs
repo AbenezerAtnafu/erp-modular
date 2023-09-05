@@ -12,6 +12,7 @@ using Barcoder.Renderer.Image;
 using QRCoder;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 
 namespace ERP.Controllers
 {
@@ -227,7 +228,7 @@ namespace ERP.Controllers
             }
         }
     }
-        public static class BitmapExtension
+  /*  public static class BitmapExtension
     {
         public static byte[] BitmapToByteArray(this Bitmap bitmap)
         {
@@ -237,5 +238,5 @@ namespace ERP.Controllers
                 return ms.ToArray();
             }
         }
-    }
+    }*/
 }

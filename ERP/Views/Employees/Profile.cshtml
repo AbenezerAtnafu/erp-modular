@@ -3,177 +3,172 @@
     var employee = ViewData["Employee"] as ERP.Models.HRMS.Employee_managments.Employee;
 }
 
-
 <section class="mx-4">
     @if (employee != null)
     {
         <h5 class="mt-4">Employee Profile</h5>
         <hr>
-         <div class="row">
+        <div class="row">
             <div class="col-lg-3 col-sm-12">
                 <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="padding-left: 15px;">
                     <li><a class="nav-link text-left active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">General</a></li>
                     <li><a class="nav-link text-left" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Address</a></li>
                     <li><a class="nav-link text-left" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Contact</a></li>
                     <li><a class="nav-link text-left" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Employment</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-family-tab" data-toggle="pill" href="#v-pills-family" role="tab" aria-controls="v-pills-family" aria-selected="false">Family</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Language</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Emergency</a></li>
+                    
                 </ul>
-                <div class="nav flex-column mt-4 nav-pills list-group list-group-flush list-pills" id="user-set-tab" role="tablist" aria-orientation="vertical">
-                    <button type="button" class="btn btn-info py-1 px-2 ml-2" data-toggle="modal" data-target="#ApproveModalCenter">
-                        Change Status
-                    </button>
-
-                </div>
+                
             </div>
             <div class="col-lg-9 col-sm-12">
-                <div class="card p-0">
+                <div class="bg-white rounded p-0">
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <div class="card-img-block" style="height:65px; width:100%;">
-                                <img src="https://wallpapers.com/images/hd/profile-picture-background-npa9yae86g2tj6xs.jpg" class="w-100" style="height:65px; width:100%; object-fit:cover;" />
-                            </div>
-                            <div class="position-relative mx-auto">
-                                @if (employee.profile_picture != null)
-                                {
-                                    <img class="img-radius mx-auto d-block border" width="100" id="profilePictureHolder" src="@Url.Content("~/img/" + employee.profile_picture)" alt="Employee Profile Photo" style="margin-top:-36px;" />
-                                }
-                                else
-                                {
-                                    <img class="img-radius mx-auto d-block border" width="100" src="~/img/male_img_avatar.png" alt="Employee Profile Photo" style="margin-top:-36px;" />
-                                }
-                            </div>
-                            @*      <div class="certificated-badge">
-                                    <i class="fas fa-certificate text-warning bg-icon"></i>
-                                </div> *@
-                            <div class="my-4 text-center">
-                                <h6 class="mb-1">FirstName LastName Grandfathername</h6>
-                                <p class="mb-0">MOLs-12344</p>
-                            </div>
-                            <div class="col-md-6 col-sm-12 text-center d-flex m-auto">
-                                <div class="col">
-                                    @if (employee.gender == "Male")
+                                <div class="card-img-block" style="height:65px; width:100%;">
+                                    <img src="https://wallpapers.com/images/hd/profile-picture-background-npa9yae86g2tj6xs.jpg" class="w-100" style="height:65px; width:100%; object-fit:cover;" />
+                                </div>
+                                <div class="position-relative mx-auto">
+                                    @if (employee.profile_picture != null)
                                     {
-                                        <h6 class="mb-1"><i class="fas fa-male fa-fw fa-1x" style="color: cadetblue;"></i> </h6>
-                                        <p class="mb-0">Male</p>
+                                        <img class="img-radius mx-auto d-block border" width="100" id="profilePictureHolder" src="@Url.Content("~/img/" + employee.profile_picture)" alt="Employee Profile Photo" style="margin-top:-36px;" />
                                     }
                                     else
                                     {
-                                        <h6 class="mb-1"><i class="fas fa-female fa-fw fa-1x" style="color: cadetblue;"></i> </h6>
-                                        <p class="mb-0">Female</p>
+                                        <img class="img-radius mx-auto d-block border" width="100" src="~/img/male_img_avatar.png" alt="Employee Profile Photo" style="margin-top:-36px;" />
                                     }
+                                </div>
+                                <div class="my-4 text-center">
+                                    <h6 class="mb-1">@employee.first_name @employee.father_name @employee.grand_father_name</h6>
+                                    <p class="mb-0">MOLs-12344</p>
+                                </div>
+                                <div class="col-md-6 col-sm-12 text-center d-flex m-auto">
+                                    <div class="col">
+                                        @if (employee.gender == "Male")
+                                        {
+                                            <h6 class="mb-1"><i class="fas fa-male fa-fw fa-1x" style="color: cadetblue;"></i> </h6>
+                                            <p class="mb-0">Male</p>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="mb-1"><i class="fas fa-female fa-fw fa-1x" style="color: cadetblue;"></i> </h6>
+                                            <p class="mb-0">Female</p>
+                                        }
 
+                                    </div>
+                                    <div class="col border-start">
+                                        @if (employee.work_status == true)
+                                        {
+                                            <h6 class="mb-1"><i class="feather icon-check text-success"></i></h6>
+                                            <p class="badge badge-success">Working</p>
+                                        }
+                                        else if (employee.work_status == false)
+                                        {
+                                            <h6 class="mb-1"><i class="feather icon-alert-triangle text-danger"></i></h6>
+                                            <p class="badge badge-danger">Terminated</p>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="mb-1"><i class="feather icon-info text-warning"></i></h6>
+                                            <p class="badge badge-warning">On Leave</p>
+                                        }
+                                    </div>
+                                    <div class="col border-start">
+                                        <div><small class="mb-1">Profile Status</small></div>
+                                        @if (employee.profile_status == true)
+                                        {
+                                            <p class="badge badge-success">Approved</p>
+                                        }
+                                        else if (employee.profile_status == false)
+                                        {
+                                            <p class="badge badge-danger">Rejected</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="badge badge-warning">Pending</p>
+                                        }
+                                    </div>
                                 </div>
-                                <div class="col border-start">
-                                    @if (employee.work_status == true)
-                                    {
-                                        <h6 class="mb-1"><i class="feather icon-check text-success"></i></h6>
-                                        <p class="badge badge-success">Working</p>
-                                    }
-                                    else if (employee.work_status == false)
-                                    {
-                                        <h6 class="mb-1"><i class="feather icon-alert-triangle text-danger"></i></h6>
-                                        <p class="badge badge-danger">Terminated</p>
-                                    }
-                                    else
-                                    {
-                                        <h6 class="mb-1"><i class="feather icon-info text-warning"></i></h6>
-                                        <p class="badge badge-warning">On Leave</p>
-                                    }
+                           <div class="row mt-5 p-4">
+                               <div class="col-md-6 col-sm-12">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">Nation</small>
+                                            <p>@employee.nation</p>
+                                        </li>
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">Religion</small>
+                                             <p>@employee.religion</p>
+                                        </li>
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">Date of Birth</small>
+                                             <p>@employee.date_of_birth</p>
+                                        </li>
+                                        <li class="list-group-item p-0">
+                                             <small class="text-muted">Place of Birth</small>
+                                             <p>@employee.place_of_birth</p>
+                                        </li>
+                                    </ul>
+                               </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">Bank Account Number</small>
+                                             <p>@employee.back_account_number</p>
+                                        </li>
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">Pension Number</small>
+                                             <p>@employee.pension_number</p>
+                                        </li>
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">TIN Number</small>
+                                             <p>@employee.tin_number</p>
+                                        </li>
+                                        <li class="list-group-item p-0">
+                                            <small class="text-muted">Nationality</small>
+                                             <p>@employee.nationality</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="col border-start">
-                                    <div><small class="mb-1">Profile Status</small></div>
-                                    @if (employee.work_status == true)
-                                    {
-                                        <p class="badge badge-success">Approved</p>
-                                    }
-                                    else if (employee.work_status == false)
-                                    {
-                                        <p class="badge badge-danger">Rejected</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="badge badge-warning">Pending</p>
-                                    }
-                                </div>
-                            </div>
-                       <div class="row mt-5 p-4">
-                           <div class="col-md-6 col-sm-12">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">Nation</small>
-                                        <p>@employee.nation</p>
-                                    </li>
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">Religion</small>
-                                         <p>@employee.religion</p>
-                                    </li>
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">Date of Birth</small>
-                                         <p>@employee.date_of_birth</p>
-                                    </li>
-                                    <li class="list-group-item p-0">
-                                         <small class="text-muted">Place of Birth</small>
-                                         <p>@employee.place_of_birth</p>
-                                    </li>
-                                </ul>
                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">Bank Account Number</small>
-                                         <p>@employee.back_account_number</p>
-                                    </li>
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">Pension Number</small>
-                                         <p>@employee.pension_number</p>
-                                    </li>
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">TIN Number</small>
-                                         <p>@employee.tin_number</p>
-                                    </li>
-                                    <li class="list-group-item p-0">
-                                        <small class="text-muted">Nationality</small>
-                                         <p>@employee.nationality</p>
-                                    </li>
-                                </ul>
-                            </div>
-                       </div>
 
 
-                </div>
-                <div class="tab-pane fade p-4" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                        <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Address</h5>
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <td class="py-1">Region</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">@employee.Employee_Address.Region.name</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Subcity</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">@employee.Employee_Address.Subcity.name</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Woreda</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">@employee.Employee_Address.Woreda.name</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Kebele</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">@employee.Employee_Address.kebele</td>
-                                </tr>
-                                <tr>
-                                    <td class="py-1">Primary Addresss</td>
-                                    <td class="py-1">:</td>
-                                    <td class="py-1">@employee.Employee_Address.primary_address</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        </div>
+                        <div class="tab-pane fade p-4" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Address</h5>
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td class="py-1">Region</td>
+                                        <td class="py-1">:</td>
+                                        <td class="py-1">@employee.Employee_Address.Region.name</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1">Subcity</td>
+                                        <td class="py-1">:</td>
+                                        <td class="py-1">@employee.Employee_Address.Subcity.name</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1">Woreda</td>
+                                        <td class="py-1">:</td>
+                                        <td class="py-1">@employee.Employee_Address.Woreda.name</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1">Kebele</td>
+                                        <td class="py-1">:</td>
+                                        <td class="py-1">@employee.Employee_Address.kebele</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1">Primary Addresss</td>
+                                        <td class="py-1">:</td>
+                                        <td class="py-1">@employee.Employee_Address.primary_address</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                </div>
-                    <div class="tab-pane fade p-4" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                        </div>
+                        <div class="tab-pane fade p-4" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                         <h5 class="mt-4 mb-4 pb-3 border-bottom font-weight-bold" id="user-education">Contacts</h5>
                         <table class="table table-borderless">
                             <tbody>
@@ -197,7 +192,7 @@
                         </table>
                      </div>
                         <div class="tab-pane fade p-4" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                            <h5 class="mt-4 mb-4 pb-3 border-bottom font-weight-bold" id="user-office">Office Information</h5>
+                            <h5 class="mt-4 mb-4 pb-3 border-bottom font-weight-bold" id="user-education">Employment Information</h5>
                             <div class="row align-items-center mb-3">
                                 <div class="col-sm-3">
                                     <h5>Division</h5><span>Department</span>
@@ -218,26 +213,201 @@
                             </div>
                             <div class="row align-items-center mb-3">
                                 <div class="col-sm-3">
-                                    <h6>Office Number</h6><span>Place of work</span>
+                                    <h6>Office Number</h6><span class="mb-1">Place of work</span>
                                 </div>
                                 <div class="col-sm-9 border-start">
                                     <h6 class="text-muted">@employee.Employee_Office.office_number</h6>
                                     <span class="text-muted">@employee.place_of_work</span>
                                 </div>
                             </div>
-                         </div>
+                        </div>
+                        
+                        <div class="tab-pane fade p-4" id="v-pills-family" role="tabpanel" aria-labelledby="v-pills-family-tab">
+                            @if (employee.Family_History != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Family Information</h5>
+                                @foreach (var item in employee.Family_History)
+                                {
+                                    <div class="d-flex">
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-sm-3">
+                                                <h5>@item.full_name</h5><span>@item.gender</span>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-sm-3">
+                                                <span>Occupation</span>
+                                            </div>
+                                            <div class="col-sm-9 border-start">
+                                                <span class="text-muted">@item.job_name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
+                        <div class="tab-pane fade p-4" id="v-pills-language" role="tabpanel" aria-labelledby="v-pills-language-tab">
+                            @if (employee.Language != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Language Information</h5>
+                                <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Language
+                                                </th>
+                                                <th>
+                                                    Speaking
+                                                </th>
+                                                <th>
+                                                    Listening
+                                                </th>
+                                                <th>
+                                                    Reading
+                                                </th>
+                                                <th>
+                                                    Writing
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var item in employee.Language)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.name)
+                                                </td>
+                                                <td>
+                                                    @if (item.ability_to_Speak >= 0 && item.ability_to_Speak <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_Speak >= 26 && item.ability_to_Speak <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_Speak >= 51 && item.ability_to_Speak <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.ability_to_listen >= 0 && item.ability_to_listen <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_listen >= 26 && item.ability_to_listen <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_listen >= 51 && item.ability_to_listen <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td><td>
+                                                    @if (item.ability_to_Speak >= 0 && item.ability_to_Speak <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_Speak >= 26 && item.ability_to_Speak <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_Speak >= 51 && item.ability_to_Speak <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.ability_to_write >= 0 && item.ability_to_write <= 25)
+                                                    {
+                                                        <span>Beginner</span>
+                                                    }
+                                                    else if (item.ability_to_write >= 26 && item.ability_to_write <= 50)
+                                                    {
+                                                        <span>Intermidiate</span>
+
+                                                    }
+                                                    else if (item.ability_to_write >= 51 && item.ability_to_write <= 75)
+                                                    {
+                                                        <span>Advanced</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Native</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
+                        <div class="tab-pane fade p-4" id="v-pills-emergency" role="tabpanel" aria-labelledby="v-pills-emergency-tab">
+                            @if (employee.Emergency_contact != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Emergency Contact Information</h5>
+                                @foreach (var item in employee.Emergency_contact)
+                                {
+                                    <div class="d-flex">
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-sm-3">
+                                                <h5>@item.full_name</h5><span>@item.phonenumber</span>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-sm-3">
+                                                <span>Occupation</span>
+                                            </div>
+                                            <div class="col-sm-9 border-start">
+                                                <span class="text-muted">@item.alternative_phonenumber</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     }
-    else if (employee == null)
+    else
     {
         <div class="text-center mt-5 text-light">
             <h2 class="font-weight-bold my-4">No Employee Profile</h2>
             <i class="feather icon-file" style="font-size:40px;"></i>
         </div>
-     }
+    }
 </section>
+   
+
 
 

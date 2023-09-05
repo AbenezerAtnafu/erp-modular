@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ERP.Models.HRMS.Address;
-using HRMS.Family;
 using ERP.Models.HRMS.Employee_managments;
 using HRMS.Office;
 using HRMS.Types;
 using HRMS.Education_management;
 using ERP.Models.HRMS.File_managment;
-using ERP.Models.HRMS.Emergency_contact;
-using ERP.Models.HRMS.Language;
 using ERP.Models.HRMS.Employee_id;
+using ERP.Models.HRMS.Training;
+using ERP.Models.HRMS.Reward_managment;
+using ERP.Models.HRMS.Types;
 
 namespace ERP.Areas.Identity.Data
 {
@@ -38,18 +38,20 @@ namespace ERP.Areas.Identity.Data
         public DbSet<Education_Program_Type> Education_Program_Types { get; set; }
         public DbSet<Employement_Type> Employement_Types { get; set; }
         public DbSet<Family_RelationShip_Type> Family_RelationShip_Types { get; set; }
-        public DbSet<Reward_Types> Reward_Types { get; set; }
+
         public DbSet<Marital_Status_Types> Marital_Status_Types { get; set; }
         public DbSet<Violation_Types> Violation_Typess { get; set; }
         public DbSet<Education> Educations { get; set; }
-
-        public DbSet<FileUpload> FileUploads {get; set; }
-
+        public DbSet<FileUpload> FileUploads { get; set; }
         public DbSet<Family_History> family_Histories { get; set; }
         public DbSet<Emergency_contact> emergency_Contacts { get; set; }
-
         public DbSet<Language> languages { get; set; }
         public DbSet<EmployeeMolsId> employeeMolsIds { get; set; }
-       
+        public DbSet<Training> Training { get; set; }
+        public DbSet<Trainign_Type> Trainign_Types { get; set; }
+        public DbSet<Reward> Rewards { get; set; }
+        public DbSet<Reward_Types> Reward_Types { get; set; }
+        public DbSet<Position_Level_Types> Position_Level_Types { get; set; }
+
     }
 }

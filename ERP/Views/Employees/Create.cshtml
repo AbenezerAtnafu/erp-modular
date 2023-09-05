@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Register Employee";
     var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address;
     var contact = ViewData["Employee_Contact"] as ERP.Models.HRMS.Employee_managments.Employee_Contact;
@@ -41,205 +41,201 @@
                     <li class="nav-item">
                         <a class="nav-link text-uppercase disabled" id="financial-tab" data-toggle="tab" href="#financial" role="tab" aria-controls="financial" aria-selected="false">Financial Details</a>
                     </li>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link text-uppercase" id="position-tab" data-toggle="tab" href="#position" role="tab" aria-controls="position" aria-selected="false">Position Details</a>
-                        </li>
-                  </ul>
-                  <form id="CreateEmpForm" asp-action="CreateOrUpdate" asp-controller="Employees" enctype="multipart/form-data">
-                      <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active mt-4" id="basic" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="m-2 img-container position-relative d-inline-block">
-                                    @if (employee != null)
+                        <a class="nav-link text-uppercase disabled" id="position-tab" data-toggle="tab" href="#position" role="tab" aria-controls="position" aria-selected="false">Position Details</a>
+                    </li>
+                </ul>
+                <form id="CreateEmpForm" asp-action="CreateOrUpdate" asp-controller="Employees" enctype="multipart/form-data">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active mt-4" id="basic" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="m-2 img-container position-relative d-inline-block">
+                                @if (employee != null)
+                                {
+                                    @if (employee.profile_picture == null)
                                     {
-                                        @if (employee.profile_picture == null)
-                                        {
                                         <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" class="border" />
-                                        }
-                                        else
-                                        {
-                                        <img id="profilePictureHolder" src="@Url.Content("~/img/" + @employee.profile_picture)" alt="Avatar" class="border" />
-                                    }
                                     }
                                     else
                                     {
-                                    <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" class="border"/>
+                                        <img id="profilePictureHolder" src="@Url.Content("~/img/" + @employee.profile_picture)" alt="Avatar" class="border" />
+                                        <p id="FileAlreadyExist"></p>
                                     }
-                                    <input type="file"
-                                           accept=".png,.jpg,.jpeg,.gif,.tif"
-                                           id="ProfilePicture"
-                                           name="file"
-                                           class="form-control d-none"
-                                           value="@((employee != null && employee.profile_picture != null) ? employee.profile_picture : "")" 
-                                       />
-                                    <small id="ProfilePictureValidation" class="text-danger"></small>
-                                </div>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="FirstName" class="control-label">First Name <span class="text-danger">*</span></label>
-                                            <input 
-                                                type="text"
-                                                id="FirstName"
-                                                name="FirstName"
-                                                class="form-control name-input"
-                                                placeholder="Abebe"
-                                                value="@((employee != null) ? employee.first_name : "")" 
-                                              />
-                                            <small id="FirstNameValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="FatherName" class="control-label">Father Name <span class="text-danger">*</span></label>
-                                        <input type="text" id="FatherName" name="FatherName" class="form-control name-input" placeholder="Kebede" value="@((employee != null) ? employee.father_name : "")" />
-                                          <small id="FatherNameValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="GrandFatherName" class="control-label">GrandFather Name <span class="text-danger">*</span></label>
-                                            <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="Chala" value="@((employee != null) ? employee.grand_father_name : "")" />
-                                            <small id="GrandFatherNameValidation" class="text-danger"></small>
-                                        </div>
+                                }
+                                else
+                                {
+                                    <img id="profilePictureHolder" src="~/img/male_img_avatar.png" alt="Avatar" class="border" />
+                                }
+                                <input type="file"
+                                       accept=".png,.jpg,.jpeg,.gif,.tif"
+                                       id="ProfilePicture"
+                                       name="file"
+                                       class="form-control d-none" />
+                                <small id="ProfilePictureValidation" class="text-danger"></small>
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="FirstName" class="control-label">First Name <span class="text-danger">*</span></label>
+                                        <input type="text"
+                                               id="FirstName"
+                                               name="FirstName"
+                                               class="form-control name-input"
+                                               placeholder="eg:Abebe"
+                                               value="@((employee != null) ? employee.first_name : "")" />
+                                        <small id="FirstNameValidation" class="text-danger"></small>
                                     </div>
                                 </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="FatherName" class="control-label">Father Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="FatherName" name="FatherName" class="form-control name-input" placeholder="eg:Kebede" value="@((employee != null) ? employee.father_name : "")" />
+                                        <small id="FatherNameValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="GrandFatherName" class="control-label">Grand Father Name <span class="text-danger">*</span></label>
+                                        <input type="text" id="GrandFatherName" name="GrandFatherName" class="form-control name-input" placeholder="eg:Chala" value="@((employee != null) ? employee.grand_father_name : "")" />
+                                        <small id="GrandFatherNameValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="FirstName" class="control-label">First Name Amharic <span class="text-danger">*</span></label>
-                                            <input type="text"
-                                                   id="FirstName"
-                                                   name="FirstNameAm"
-                                                   class="form-control name-input"
-                                                   placeholder="አበበ" value="@((employee != null) ? employee.first_name_am : "")" />
-                                            <small id="FirstNameValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                        <label for="FatherName" class="control-label">Father Name Amharic<span class="text-danger">*</span></label>
-                                        <input type="text" id="FatherName" name="FatherNameAm" class="form-control name-input" placeholder="ከበደ" value="@((employee != null) ? employee.father_name_am : "")" />
-                                            <small id="FatherNameValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="GrandFatherName" class="control-label">GrandFather Name Amharic<span class="text-danger">*</span></label>
-                                            <input type="text" id="GrandFatherName" name="GrandFatherNameAm" class="form-control name-input" placeholder="ጫላ" value="@((employee != null) ? employee.grand_father_name_am : "")" />
-                                            <small id="GrandFatherNameValidation" class="text-danger"></small>
-                                        </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="FirstName" class="control-label">ስም <span class="text-danger">*</span></label>
+                                        <input type="text"
+                                               id="FirstName"
+                                               name="FirstNameAm"
+                                               class="form-control name-input"
+                                               placeholder="eg:አበበ" value="@((employee != null) ? employee.first_name_am : "")" />
+                                        <small id="FirstNameValidation" class="text-danger"></small>
                                     </div>
                                 </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="FatherName" class="control-label">የአባት ስም <span class="text-danger">*</span></label>
+                                        <input type="text" id="FatherName" name="FatherNameAm" class="form-control name-input" placeholder="eg:ከበደ" value="@((employee != null) ? employee.father_name_am : "")" />
+                                        <small id="FatherNameValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="GrandFatherName" class="control-label">የአያት ስም <span class="text-danger">*</span></label>
+                                        <input type="text" id="GrandFatherName" name="GrandFatherNameAm" class="form-control name-input" placeholder="eg:ጫላ" value="@((employee != null) ? employee.grand_father_name_am : "")" />
+                                        <small id="GrandFatherNameValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="PlaceofBirth" class="control-label">Place of Birth <span class="text-danger">*</span></label>
-                                        <input type="text" id="PlaceofBirth" name="PlaceofBirth" class="form-control name-input" placeholder="Addis Ababa" value="@((employee != null) ? employee.place_of_birth : "")" />
-                                          <small id="PlaceofBirthValidation" class="text-danger"></small>
-                                        </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="PlaceofBirth" class="control-label">Place of Birth <span class="text-danger">*</span></label>
+                                        <input type="text" id="PlaceofBirth" name="PlaceofBirth" class="form-control name-input" placeholder="eg:Addis Ababa" value="@((employee != null) ? employee.place_of_birth : "")" />
+                                        <small id="PlaceofBirthValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="DateofBirth" class="control-label">Date of Birth <span class="text-danger">*</span></label>
-                                           <input type="date" id="DateofBirth" name="DateofBirth" class="form-control" value="@((employee != null) ? employee.date_of_birth.ToString("yyyy-MM-dd") : "")" />
-                                          <small id="DateofBirthValidation" class="text-danger"></small>
-                                        </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="DateofBirth" class="control-label">Date of Birth <span class="text-danger">*</span></label>
+                                        <input type="date" id="DateofBirth" name="DateofBirth" class="form-control" value="@((employee != null) ? employee.date_of_birth.ToString("yyyy-MM-dd") : "")" />
+                                        <small id="DateofBirthValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Nationality" class="control-label">Nationality <span class="text-danger">*</span></label>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Nationality" class="control-label">Nationality <span class="text-danger">*</span></label>
                                         <select id="Nationality" name="Nationality" class="form-control first-dropdown">
-                                                @if (employee != null)
-                                                {
-                                                    <option value="@employee.nationality" selected>@employee.nationality</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="">-- select Nationality --</option>
-                                                }
-                                                    <option value="Ethiopian">Ethiopian</option>
-                                             </select>
-                                             <small id="NationalityValidation" class="text-danger"></small>
-                                        </div>
+                                            @if (employee != null)
+                                            {
+                                                <option value="@employee.nationality" selected>@employee.nationality</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Nationality --</option>
+                                            }
+                                            <option value="Ethiopian">Ethiopian</option>
+                                        </select>
+                                        <small id="NationalityValidation" class="text-danger"></small>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12">
-                                        <div class="form-group p-2">
-                                            <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
-                                            <div class="form-check pt-2">
-                                                <span class="mx-2">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
+                                        <div class="form-check pt-2">
+                                            <span class="mx-2">
                                                 <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
-                                                    <label for="Female" class="form-check-label">Female</label>
-                                                </span>
-                                                <span class="mx-2">
+                                                <label for="Female" class="form-check-label">Female</label>
+                                            </span>
+                                            <span class="mx-2">
 
                                                 <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
-                                                    <label for="Male" class="form-check-label">Male</label>
-                                                </span>
-                                            </div>
-                                          <small id="GenderValidation" class="text-danger"></small>
+                                                <label for="Male" class="form-check-label">Male</label>
+                                            </span>
                                         </div>
+                                        <small id="GenderValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Religion" class="control-label">Religion <span class="text-danger">*</span></label>
-                                        <input type="text" id="Religion" name="Religion" class="form-control name-input" placeholder="Christian" value="@((employee != null) ? employee.religion : "")" />
-                                            <small id="ReligionValidation" class="text-danger"></small>
-                                        </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Nation" class="control-label">Nation and Nationality  <span class="text-danger">*</span></label>
+                                        <input type="text" id="Nation" name="Nation" class="form-control" placeholder="eg:Amhara" value="@((employee != null) ? employee.nation : "")" />
+                                        <small id="NationnValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="maritalstatus" class="control-label">Matrital Status <span class="text-danger">*</span></label>
-                                            <select name="maritalstatus" class="form-control first-dropdown" asp-items="ViewBag.MaritalStatus">
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="maritalstatus" class="control-label">Matrital Status <span class="text-danger">*</span></label>
+                                        <select name="maritalstatus" class="form-control first-dropdown" asp-items="ViewBag.MaritalStatus">
                                             @if (employee != null)
                                             {
                                                 <option value="@employee.Marital_Status_Types.id" selected>@employee.Marital_Status_Types.name</option>
-                                            } else
+                                            }
+                                            else
                                             {
                                                 <option value="">-- select Marital Status --</option>
 
                                             }
-                                             </select>
-                                            <small id="maritalstatusValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="maritalstatusValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-
-                                <div class="px-3 py-4 mt-2">
-                                    <button id="nexttab" class="btn btn-info float-right" onclick="submitFirstTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
-                                </div>
-                                
                             </div>
-                            <div class="tab-pane fade mt-4" id="address" role="tabpanel" aria-labelledby="profile-tab">
-                                <h6 class="mt-4">Location</h6>
-                                <hr>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Region" class="control-label">Region <span class="text-danger">*</span></label>
-                                            <select name="Region" class="form-control second-dropdown" asp-items="ViewBag.Region">
-                                            @if(address != null)
+
+                            <div class="px-3 py-4 mt-2">
+                                <button id="nexttab" class="btn btn-info float-right" onclick="submitFirstTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade mt-4" id="address" role="tabpanel" aria-labelledby="profile-tab">
+                            <h6 class="mt-4">Location</h6>
+                            <hr>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="Region" class="control-label">Region <span class="text-danger">*</span></label>
+                                        <select name="Region" class="form-control second-dropdown" asp-items="ViewBag.Region" id="RegionSelect">
+                                            @if (address != null)
                                             {
                                                 <option value="@address.Region.id" selected>@address.Region.name</option>
                                             }
                                             else
                                             {
                                                 <option value="">-- select Region --</option>
-
                                             }
-                                            </select>
-                                            <small id="RegionValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="RegionValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
-                                        <select name="Zone" class="form-control  second-dropdown" asp-items="ViewBag.Zone">
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
+                                        <select name="Zone" class="form-control second-dropdown" asp-items="ViewBag.zone" id="ZoneSelect">
                                             @if (address != null)
                                             {
                                                 <option value="@address.Zone.id">@address.Zone.name</option>
@@ -247,16 +243,15 @@
                                             else
                                             {
                                                 <option value="">-- select Zone --</option>
-
                                             }
-                                            </select>
-                                            <small id="ZoneValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="ZoneValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
-                                        <select name="Subcity" class="form-control  second-dropdown" asp-items="ViewBag.Subcity">
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
+                                        <select name="Subcity" class="form-control second-dropdown" asp-items="ViewBag.subcity" id="SubcitySelect">
                                             @if (address != null)
                                             {
                                                 <option value="@address.Subcity.id">@address.Subcity.name</option>
@@ -264,126 +259,132 @@
                                             else
                                             {
                                                 <option value="">-- select Subcity --</option>
-
                                             }
-                                            </select>
-                                            <small id="SubcityValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="SubcityValidation" class="text-danger"></small>
                                     </div>
-                                </div>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
-                                            <select name="Woreda" class="form-control  second-dropdown" asp-items="ViewBag.Woreda">
-                                                @if (address != null)
-                                                {
-                                                    <option value="@address.Woreda.id">@address.Woreda.name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="">-- select Woreda --</option>
-
-                                                }
-                                            </select>
-                                            <small id="WoredaValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="kebele" class="control-label">kebele</label>
-                                            <input type="text" id="Kebele" name="kebele" class="form-control" placeholder="01" value="@((address != null) ? address.kebele : "")" />
-                                            <small id="kebeleValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="PrimaryAddress" class="control-label">Primary Address</label>
-                                            <input type="text" id="PrimaryAddress" name="PrimaryAddress" class="form-control" placeholder="Megenagna" value="@((address != null) ? address.primary_address : "")" />
-                                            <small id="PrimaryAddressValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h6 class="mt-5">Contact</h6>
-                                <hr>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="PhoneNumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
-                                             <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">+251</span>
-                                                </div>
-                                               <input type="text" class="form-control" placeholder="920124578" name="PhoneNumber" id="PhoneNumber" aria-label="PhoneNumber" aria-describedby="Phone-Number" value="@((contact != null) ? contact.phonenumber : "")" />
-                                                <small id="PhoneNumberValidation" class="text-danger bg-white"></small>
-                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="AlternativePhoneNumber" class="control-label">Alternative Phone Number</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">+251</span>
-                                                </div>
-                                            <input type="text" class="form-control optional" placeholder="920124578" name="AlternativePhoneNumber" id="AlternativePhoneNumber" aria-label="AlternativePhoneNumber" aria-describedby="AlternativePhone-Number" value="@((contact != null) ? contact.alternative_phonenumber : "")" />
-                                                <small id="AlternativePhoneNumberValidation" class="text-danger bg-white"></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="InternalPhoneNumber" class="control-label">Internal Phone Line</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">011</span>
-                                                </div>
-                                            <input type="text" class="form-control optional" placeholder="820124578" name="InternalPhoneNumber" id="InternalPhoneNumber" aria-label="InternalPhoneNumber" aria-describedby="InternalPhoneNumber" value="@((contact != null) ? contact.internal_phonenumber : "")" />
-                                            </div>
-                                          <small id="InternalPhoneNumberValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-3 py-4 mt-2">
-                                    <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
-                                    <button id="nexttab" class="btn btn-info float-right" onclick="submitSecondTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
                                 </div>
                             </div>
-                            <div class="tab-pane fade  mt-4" id="financial" role="tabpanel" aria-labelledby="contact-tab">
-                                    <div class="row p-0 m-0">
-                                        <div class="col-md-4 col-sm-12 ">
-                                            <div class="form-group p-2">
-                                                <label for="BankNumber" class="control-label">Bank Account Number <span class="text-danger">*</span></label>
-                                                <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="10001842693"  value="@((employee != null) ? employee.back_account_number : "")" />
-                                                <small id="BankNumberValidation" class="text-danger"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12 ">
-                                            <div class="form-group p-2">
-                                                <label for="PensionNumber" class="control-label">Pension Number</label>
-                                                <input type="number" id="PensionNumber" name="PensionNumber" class="form-control" placeholder="1245"  value="@((employee != null) ? employee.pension_number : "")" />
-                                                <small id="PensionNumberValidation" class="text-danger"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-12 ">
-                                            <div class="form-group p-2">
-                                                <label for="TinNumber" class="control-label">Tin Number</label>
-                                                <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="1236578952"  value="@((employee != null) ? employee.tin_number : "")" />
-                                                <small id="TinNumberValidation" class="text-danger"></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="px-3 py-4 mt-2">
-                                        <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
-                                        <button id="nexttab" class="btn btn-info float-right" onclick="submitThirdTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+
+
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
+                                        <select name="Woreda" class="form-control  second-dropdown" asp-items="ViewBag.Woreda">
+                                            @if (address != null)
+                                            {
+                                                <option value="@address.Woreda.id">@address.Woreda.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Woreda --</option>
+
+                                            }
+                                        </select>
+                                        <small id="WoredaValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                            <div class="tab-pane fade  mt-4" id="position" role="tabpanel" aria-labelledby="contact-tab">
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
-                                            <select name="Division" class="form-control thrid-dropdown" asp-items="ViewBag.Division">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="kebele" class="control-label">kebele</label>
+                                        <input type="text" id="Kebele" name="kebele" class="form-control" placeholder="eg:01" value="@((address != null) ? address.kebele : "")" />
+                                        <small id="kebeleValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="PrimaryAddress" class="control-label">Primary Address</label>
+                                        <input type="text" id="PrimaryAddress" name="PrimaryAddress" class="form-control" placeholder="eg:Megenagna" value="@((address != null) ? address.primary_address : "")" />
+                                        <small id="PrimaryAddressValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="mt-5">Contact</h6>
+                            <hr>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="PhoneNumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">+251</span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="eg:920124578" name="PhoneNumber" id="PhoneNumber" aria-label="PhoneNumber" aria-describedby="Phone-Number" value="@((contact != null) ? contact.phonenumber : "")" />
+                                            <small id="PhoneNumberValidation" class="text-danger bg-white"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="AlternativePhoneNumber" class="control-label">Alternative Phone Number</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">+251</span>
+                                            </div>
+                                            <input type="text" class="form-control optional" placeholder="eg:920124578" name="AlternativePhoneNumber" id="AlternativePhoneNumber" aria-label="AlternativePhoneNumber" aria-describedby="AlternativePhone-Number" value="@((contact != null) ? contact.alternative_phonenumber : "")" />
+                                            <small id="AlternativePhoneNumberValidation" class="text-danger bg-white"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="InternalPhoneNumber" class="control-label">Internal Phone Line</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">011</span>
+                                            </div>
+                                            <input type="text" class="form-control optional" placeholder="eg:820124578" name="InternalPhoneNumber" id="InternalPhoneNumber" aria-label="InternalPhoneNumber" aria-describedby="InternalPhoneNumber" value="@((contact != null) ? contact.internal_phonenumber : "")" />
+                                        </div>
+                                        <small id="InternalPhoneNumberValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-3 py-4 mt-2">
+                                <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
+                                <button id="nexttab" class="btn btn-info float-right" onclick="submitSecondTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade  mt-4" id="financial" role="tabpanel" aria-labelledby="contact-tab">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="BankNumber" class="control-label">Bank Account Number <span class="text-danger">*</span></label>
+                                        <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="eg:10001842693" value="@((employee != null) ? employee.back_account_number : "")" />
+                                        <small id="BankNumberValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="form-group p-2">
+                                        <label for="PensionNumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">ሰ/</span>
+                                            </div>
+                                            <input type="number" class="form-control" placeholder="eg:1245" name="PensionNumber" id="PensionNumber" aria-label="PensionNumber" aria-describedby="Phone-Number" value="@((employee != null) ? employee.pension_number : "")" />
+                                            <small id="PensionNumberValidation" class="text-danger bg-white"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="TinNumber" class="control-label">Tin Number</label>
+                                        <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="eg:1236578952" value="@((employee != null) ? employee.tin_number : "")" />
+                                        <small id="TinNumberValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-3 py-4 mt-2">
+                                <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
+                                <button id="nexttab" class="btn btn-info float-right" onclick="submitThirdTab()" type="button">Next<i class="fa fa-arrow-right fa-fw"></i></button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade  mt-4" id="position" role="tabpanel" aria-labelledby="contact-tab">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
+                                        <select name="Division" class="form-control thrid-dropdown" asp-items="ViewBag.Division">
                                             @if (office != null)
                                             {
                                                 <option value="@office.Division.id" selected>@office.Division.name</option>
@@ -393,13 +394,13 @@
                                                 <option value="">-- select Division --</option>
 
                                             }
-                                            </select>
-                                          <small id="DivisionValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="DivisionValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
                                         <select name="Department" class="form-control thrid-dropdown" asp-items="ViewBag.Department">
                                             @if (office != null)
                                             {
@@ -410,107 +411,118 @@
                                                 <option value="">-- select Department --</option>
 
                                             }
-                                            </select>
-                                            <small id="DepartmentValidation" class="text-danger"></small>
-                                        </div>
+                                        </select>
+                                        <small id="DepartmentValidation" class="text-danger"></small>
                                     </div>
+                                </div>
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
                                         <select name="Team" class="form-control thrid-dropdown" asp-items="ViewBag.Team">
-                                        @if (office != null)
-                                        {
+                                            @if (office != null)
+                                            {
                                                 <option value="@office.Team.id" selected>@office.Team.name</option>
-                                        }
-                                        else
-                                        {
+                                            }
+                                            else
+                                            {
                                                 <option value="">-- select Team --</option>
 
-                                        }
+                                            }
                                         </select>
                                         <small id="TeamtValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                </div>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Position" class="control-label">Position <span class="text-danger">*</span></label>
-                                            <select name="Position" class="form-control thrid-dropdown" asp-items="ViewBag.Position" multiple>
-                                                @if (office != null)
-                                                {
-                                                    <option value="@office.Position.id" selected>@office.Position.name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="">-- select Position --</option>
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Position" class="control-label">Position <span class="text-danger">*</span></label>
+                                        <select name="Position" class="form-control thrid-dropdown" asp-items="ViewBag.Position">
+                                            @if (office != null)
+                                            {
+                                                <option value="@office.Position.id" selected>@office.Position.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Position --</option>
 
-                                                }
-                                            </select>
-                                            <small id="PositionValidation" class="text-danger"></small>
-                                        </div>
+                                            }
+                                        </select>
+                                        <small id="PositionValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="Employmenttype" class="control-label">Employment type <span class="text-danger">*</span></label>
-                                            <select name="Employmenttype" class="form-control thrid-dropdown" asp-items="ViewBag.EmpType">
-                                                @if (office != null)
-                                                {
-                                                    <option value="@office.Employement_Type.id" selected>@office.Employement_Type.name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="">-- select Employement Type --</option>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Employmenttype" class="control-label">Employment type <span class="text-danger">*</span></label>
+                                        <select name="Employmenttype" class="form-control thrid-dropdown" asp-items="ViewBag.EmpType">
+                                            @if (office != null)
+                                            {
+                                                <option value="@office.Employement_Type.id" selected>@office.Employement_Type.name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="">-- select Employement Type --</option>
 
-                                                }
-                                             </select>
-                                          <small id="EmploymenttypeValidation" class="text-danger"></small>
-                                        </div>
-                                    </div><div class="col-md-4 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="OfficeNumber" class="control-label">Office Number</label>
-                                             <input type="number" id="OfficeNumber" name="OfficeNumber" class="form-control" placeholder="125" value="@((office != null) ? office.office_number : "")" />
-                                          <small id="OfficeNumberValidation" class="text-danger"></small>
-                                        </div>
+                                            }
+                                        </select>
+                                        <small id="EmploymenttypeValidation" class="text-danger"></small>
                                     </div>
-                                </div>
-                                <div class="row p-0 m-0">
-                                    <div class="col-md-6 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="PlaceofWork" class="control-label">Place of work <span class="text-danger">*</span></label>
-                                           <input type="text" id="PlaceofWork" name="PlaceofWork" class="form-control position-input" placeholder="Addis Ababa" value="@((employee != null) ? employee.place_of_work : "")" />
-                                          <small id="PlaceofWorkValidation" class="text-danger"></small>
-                                        </div>
+                                </div><div class="col-md-4 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="OfficeNumber" class="control-label">Office Number</label>
+                                        <input type="number" id="OfficeNumber" name="OfficeNumber" class="form-control" placeholder="eg:125" value="@((office != null) ? office.office_number : "")" />
+                                        <small id="OfficeNumberValidation" class="text-danger"></small>
                                     </div>
-                                    <div class="col-md-6 col-sm-12 ">
-                                        <div class="form-group p-2">
-                                            <label for="StartDate" class="control-label">Start Date <span class="text-danger">*</span></label>
-                                        <input type="date" id="StartDate" name="StartDate" class="form-control" value="@((office != null) ? office.start_date : "")" />
-                                          <small id="StartDateValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group mb-2">
-                                            <div class="checkbox checkbox-fill d-inline">
-                                                <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()">
-                                                <label for="AlreadyWorking" class="cr">I am currently working at mols.</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group p-2" id="EmpEndDate">
-                                            <label for="EndDate" class="control-label">End date</label>
-                                            <input type="date" id="EndDate" name="EndDate" class="form-control" />
-                                          <small id="EndDateValidation" class="text-danger"></small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-3 py-4 mt-2">
-                                    <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
-                                    <button class="btn btn-primary float-right" onclick="submitfinalTab()" type="button">Submit</button>
                                 </div>
                             </div>
-                      </div>
-                 </form>
-             </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-6 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="PlaceofWork" class="control-label">Place of work <span class="text-danger">*</span></label>
+                                        <input type="text" id="PlaceofWork" name="PlaceofWork" class="form-control" placeholder="eg:Addis Ababa" value="@((employee != null) ? employee.place_of_work : "")" />
+                                        <small id="PlaceofWorkValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="StartDate" class="control-label">Start Date <span class="text-danger">*</span></label>
+                                        <input type="date" id="StartDate" name="StartDate" class="form-control" value="@((employee != null) ? employee.start_date.ToString("yyyy-MM-dd") : "")" />
+                                        <small id="StartDateValidation" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group mb-2">
+                                        <div class="checkbox checkbox-fill d-inline">
+                                            <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()">
+                                            <label for="AlreadyWorking" class="cr">I am currently working at mols.</label>
+                                        </div>
+                                    </div>
+
+
+                                    
+                                    <div class="form-group p-2" id="EmpEndDate">
+                                        <label for="EndDate" class="control-label">End date</label>
+                                        <input type="date" id="EndDate" name="EndDate" class="form-control" />
+                                        <small id="EndDateValidation" class="text-danger"></small>
+                                    </div>
+
+                                    <div class="form-group p-2" id="Empsalary">
+                                        <label for="salary" class="control-label">salary</label>
+                                        <input type="number" id="salary" name="salary" class="form-control" />
+                                        
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="px-3 py-4 mt-2">
+                                <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>
+                                <button class="btn btn-primary float-right" onclick="submitfinalTab()" type="button">@((employee != null) ? "Update" : "Register")</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

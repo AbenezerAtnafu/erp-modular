@@ -4,11 +4,13 @@
 @using X.PagedList.Web.Common
 @model X.PagedList.IPagedList<ERP.Areas.Identity.Data.User>
 
+
 @{
     var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
 }
 
-@using (Html.BeginForm("Index", "Users", FormMethod.Get))
+
+@* @using (Html.BeginForm("Index", "Users", FormMethod.Get))
 {
     <div class="form-group">
         @Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Search by email or username" })
@@ -21,101 +23,93 @@
     {
         <a href="@Url.Action("Index")" class="btn btn-secondary">Clear</a>
     }
-}
+} *@
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                
-                <td>
-                    <label class="switch">
-                        <a class="toggle-activate" data-userid="@user.Id" @(user.is_active ? "checked" : "") asp-action="@(user.is_active ? "ActivateUser" : "DeactivateUser")" asp-route-userId="@user.Id"></a>
-                        <span class="slider round"></span>
-                    </label>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
-<div class="pagination">
-    <ul class="pagination justify-content-center">
-        @if (Model.HasPreviousPage)
-        {
-            <li class="page-item">
-                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
-            </li>
-        }
-        @if (Model.HasNextPage)
-        {
-            <li class="page-item">
-                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Next</a>
-            </li>
-        }
-    </ul>
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <div class="">
+                <h5>Users List</h5>
+                <span class="d-block m-t-5">The following is a list of Mols ERP users.</span>
+            </div>
+            <form asp-action="Index">
+                <div class="d-flex justify-content-end">
+                    @*<div class="mr-3">Flex item 1</div>
+                    <div class="mr-3">Flex item 2</div>*@
+                    <div class="input-group mb-3 w-25">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="feather icon-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search.." name="searchTerm" id="Search" />
+                    </div>
+                    @if (string.IsNullOrEmpty(searchTerm))
+                    {
+                        <a href="@Url.Action("Index")" class="btn btn-light">Clear</a>
+                    }
+                </div>
+            </form>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Email
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+              
+                                <td>
+                                    @if (user.is_active == true)
+                                    {
+
+                                        <i class="fas fa-circle text-c-blue f-10 fa-fw"></i>
+
+                                        <span class="ml-2 text-c-blue">Active</span>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-circle text-c-purple f-10 fa-fw"></i>
+
+                                        <span class="ml-2 text-c-purple">InActive</span>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
+                            </li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Include necessary CSS styles -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
 
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #808080;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-    input[type="checkbox"]:checked + .slider {
-        background-color: #00b300;
-    }
-
-        input[type="checkbox"]:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-    .slider.round {
-        border-radius: 34px;
-    }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-</style>
 

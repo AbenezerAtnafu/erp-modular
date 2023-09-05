@@ -58,16 +58,15 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Region region)
         {
-            if (ModelState.IsValid)
-            {
-                region.created_date = DateTime.Now;
-                region.updated_date = DateTime.Now;
+    
+                region.created_date = DateTime.Now.Date;
+                region.updated_date = DateTime.Now.Date;
                 _context.Add(region);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "You have created successfully.";
                 return RedirectToAction(nameof(Index));
-            }
-            return View(region);
+            
+           
         }
 
         // GET: Regions/Edit/5
