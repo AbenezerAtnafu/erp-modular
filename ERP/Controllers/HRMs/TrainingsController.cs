@@ -7,19 +7,40 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using ERP.Models.HRMS.Training;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 
 namespace ERP.Controllers.HRMs
 {
     public class TrainingsController : Controller
     {
         private readonly employee_context _context;
+        private readonly UserManager<User> _userManager;
+        private readonly IFileProvider fileProvider;
 
-        public TrainingsController(employee_context context)
+        public TrainingsController(employee_context context, UserManager<User> userManager, IFileProvider fileProvider)
         {
             _context = context;
+            _userManager = userManager;
+            this.fileProvider = fileProvider;
         }
 
         // GET: Trainings
+        public async Task<IActionResult> IndexBasic()
+        {
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+            if(check_employee != null)
+            {
+                var taining = _context.Training.Where(t => t.id == check_employee.id);
+                return View(await taining.ToListAsync());
+            }
+            else
+            {
+                return View();
+            }
+        }
+        // GET: ALL Trainings
         public async Task<IActionResult> Index()
         {
             var employee_context = _context.Training.Include(t => t.Employee);
@@ -48,7 +69,6 @@ namespace ERP.Controllers.HRMs
         // GET: Trainings/Create
         public IActionResult Create()
         {
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number");
             return View();
         }
 
@@ -57,7 +77,7 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,training_name,description,start_date,end_date,trainingDocumentPathsField,status,filestatus,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,deleted_by,approved_by,rejected_by")] Training training)
+        public async Task<IActionResult> Create([Bind("id,training_institution,description,country_of_training,email,training_type,training_situation,start_date,end_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Training training)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +111,7 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,training_name,description,start_date,end_date,trainingDocumentPathsField,status,filestatus,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,deleted_by,approved_by,rejected_by")] Training training)
+        public async Task<IActionResult> Edit(int id, [Bind("id,training_institution,description,country_of_training,email,training_type,training_situation,start_date,end_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Training training)
         {
             if (id != training.id)
             {
