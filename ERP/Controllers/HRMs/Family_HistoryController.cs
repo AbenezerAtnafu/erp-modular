@@ -74,8 +74,7 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,full_name,job_name,house_number,phonenumber,alternative_phonenumber,gender,family_relationship_id,primary_address,employee_id,created_date,updated_date")] Family_History family_History)
         {
-            if (ModelState.IsValid)
-            {
+     
 
                 var users = _userManager.GetUserId(HttpContext.User);
                 var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
@@ -85,9 +84,9 @@ namespace ERP.Controllers.HRMs
                     family_History.created_date = DateTime.Now.Date;
                     family_History.updated_date = DateTime.Now.Date;
                     family_History.employee_id = employee.id;
+                    ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                     _context.Add(family_History);
                     await _context.SaveChangesAsync();
-
                     TempData["Success"] = "New Family is added.";
                     return RedirectToAction(nameof(Index));
                 }
@@ -96,9 +95,9 @@ namespace ERP.Controllers.HRMs
                     TempData["Warning"] = "You should First fill in Your detail.";
                     return RedirectToAction(nameof(Index));
                 }
-            }
+            
 
-            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
+        
             return View(family_History);
         }
 
@@ -115,6 +114,7 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
             return View(family_History);
         }
 
@@ -148,6 +148,7 @@ namespace ERP.Controllers.HRMs
                         throw;
                     }
                 }
+                ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                 return RedirectToAction(nameof(Index));
             }
             return View(family_History);
