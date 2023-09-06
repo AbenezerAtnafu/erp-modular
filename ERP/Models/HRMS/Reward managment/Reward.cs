@@ -14,10 +14,10 @@ namespace ERP.Models.HRMS.Reward_managment
         [StringLength(100, MinimumLength = 2, ErrorMessage = "The 'training name' field must be between 2 and 100 characters.")]
         public string reward_name { get; set; }
 
-        [StringLength(200, ErrorMessage = "Description field must be between {5} and {200} characters long.", MinimumLength = 5)]
+        [StringLength(200, ErrorMessage = "Description field must be between {5} and {200} characters long.")]
         public string? description { get; set; }
         
-        [StringLength(200, ErrorMessage = "Reason of reward field must be between {5} and {200} characters long.", MinimumLength = 5)]
+        [StringLength(200, ErrorMessage = "Reason of reward field must be between {5} and {200} characters long.")]
         public string? reason_of_reward { get; set; }
 
         [Required(ErrorMessage = "Reward given date is required.")]
