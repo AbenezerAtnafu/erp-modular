@@ -24,27 +24,20 @@ namespace ERP.Controllers.HRMs
         }
 
         // GET: Rewards
-        public async Task<IActionResult> IndexBasic()
+        public async Task<IActionResult> Index()
         {
             User user = await _userManager.GetUserAsync(User);
             var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
             if (check_employee != null)
             {
-                var taining = _context.Rewards.Where(t => t.id == check_employee.id);
-                return View(await taining.ToListAsync());
+                var reward = _context.Rewards.Where(t => t.employee_id == check_employee.id);
+                return View(await reward.ToListAsync());
             }
             else
             {
                 TempData["Warning"] = "Fill in your information";
                 return View();
             }
-        }
-        
-        // GET: Rewards
-        public async Task<IActionResult> Index()
-        {
-            var employee_context = _context.Rewards.Include(r => r.Employee);
-            return View(await employee_context.ToListAsync());
         }
 
         // GET: Rewards/Details/5

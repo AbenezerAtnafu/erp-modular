@@ -20,9 +20,18 @@ namespace ERP.Controllers.HRMs
         // GET: Languages
         public async Task<IActionResult> Index()
         {
-              return _context.languages != null ? 
-                          View(await _context.languages.ToListAsync()) :
-                          Problem("Entity set 'employee_context.languages'  is null.");
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+            if (check_employee != null)
+            {
+                var language = _context.languages.Where(t => t.employee_id == check_employee.id);
+                return View(await language.ToListAsync());
+            }
+            else
+            {
+                TempData["Warning"] = "Fill in your information";
+                return View();
+            }
         }
 
         // GET: Languages/Details/5

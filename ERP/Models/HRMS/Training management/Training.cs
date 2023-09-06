@@ -18,8 +18,10 @@ namespace ERP.Models.HRMS.Training
     
         [StringLength(200, ErrorMessage = "The description must be between {2} and {200} characters long.", MinimumLength = 0)]
         public string? description { get; set; }    
+
         [StringLength(200, ErrorMessage = "The country must be between {2} and {200} characters long.", MinimumLength = 0)]
         public string country_of_training { get; set; }
+
         [StringLength(200, ErrorMessage = "The email field is required.", MinimumLength = 0)]
         public string? email { get; set; }
         [StringLength(200, ErrorMessage = "The training type must be between {2} and {200} characters long.", MinimumLength = 0)]

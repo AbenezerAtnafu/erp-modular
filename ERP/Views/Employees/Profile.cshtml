@@ -18,7 +18,6 @@
                     <li><a class="nav-link text-left" id="v-pills-family-tab" data-toggle="pill" href="#v-pills-family" role="tab" aria-controls="v-pills-family" aria-selected="false">Family</a></li>
                     <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Language</a></li>
                     <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Emergency</a></li>
-                    
                 </ul>
                 
             </div>
@@ -41,7 +40,16 @@
                                 </div>
                                 <div class="my-4 text-center">
                                     <h6 class="mb-1">@employee.first_name @employee.father_name @employee.grand_father_name</h6>
-                                    <p class="mb-0">MOLs-12344</p>
+                                    <p class="mb-0">
+                                        @if(employee.employee_code == null)
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@employee.employee_code</span>
+                                        }
+                                    </p>
                                 </div>
                                 <div class="col-md-6 col-sm-12 text-center d-flex m-auto">
                                     <div class="col">

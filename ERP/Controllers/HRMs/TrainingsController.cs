@@ -26,25 +26,19 @@ namespace ERP.Controllers.HRMs
         }
 
         // GET: Trainings
-        public async Task<IActionResult> IndexBasic()
+        public async Task<IActionResult> Index()
         {
             User user = await _userManager.GetUserAsync(User);
             var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
             if(check_employee != null)
             {
-                var taining = _context.Training.Where(t => t.id == check_employee.id);
+                var taining = _context.Training.Where(t => t.employee_id == check_employee.id);
                 return View(await taining.ToListAsync());
             }
             else
             {
                 return View();
             }
-        }
-        // GET: ALL Trainings
-        public async Task<IActionResult> Index()
-        {
-            var employee_context = _context.Training.Include(t => t.Employee);
-            return View(await employee_context.ToListAsync());
         }
 
         // GET: Trainings/Details/5

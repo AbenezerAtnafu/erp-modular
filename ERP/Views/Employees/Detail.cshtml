@@ -18,13 +18,15 @@
                     <li><a class="nav-link text-left" id="v-pills-family-tab" data-toggle="pill" href="#v-pills-family" role="tab" aria-controls="v-pills-family" aria-selected="false">Family</a></li>
                     <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Language</a></li>
                     <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Emergency</a></li>
-                    @if (Context.User.IsInRole("HR"))
+          @*           <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Reward</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Training</a></li> *@
+                    @if (Context.User.IsInRole("HR") && (employee.employee_code != null && employee.employee_code.Length >= 4))
                     {
                         <li><a class="nav-link text-left" id="v-pills-ids-tab" data-toggle="pill" href="#v-pills-ids" role="tab" aria-controls="v-pills-ids" aria-selected="false">Id</a></li>
                     }
                 </ul>
-              @*   @if (Context.User.IsInRole("HR"))
-                { *@
+                @if (Context.User.IsInRole("HR"))
+                {
                     <div class="nav nav-pills d-flex mt-4" id="user-set-tab" role="tablist" aria-orientation="vertical">
                        @*  <small class="my-4 pl-2">Approve / Reject employee profile status.</small><br> *@
                         <a onclick="approveModal(@employee.id)" class="btn btn-success text-white w-full py-1 px-3 ml-2">
@@ -34,7 +36,7 @@
                              Reject
                         </a>
                     </div>
-               @*  } *@
+                }
             </div>
             <div class="col-lg-9 col-sm-12">
                 <div class="bg-white rounded p-0">
@@ -55,7 +57,16 @@
                                 </div>
                                 <div class="my-4 text-center">
                                     <h6 class="mb-1">@employee.first_name @employee.father_name @employee.grand_father_name</h6>
-                                    <p class="mb-0">MOLs-12344</p>
+                                    <p class="mb-0">
+                                        @if (employee.employee_code == null)
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@employee.employee_code</span>
+                                        }
+                                    </p>
                                 </div>
                                 <div class="col-md-6 col-sm-12 text-center d-flex m-auto">
                                     <div class="col">
@@ -235,7 +246,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if (Context.User.IsInRole("HR"))
+                        @if (Context.User.IsInRole("HR") && (employee.employee_code != null && employee.employee_code.Length >= 4))
                         {
                             <div class="tab-pane fade p-4" id="v-pills-ids" role="tabpanel" aria-labelledby="v-pills-ids-tab">
                                 <div class="row">
@@ -258,11 +269,10 @@
                                                     }
                                                     else
                                                     {
-                                                        <img src="~/img/male_img_avatar.png"
+                                                        <img src="@Url.Content("~/img/" + employee.profile_picture)"
                                                         class="thumbnail"
                                                         alt="John">
                                                     }
-
                                                     <p class="font-weight-bold" style="font-size:12px;">
                                                         @employee.first_name_am @employee.father_name_am @employee.grand_father_name_am
                                                     </p>
@@ -280,7 +290,14 @@
                                                         </span>
                                                         <span class="blue font-weight-bold my-auto id"
                                                         style="letter-spacing: 0.7px; font-size: 15px; margin-bottom: -41px; color:#000000;">
-                                                            @employee.id
+                                                            @if (employee.employee_code == null)
+                                                            {
+                                                                <span>-</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>@employee.employee_code</span>
+                                                            }
                                                         </span>
                                                     </div>
                                                     <div class="side-ban">
@@ -289,8 +306,8 @@
                                                             <p>የተሰጠበት ቀን</p>
                                                         </div>
                                                         <div class="ml-5">
-                                                            @*    <p class="pb-1 font-weight-bold">@employee.IssuedMonth/@employee.IssuedYear G.C </p>
-                                                        <p class="font-weight-bold">@employee.monthinamh/2015 ዓ.ም</p> *@
+                                                            <p class="pb-1">@ViewBag.IssuedMonth/@ViewBag.IssuedYear</p>
+                                                            <p>@ViewBag.monthinamh/2015</p>
                                                         </div>
                                                     </div>
                                                     <div class="side-ban">
@@ -299,7 +316,16 @@
                                                             <p>ስልክ/Tel</p>
                                                         </div>
                                                         <div class="ml-5">
-                                                            <p class="pb-1 font-weight-bold">@employee.gender</p>
+                                                            <p class="pb-1 font-weight-bold">
+                                                            @employee.gender / 
+                                                            @if (@employee.gender == "Male")
+                                                            {
+                                                                <span> ወንድ </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> ሴት </span>
+                                                            }
                                                             <p class="font-weight-bold">@employee.Employee_Contact.phonenumber</p>
                                                         </div>
                                                     </div>
@@ -364,9 +390,9 @@
                                             <div class="my-2">
                                                 <div style="display: flex; justify-content:center; height:80px;">
 
-                                                    @*  <img src="@employee.first_name"
+                                                    <img src="@ViewBag.QrCodeUri"
                                                          alt=""
-                                                         style="width: 70px;" /> *@
+                                                         style="width: 70px;" />
                                                     <div style="display: flex; position:relative;">
 
                                                         <p class="my-3 pl-1" style="font-size: 12px; font-weight: 500;">
@@ -380,9 +406,9 @@
                                                         alt="sign"
                                                         style="width: 200px; position:absolute;" />
                                                     </div>
-                                                    <img src="@employee.first_name"
-                                                    alt=""
-                                                    style="width: 200px;">
+                                                    <img src="@ViewBag.BarCodeUri"
+                                                         alt=""
+                                                         style="width: 200px;">
                                                 </div>
                                                 <div class="mt-2 px-4">
                                                     <p style="font-size: 10px; color:; line-height:10px;">
