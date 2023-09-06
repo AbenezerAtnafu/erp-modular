@@ -22,11 +22,26 @@ namespace ERP.Controllers.HRMs
         // GET: Family_History
         public async Task<IActionResult> Index()
         {
-            return _context.family_Histories != null ?
-                        View(await _context.family_Histories.ToListAsync()) :
-                        Problem("Entity set 'employee_context.family_Histories'  is null.");
+            var family_context = _context.family_Histories.Include(e => e.Family_RelationShip_Type).Include(e => e.Employees);
+            return View(await family_context.ToListAsync());
         }
 
+        public async Task<IActionResult> Index_Personal()
+        {
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+
+            if (check_employee != null)
+            {
+                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employees).Include(a=>a.Family_RelationShip_Type);
+                return View(assign_family_history);
+            }
+            else
+            {
+                TempData["Warning"] = "No Employee Info";
+                return View();
+            }
+        }
         // GET: Family_History/Details/5
         public async Task<IActionResult> Details(int? id)
         {

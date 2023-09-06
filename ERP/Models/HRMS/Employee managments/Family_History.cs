@@ -31,7 +31,7 @@ namespace ERP.Models.HRMS.Employee_managments
         
         public Family_RelationShip_Type? Family_RelationShip_Type { get; set; }
 
-        [ForeignKey("Employees")]
+        [ForeignKey("Employee")]
         public int employee_id { get; set; }
         public Employee? Employees { get; set; }
 
@@ -42,6 +42,9 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'updated_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
+
+
+
 
     }
 }

@@ -52,6 +52,7 @@
     <PackageReference Include="Barcoder" Version="2.0.0" />
     <PackageReference Include="Barcoder.Renderer.Image" Version="2.0.0" />
     <PackageReference Include="Barcoder.Renderer.Svg" Version="2.0.0" />
+    <PackageReference Include="MessagePackAnalyzer" Version="2.3.75" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.21" />
@@ -260,6 +261,10 @@
     <None Include="wwwroot\bootstrap\js\bootstrap.min.js" />
     <None Include="wwwroot\img\male_img_avatar.png" />
     <None Include="wwwroot\img\mols.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="..\.dockerignore" Link="Docker\.dockerignore" />
   </ItemGroup>
 
   
