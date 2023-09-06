@@ -751,52 +751,61 @@ namespace ERP.Controllers.HRMs
 
             if (check_employee != null)
             {
-                education.status = null;
-                if (FormFile == null)
+                if (education.end_date >= education.start_date)
                 {
-                    education.filestatus = false;
-                    education.employee_id = check_employee.id;
-                    _context.Add(education);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    if (file_size < 524288000)
+                    education.status = null;
+                    if (FormFile == null)
                     {
-                        education.filestatus = true;
+                        education.filestatus = false;
                         education.employee_id = check_employee.id;
-                        education.Identificationnumber = random_max;
                         _context.Add(education);
                         await _context.SaveChangesAsync();
-
-                        foreach (var formFile in FormFile)
+                    }
+                    else
+                    {
+                        if (file_size < 524288000)
                         {
+                            education.filestatus = true;
+                            education.employee_id = check_employee.id;
+                            education.Identificationnumber = random_max;
+                            _context.Add(education);
+                            await _context.SaveChangesAsync();
 
-                            if (formFile.Length > 0)
+                            foreach (var formFile in FormFile)
                             {
 
-                                var filePath = Path.Combine(
-                                  Directory.GetCurrentDirectory(), syspath, formFile.FileName);
-                                var files = new FileUpload
+                                if (formFile.Length > 0)
                                 {
-                                    id = 0,
-                                    created_at = DateTime.Now.Date,
-                                    name = filePath,
-                                    Identificationnumbers = random_max
-                                };
 
-                                _context.Add(files);
-                                await _context.SaveChangesAsync();
+                                    var filePath = Path.Combine(
+                                      Directory.GetCurrentDirectory(), syspath, formFile.FileName);
+                                    var files = new FileUpload
+                                    {
+                                        id = 0,
+                                        created_at = DateTime.Now.Date,
+                                        name = filePath,
+                                        Identificationnumbers = random_max
+                                    };
 
-                                using (var stream = System.IO.File.Create(filePath))
-                                {
-                                    await formFile.CopyToAsync(stream);
+                                    _context.Add(files);
+                                    await _context.SaveChangesAsync();
+
+                                    using (var stream = System.IO.File.Create(filePath))
+                                    {
+                                        await formFile.CopyToAsync(stream);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
+
+                else
+                {
+                    TempData["Warning"] = "End date must be grater than start date";
+                    return View();
+                 }
+             }
             else
             {
                 TempData["Warning"] = "Fill in your information first";
