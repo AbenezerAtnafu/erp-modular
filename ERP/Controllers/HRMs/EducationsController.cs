@@ -6,14 +6,7 @@ using HRMS.Education_management;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using ERP.Models.HRMS.File_managment;
-using ERP.Models.HRMS.Employee_managments;
-using X.PagedList;
-using System.Threading.Tasks;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-using System;
-using Microsoft.AspNetCore.Http;
+
 
 namespace ERP.Controllers.HRMs
 {

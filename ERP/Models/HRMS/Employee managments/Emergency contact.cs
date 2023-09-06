@@ -16,16 +16,16 @@ namespace ERP.Models.HRMS.Employee_managments
 
         [Required(ErrorMessage = "The 'phone number' field is required.")]
         [MinLength(9, ErrorMessage = "The 'phone number' field must be a 9-digit number.")]
-        public int phonenumber { get; set; }
+        public string phonenumber { get; set; }
         [MinLength(9, ErrorMessage = "The 'alternative phone number' field must be a 9-digit number.")]
-        public int? alternative_phonenumber { get; set; }
+        public string? alternative_phonenumber { get; set; }
 
         [StringLength(200, ErrorMessage = "The 'Relationship' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string Relationship { get; set; }
 
-        [ForeignKey("Employees")]
+        [ForeignKey("Employee")]
         public int employee_id { get; set; }
-        public Employee Employees { get; set; }
+        public Employee Employee { get; set; }
 
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]
@@ -34,7 +34,5 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'updated_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'updated_date' field must be a valid Date.")]
         public DateTime updated_date { get; set; }
-
-
     }
 }

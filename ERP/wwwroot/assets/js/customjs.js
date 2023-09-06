@@ -69,7 +69,27 @@ function deleteConf(id) {
     $("#DeleteModalCenter").modal()
 }
 
+//approve action from modal
+function approveModal(id) {
+    $('#ApproveId').val(id);
+    $("#ApproveModalCenter").modal()
+}
 
+//reject action from modal
+function rejectModal(id) {
+    $('#RejectEmpId').val(id);
+    $("#RejectModalCenter").modal()
+}
+//
+function inactivemodal(id) {
+    $('#inactiveid').val(id);
+    $("#InActiveuserModal").modal()
+}
+function activemodal(id) {
+    console.log("ddd "+id)
+    $('#activeid').val(id);
+    $("#ActiveuserModal").modal()
+}
 
 //file upload placeholder
 const profilepicture = document.getElementById('profilePictureHolder');
@@ -167,16 +187,15 @@ function submitFirstTab() {
 
     var dob = new Date(document.getElementById('DateofBirth').value);
     var age = currentDate.getFullYear() - dob.getFullYear();
-    if (!(age >=18)) {
+    if (!(age >= 18 && age <= 60)) {
         isdobValid = false
-        document.getElementById("DateofBirthValidation").textContent = "Please select date >= 18."
+        document.getElementById("DateofBirthValidation").textContent = "Please select date >= 18 and <= 60."
     } else {
         isdobValid = true
         document.getElementById("DateofBirthValidation").textContent = ""
     }
 
     const alreadySelected = document.getElementById('FileAlreadyExist');
-    console.log("ff" + alreadySelected)
     var pp = document.getElementById('ProfilePicture').files[0];
     if (!pp && !alreadySelected) {
         isppValid = false
@@ -436,54 +455,23 @@ function submitfinalTab() {
 }
 
 //submit modal
-function submitApproveModal() {
+/*function submitApproveModal() {
     var pattern = /^[a-zA-Z\s]{2,30}$/;
+    var validation = false;
 
-    if (document.getElementById("ApproveEmployee").checked) {
-        document.getElementById("EmployeeApproveForm").submit();
-
+    if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
+        validation = false
+        document.getElementById("EmpRejectMessage").classList.add("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = "Account number should at least be 4 or max 30 digits."
     } else {
-        if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
-            isbankValid = false
-            document.getElementById("EmpRejectMessage").classList.add("is-invalid");
-            document.getElementById("EmpRejectMessageValidation").textContent = "Account number should at least be 4 or max 30 digits."
-        } else {
-            document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
-            document.getElementById("EmpRejectMessageValidation").textContent = ""
-            isbankValid = true
-        }
-        isbankValid ? setTimeout(() => { document.getElementById("EmployeeApproveForm").submit() }, 400)  : '';
+        document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = ""
+        validation = true
     }
+    validation ? document.getElementById("RejectForm").submit()  : '';
     
 }
-
-
-// show table actions
-function showTableMenu() {
-    const tbl = document.getElementById("TableMenu");
-    if (tbl.classList.contains("d-none")) {
-        tbl.classList.remove("d-none");
-    } else {
-        tbl.classList.add("d-none");
-    }
-}
-
-const tblmenu = document.getElementById("TableMenu");
-if (tblmenu) {
-        console.log("vlid here")
-    if (tblmenu.classList.contains("d-none")) {
-        console.log("yes here")
-    } else {
-        console.log("no here")
-        document.addEventListener('mousedown', function (event) {
-            tblmenu.addEventListener('mousedown', function (event) {
-                if (!event.target === box) {
-                    tblmenu.classList.add("d-none");
-                }
-            });
-        });
-    }
-}
+*/
 
 function screenShot(cardelement, dwnlink) {
 
@@ -505,4 +493,18 @@ function screenShot(cardelement, dwnlink) {
             link.href = canvas.toDataURL('image/png', 1.0);
             link.click(); // click on the link
         });
+}
+
+
+function submitRejectModal() {
+    var pattern = /^[a-zA-Z\s]{2,30}$/;
+
+    if (!document.getElementById('EmpRejectMessage').value.match(pattern)) {
+        document.getElementById("EmpRejectMessage").classList.add("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = "Please enter between 10 and 300 alphabetic characters."
+    } else {
+        document.getElementById("EmpRejectMessage").classList.remove("is-invalid");
+        document.getElementById("EmpRejectMessageValidation").textContent = ""
+        document.getElementById("RejectFormModal").submit()
+    }
 }

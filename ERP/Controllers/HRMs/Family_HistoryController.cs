@@ -11,8 +11,9 @@ namespace ERP.Controllers.HRMs
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-       
-        public Family_HistoryController(employee_context context , UserManager<User> userManager)
+
+
+        public Family_HistoryController(employee_context context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -21,7 +22,7 @@ namespace ERP.Controllers.HRMs
         // GET: Family_History
         public async Task<IActionResult> Index()
         {
-            var family_context = _context.family_Histories.Include(e => e.Family_RelationShip_Type).Include(e => e.Employee);
+            var family_context = _context.family_Histories.Include(e => e.Family_RelationShip_Type).Include(e => e.Employees);
             return View(await family_context.ToListAsync());
         }
 
@@ -32,7 +33,7 @@ namespace ERP.Controllers.HRMs
 
             if (check_employee != null)
             {
-                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(a=>a.Family_RelationShip_Type);
+                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employees).Include(a=>a.Family_RelationShip_Type);
                 return View(assign_family_history);
             }
             else
@@ -73,22 +74,32 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,full_name,job_name,house_number,phonenumber,alternative_phonenumber,gender,family_relationship_id,primary_address,employee_id,created_date,updated_date")] Family_History family_History)
         {
-            
-                User users = await _userManager.GetUserAsync(User);
-                var check_employee = _context.Employees.FirstOrDefault(e => e.user_id == users.Id);
-                if (check_employee != null)
+            if (ModelState.IsValid)
+            {
+
+                var users = _userManager.GetUserId(HttpContext.User);
+                var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
+
+                if (employee != null)
                 {
-                    family_History.employee_id = check_employee.id;
                     family_History.created_date = DateTime.Now.Date;
                     family_History.updated_date = DateTime.Now.Date;
-                    ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
-                    _context.family_Histories.Add(family_History);
-                    _context.SaveChanges();
+                    family_History.employee_id = employee.id;
+                    _context.Add(family_History);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "New Family is added.";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["Warning"] = "You should First fill in Your detail.";
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
-                return RedirectToAction(nameof(Index));
-            
-        
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
+            return View(family_History);
         }
 
         // GET: Family_History/Edit/5

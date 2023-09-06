@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.IO;
+using QRCoder;
+
+
 
 namespace ERP.Controllers
 {
@@ -34,7 +37,10 @@ namespace ERP.Controllers
         public async Task<IActionResult> Index(string searchTerm, int? page, string sortOrder, DateTime? birthdateFilter, string maritalStatusFilter)
         {
             var users = _userManager.GetUserId(HttpContext.User);
-            var employee_list = _context.Employees.Where(q => q.user_id != users);
+            var employee_list = _context.Employees
+                .Include(e => e.Employee_Office.Department)
+                .Where(q => q.user_id != null); 
+           // var employee_list = _context.Employees.Where(q => q.user_id != users);
             var pageSize = 10;
             var pageNumber = page ?? 1;
 
@@ -95,9 +101,10 @@ namespace ERP.Controllers
         }
 
         // GET: Employees
-        public IActionResult Profile()
+        public  IActionResult Profile()
         {
-            var users = _userManager.GetUserId(HttpContext.User);
+            var users =  _userManager.GetUserId(HttpContext.User);
+            
             var employee = _context.Employees
                 .Include(e => e.Employee_Address.Region)
                 .Include(e => e.Employee_Address.Zone)
@@ -111,9 +118,28 @@ namespace ERP.Controllers
                 .Include(e => e.Employee_Office.Position)
                 .Include(e => e.Marital_Status_Types)
                 .FirstOrDefault(a => a.user_id == users);
+
+                employee.employee_code = GenerateEmployeeID(true);
+                int gregorianMonth = DateTime.Now.Month;
+                int ethiopianYear = (gregorianMonth < 9) ? DateTime.Now.Year - 8 : DateTime.Now.Year - 7;
+                int ethiopianMonth = (gregorianMonth - 8 <= 0) ? gregorianMonth - 8 + 12 : gregorianMonth - 8;
+                string[] monthNames = { "መስከረም", "ትቅምት", "ሂዳር", "ታህሳስ", "ጥር", "Yekatit", "የካቲት", "መጋቢት", "ግንቦት", "ሰኔ", "ሃምሌ", "ነሃሴ", "ጳጉሜ" };
+                string monthinamh = monthNames[ethiopianMonth - 1];
+
+                string sex_amh_after = (employee.gender == "Male") ? "ወንድ" : "ሴት";
+                ViewBag.employeecode = employee.employee_code;
+                ViewBag.name = $"{employee.first_name} {employee.father_name} {employee.grand_father_name}";
+                ViewBag.nameam = $"{employee.first_name_am} {employee.father_name_am} {employee.grand_father_name_am}";
+                ViewBag.sex_amh = sex_amh_after;
+                ViewBag.IssuedMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+                ViewBag.monthinamh = monthinamh;
+                ViewBag.IssuedYear = DateTime.Now.Year;
+                ViewBag.ExpairyYear = DateTime.Now.Year + 14;
+                ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
+                ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
+                
             if (employee == null)
             {
-                ViewData["Employee"] = employee;
                 return View();
             }
             else
@@ -121,6 +147,40 @@ namespace ERP.Controllers
                 ViewData["Employee"] = employee;
                 return View();
             }
+            
+        }
+
+        //Hr employee Detail
+        public IActionResult Detail(int? id)
+        {
+            var employee = _context.Employees
+            .Include(e => e.Employee_Address.Region)
+            .Include(e => e.Employee_Address.Zone)
+            .Include(e => e.Employee_Address.Subcity)
+            .Include(e => e.Employee_Address.Woreda)
+            .Include(e => e.Employee_Contact)
+            .Include(e => e.Employee_Office.Division)
+            .Include(e => e.Employee_Office.Department)
+            .Include(e => e.Employee_Office.Team)
+            .Include(e => e.Employee_Office.Employement_Type)
+            .Include(e => e.Employee_Office.Position)
+            .Include(e => e.Emergency_contact)
+            .Include(e => e.Family_History)
+            .Include(e => e.Language)
+            .Include(e => e.Marital_Status_Types)
+            .FirstOrDefault(e=> e.id == id);
+
+            if (employee == null)
+            {
+                ViewData["Employee"] = null;
+                return View();
+            }
+            else
+            {
+                ViewData["Employee"] = employee;
+                return View();
+            }
+
         }
 
 
@@ -141,12 +201,15 @@ namespace ERP.Controllers
                 .Include(e => e.Marital_Status_Types)
                 .FirstOrDefault(a => a.user_id == users);
 
+          
+
             if (emp != null)
             {
                 ViewData["Employee"] = emp;
                 ViewData["Employee_Address"] = _context.Employee_Addresss.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Contact"] = _context.Employee_Contacts.FirstOrDefault(a => a.employee_id == emp.id);
                 ViewData["Employee_Office"] = _context.Employee_Offices.FirstOrDefault(a => a.employee_id == emp.id);
+
             }
 
 
@@ -199,13 +262,14 @@ namespace ERP.Controllers
                 employee.work_status = true;
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
+                employee.employee_code = "mols1234";
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
 
 
                 Employee_Address address = new Employee_Address();
-
-                address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
+              
+;                address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
                 address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
                 address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
                 address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
@@ -370,6 +434,64 @@ namespace ERP.Controllers
             }
         }
 
+        // approve employee and set mols id
+        public async Task<IActionResult> Approve(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if(employee != null)
+            {
+                if (employee.profile_status == true) {
+                    TempData["Warning"] = "Employee Profile is Already Approved.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+                else
+                {
+                    employee.profile_status = true;
+                    employee.updated_date = DateTime.Now;
+                    _context.Update(employee);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Employee Profile is Approved.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+            }
+            else
+            {
+                TempData["Warning"] = "Employee not found.";
+                return RedirectToAction(nameof(Detail), new { id = id });
+            }
+        }
+        
+        // reject employee and set feedback
+        public async Task<IActionResult> RejectEmployee()
+        {
+            var id = Convert.ToInt32(HttpContext.Request.Form["RejectEmpId"]);
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee != null)
+            {
+                if (employee.profile_status == false)
+                {
+                    TempData["Warning"] = "Employee Profile is Already Rejected.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+                else
+                {
+                    employee.profile_status = false;
+                    employee.feedback = Convert.ToString(HttpContext.Request.Form["EmpRejectMessage"]);
+                    employee.updated_date = DateTime.Now;
+                    _context.Update(employee);
+                    await _context.SaveChangesAsync();
+                    TempData["Success"] = "Employee Profile is Rejected.";
+                    return RedirectToAction(nameof(Detail), new { id = id });
+                }
+            }
+            else
+            {
+                TempData["Warning"] = "Employee not found.";
+                return RedirectToAction(nameof(Detail), new { id = id });
+            }
+        }
+
         public static string GetDataURL(string imgFile)
         {
             var bytes = System.IO.File.ReadAllBytes(imgFile);
@@ -377,6 +499,115 @@ namespace ERP.Controllers
             var dataUrl = "data:image/png;base64," + b64String;
 
             return dataUrl;
+        }
+        public int IDtracker()
+        {
+            if (_context.employeeMolsIds.Count() == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                var employeelast = _context.employeeMolsIds.OrderByDescending(e => e.id_tracker).FirstOrDefault()?.id_tracker ?? 0;
+                return employeelast;
+            }
+        }
+
+
+
+
+
+
+
+        public string GenerateEmployeeID(bool isApproved)
+        {
+            if (!isApproved)
+            {
+                return string.Empty;
+            }
+
+            /* int lastID = IDtracker();*/
+            int lastID = 450;
+
+            string idTracker = (lastID + 1).ToString("D4");
+            string employeeID = $"Mols-{idTracker}-15";
+
+            return employeeID;
+        }
+        public string GenerateQRCode(string employeeCode)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(employeeCode, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrBitmap = qrCode.GetGraphic(60);
+            byte[] bitmapArray = qrBitmap.BitmapToByteArray();
+            string qrUri = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(bitmapArray));
+
+            return qrUri;
+        }
+        public string GenerateBarCode(string employeeCode)
+        {
+            var barcode = Code128Encoder.Encode(employeeCode);
+            var renderer = new ImageRenderer(new ImageRendererOptions { ImageFormat = Barcoder.Renderer.Image.ImageFormat.Png });
+            var convobarcode = barcode.Content;
+
+            using (var stream = new FileStream("C:\\systemfilestore\\Barcodegemerated\\" + employeeCode + ".png", FileMode.Create))
+            {
+                renderer.Render(barcode, stream);
+            }
+
+
+            string BarUri = GetDataURL("C:\\systemfilestore\\Barcodegemerated\\" + employeeCode + ".png");
+
+            return BarUri;
+
+        }
+
+
+        public IActionResult LoadDepartments(int divisionId)
+        {
+
+            var departments = _context.Departments.Where(a => a.division_id == divisionId);
+            var departmentList = departments.Select(department => new
+            {
+                id = department.id,
+                name = department.name
+            });
+
+            return Json(departmentList);
+        }
+
+
+        public IActionResult LoadTeams(int departmentId)
+        {
+
+            var teams = _context.Teams.Where(a => a.department_id == departmentId);
+            var teamstList = teams.Select(department => new
+            {
+                id = department.id,
+                name = department.name
+            });
+
+            return Json(teamstList);
+        }
+
+
+
+
+
+
+    }
+
+
+    public static class BitmapExtension
+    {
+        public static byte[] BitmapToByteArray(this Bitmap bitmap)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
         }
     }
 }
