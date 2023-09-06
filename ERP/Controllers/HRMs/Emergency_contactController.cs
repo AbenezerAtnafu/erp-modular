@@ -22,9 +22,18 @@ namespace ERP.Controllers.HRMs
         // GET: Emergency_contact
         public async Task<IActionResult> Index()
         {
-              return _context.emergency_Contacts != null ? 
-                          View(await _context.emergency_Contacts.ToListAsync()) :
-                          Problem("Entity set 'employee_context.emergency_Contacts'  is null.");
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+            if (check_employee != null)
+            {
+                var emergency_Contacts = _context.emergency_Contacts.Where(t => t.employee_id == check_employee.id);
+                return View(await emergency_Contacts.ToListAsync());
+            }
+            else
+            {
+                TempData["Warning"] = "Fill in your information";
+                return View();
+            }
         }
 
         // GET: Emergency_contact/Details/5
@@ -60,27 +69,25 @@ namespace ERP.Controllers.HRMs
         public async Task<IActionResult> Create([Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id")] Emergency_contact emergency_contact)
         {
          
-                var users = _userManager.GetUserId(HttpContext.User);
-                var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
+            var users = _userManager.GetUserId(HttpContext.User);
+            var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
 
-                if (employee != null)
-                {
-                    emergency_contact.employee_id= employee.id; 
-                    emergency_contact.created_date = DateTime.Now.Date;
-                    emergency_contact.updated_date = DateTime.Now.Date;
-                    _context.Add(emergency_contact);
-                    await _context.SaveChangesAsync();
+            if (employee != null)
+            {
+                emergency_contact.employee_id= employee.id; 
+                emergency_contact.created_date = DateTime.Now.Date;
+                emergency_contact.updated_date = DateTime.Now.Date;
+                _context.Add(emergency_contact);
+                await _context.SaveChangesAsync();
 
-                    TempData["Success"] = "New Emergency contact is added.";
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    TempData["Warning"] = "You should First fill in Your detail.";
-                    return RedirectToAction(nameof(Index));
-                }
-            
-          
+                TempData["Success"] = "New Emergency contact is added.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["Warning"] = "You should First fill in Your detail.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // GET: Emergency_contact/Edit/5
@@ -107,38 +114,32 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id,created_date,updated_date")] Emergency_contact emergency_contact)
         {
-            if (ModelState.IsValid)
+            
+            if (id != emergency_contact.id)
             {
-                if (id != emergency_contact.id)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                try
-                {
-                    emergency_contact.updated_date = DateTime.Now;
-                    _context.Update(emergency_contact);
-                    await _context.SaveChangesAsync();
+            try
+            {
+                emergency_contact.updated_date = DateTime.Now;
+                _context.Update(emergency_contact);
+                await _context.SaveChangesAsync();
 
-                    TempData["Success"] = "Language is Updated.";
+                TempData["Success"] = "Language is Updated.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!Emergency_contactExists(emergency_contact.id))
+                {
+                    TempData["Warning"] = "Something went wrong.";
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!Emergency_contactExists(emergency_contact.id))
-                    {
-                        TempData["Warning"] = "Something went wrong.";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-            }
-            else
-            {
-                return View(emergency_contact);
             }
         }
 

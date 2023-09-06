@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
 
 builder.Services.AddDbContext<UserDbContext>(options =>
-
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDbContext<employee_context>(options =>
@@ -32,10 +31,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     
 });
 
-string syspath = @"C:\systemfilestore";
+string syspath = "";
 builder.Services.AddSingleton<IFileProvider>(
         new PhysicalFileProvider(
             Path.Combine(Directory.GetCurrentDirectory(), syspath)));
+
 
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
@@ -70,6 +70,8 @@ var userManager = services.GetRequiredService<UserManager<User>>();
 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
 
-await SeedRoles.SeedRolesAsync(userManager, roleManager);
-await SeedRoles.SeedSuperAdminAsync(userManager, roleManager);
+//await SeedRoles.SeedRolesAsync(userManager, roleManager);
+//await SeedRoles.SeedSuperAdminAsync(userManager, roleManager);
+
+//await Task.Delay(Timeout.Infinite);
 app.Run();

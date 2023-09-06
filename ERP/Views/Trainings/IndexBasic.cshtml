@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ERP.Models.HRMS.Training.Training>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <div class="">
+                <h5>Training List</h5>
+                <span class="d-block m-t-5">The following is a list of Trainings.</span>
+            </div>
+            <a class="btn btn-info float-right" asp-action="Create"><i class="feather icon-plus fa-fw"></i>Create New</a>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Traning Institution
+                            </th>
+                            <th>
+                                Duration
+                            </th>
+                            <th>
+                                Traning type
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>
+                                    @if ((@item.training_institution != null && @item.training_institution != null) && (@item.training_institution.Length > 10 || @item.training_institution.Length > 10))
+                                    {
+                                        <p class="m-0">@item.training_institution.Substring(0, 10) @item.training_institution.Substring(0, 10)...</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="m-0">@item.training_institution @item.training_institution</p>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.start_date)- @Html.DisplayFor(modelItem => item.end_date)
+                                </td>
+                                <td>
+                                    @if ((@item.training_type != null && @item.training_type != null) && (@item.training_type.Length > 10 || @item.training_type.Length > 10))
+                                    {
+                                        <p class="m-0">@item.training_type.Substring(0, 10) @item.training_type.Substring(0, 10)...</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="m-0">@item.training_type @item.training_type</p>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.status)
+                                </td>
+                                <td class="float-right">
+                                    <a onclick="deleteConf(@item.id)" class="text-danger ml-2" id="DeleteLink">
+                                        <i class="feather icon-trash-2 fa-fw"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.id" class="text-success ml-2">
+                                        <i class="feather icon-edit fa-fw"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

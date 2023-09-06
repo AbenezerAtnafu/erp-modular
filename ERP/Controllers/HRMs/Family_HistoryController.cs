@@ -22,11 +22,36 @@ namespace ERP.Controllers.HRMs
         // GET: Family_History
         public async Task<IActionResult> Index()
         {
-            return _context.family_Histories != null ?
-                        View(await _context.family_Histories.ToListAsync()) :
-                        Problem("Entity set 'employee_context.family_Histories'  is null.");
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+            if (check_employee != null)
+            {
+                var family_relation = _context.family_Histories.Include(e=>e.Family_RelationShip_Type).Where(t => t.employee_id == check_employee.id);
+                return View(await family_relation.ToListAsync());
+            }
+            else
+            {
+                TempData["Warning"] = "Fill in your information";
+                return View();
+            }
         }
 
+        public async Task<IActionResult> Index_Personal()
+        {
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+
+            if (check_employee != null)
+            {
+                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employees).Include(a=>a.Family_RelationShip_Type);
+                return View(assign_family_history);
+            }
+            else
+            {
+                TempData["Warning"] = "No Employee Info";
+                return View();
+            }
+        }
         // GET: Family_History/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -35,7 +60,7 @@ namespace ERP.Controllers.HRMs
                 return NotFound();
             }
 
-            var family_History = await _context.family_Histories
+            var family_History = await _context.family_Histories.Include(e => e.Family_RelationShip_Type)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (family_History == null)
             {
@@ -59,8 +84,7 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,full_name,job_name,house_number,phonenumber,alternative_phonenumber,gender,family_relationship_id,primary_address,employee_id,created_date,updated_date")] Family_History family_History)
         {
-            if (ModelState.IsValid)
-            {
+            
 
                 var users = _userManager.GetUserId(HttpContext.User);
                 var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
@@ -70,9 +94,10 @@ namespace ERP.Controllers.HRMs
                     family_History.created_date = DateTime.Now.Date;
                     family_History.updated_date = DateTime.Now.Date;
                     family_History.employee_id = employee.id;
+                    ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                     _context.Add(family_History);
                     await _context.SaveChangesAsync();
-
+                    ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                     TempData["Success"] = "New Family is added.";
                     return RedirectToAction(nameof(Index));
                 }
@@ -81,10 +106,8 @@ namespace ERP.Controllers.HRMs
                     TempData["Warning"] = "You should First fill in Your detail.";
                     return RedirectToAction(nameof(Index));
                 }
-            }
-
-            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
-            return View(family_History);
+            /*ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
+            return View(family_History);*/
         }
 
         // GET: Family_History/Edit/5
@@ -100,6 +123,7 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name");
             return View(family_History);
         }
 
@@ -133,8 +157,10 @@ namespace ERP.Controllers.HRMs
                         throw;
                     }
                 }
+                ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
             return View(family_History);
         }
 

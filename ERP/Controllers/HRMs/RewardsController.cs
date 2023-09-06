@@ -7,23 +7,37 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using ERP.Models.HRMS.Reward_managment;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 
 namespace ERP.Controllers.HRMs
 {
     public class RewardsController : Controller
     {
         private readonly employee_context _context;
+        private readonly UserManager<User> _userManager;
 
-        public RewardsController(employee_context context)
+        public RewardsController(employee_context context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Rewards
         public async Task<IActionResult> Index()
         {
-            var employee_context = _context.Rewards.Include(r => r.Employee);
-            return View(await employee_context.ToListAsync());
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+            if (check_employee != null)
+            {
+                var reward = _context.Rewards.Where(t => t.employee_id == check_employee.id);
+                return View(await reward.ToListAsync());
+            }
+            else
+            {
+                TempData["Warning"] = "Fill in your information";
+                return View();
+            }
         }
 
         // GET: Rewards/Details/5
@@ -57,7 +71,7 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,reward_name,description,start_date,end_date,rewarddocumentPathsField,status,filestatus,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,deleted_by")] Reward reward)
+        public async Task<IActionResult> Create([Bind("id,reward_name,description,reason_of_reward,given_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Reward reward)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +105,7 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,reward_name,description,start_date,end_date,rewarddocumentPathsField,status,filestatus,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,deleted_by")] Reward reward)
+        public async Task<IActionResult> Edit(int id, [Bind("id,reward_name,description,reason_of_reward,given_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Reward reward)
         {
             if (id != reward.id)
             {
