@@ -23,7 +23,7 @@ namespace ERP.Controllers.UserManagment
         public async Task<IActionResult> Index(string searchTerm, int? page)
         {
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var users = _userManager.Users.Where(u => u.Id != currentUser.Id && u.is_active);
+            var users = _userManager.Users.Where(u => u.Id != currentUser.Id && u.is_active).ToList();
             var pageSize = 10;
             var pageNumber = page ?? 1;
             var userRolesViewModel = new List<UserRolesViewModel>();
@@ -35,7 +35,7 @@ namespace ERP.Controllers.UserManagment
                 users = users.Where(u =>
                     u.Email.ToLower().Contains(searchTerm) || // Search by email (case-insensitive)
                     u.UserName.ToLower().Contains(searchTerm) // Search by username (case-insensitive)
-                );
+                ).ToList();
             }
 
             foreach (User user in users)
@@ -65,7 +65,14 @@ namespace ERP.Controllers.UserManagment
         }
         private async Task<List<string>> GetUserRoles(User user)
         {
-            return new List<string>(await _userManager.GetRolesAsync(user));
+            List<string> roles = new List<string>();
+
+            using (var context = new UserDbContext(new DbContextOptions<UserDbContext>())) // Pass the DbContextOptions to the constructor
+            {
+                roles = new List<string>(await _userManager.GetRolesAsync(user));
+            }
+
+            return roles;
         }
 
 
@@ -75,7 +82,7 @@ namespace ERP.Controllers.UserManagment
 
 
             var user = await _userManager.FindByIdAsync(userId);
-          
+
             var userrole = _context.Users.FirstOrDefault(a => a.Id == userId);
             if (user == null)
             {
