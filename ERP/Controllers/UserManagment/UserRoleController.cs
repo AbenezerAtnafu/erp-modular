@@ -1,6 +1,7 @@
 ﻿using ERP.Areas.Identity.Data;
 using ERP.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -80,47 +81,43 @@ namespace ERP.Controllers.UserManagment
         {
             ViewBag.userId = userId;
 
-
             var user = await _userManager.FindByIdAsync(userId);
 
             var userrole = _context.Users.FirstOrDefault(a => a.Id == userId);
             if (user == null)
             {
-                TempData["Warning"] = "User with Id = {userId} cannot be found";
+                TempData["Warning"] = $"User with Id = {userId} cannot be found";
                 return View("NotFound");
             }
             ViewBag.UserName = user.UserName;
             var model = new List<ManageUserRolesViewModel>();
             foreach (var role in _roleManager.Roles)
             {
-                var userRolesViewModel = new ManageUserRolesViewModel
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name,
-                };
-
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
-                    /* if (role.Name == "Director")
-                     {
-                         userRolesViewModel.DepartmentId = userEmp.DepartmentId;
-
-                     }*/
-                    userRolesViewModel.Selected = true;
+                    model.Add(new ManageUserRolesViewModel
+                    {
+                        RoleId = role.Id,
+                        RoleName = role.Name,
+                        Selected = true
+                    });
                 }
                 else
                 {
-                    userRolesViewModel.Selected = false;
+                    model.Add(new ManageUserRolesViewModel
+                    {
+                        RoleId = role.Id,
+                        RoleName = role.Name,
+                        Selected = false
+                    });
                 }
-                model.Add(userRolesViewModel);
-
             }
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> Manage(List<ManageUserRolesViewModel> model, string userId)
         {
-
             var user = await _userManager.FindByIdAsync(userId);
             var userrole = _context.Users.FirstOrDefault(a => a.Id == userId);
             if (user == null)
@@ -132,23 +129,19 @@ namespace ERP.Controllers.UserManagment
             var result = await _userManager.RemoveFromRolesAsync(user, roles);
             if (!result.Succeeded)
             {
-                TempData["Success"] = "Cannot remove user existing roles.";
+                TempData["Success"] = "Cannot remove user's existing roles.";
                 return View(model);
             }
 
-
             result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName));
             var userAsp = _context.UserRoles.FirstOrDefault(a => a.UserId == user.Id);
-
+           
             if (!result.Succeeded)
             {
                 TempData["Success"] = "Cannot add selected roles to user.";
                 return View(model);
             }
 
-
-            //_context.Users.Update(userrole);
-            //await _context.SaveChangesAsync();
             TempData["Success"] = "User is assigned role.";
             return RedirectToAction("Index");
         }

@@ -18,6 +18,8 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>();
 
+builder.Services.AddIdentityCore<User>().AddUserManager<UserManager<User>>();
+
 // Add services to the container.b
 //builder.Services.AddControllersWithViews();
 builder.Services.ConfigureApplicationCookie(options =>
