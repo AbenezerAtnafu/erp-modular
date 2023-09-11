@@ -19,6 +19,18 @@ namespace ERP.Areas.Identity.Data
         public employee_context(DbContextOptions<employee_context> options) : base(options)
         {
         }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder
+                    .UseLazyLoadingProxies() // Enable lazy loading
+                    .UseSqlServer("UserDbContextConnection");
+            }
+        }
+
         //Address
         public DbSet<Region> Regions { get; set; }
         public DbSet<Subcity> Subcitys { get; set; }

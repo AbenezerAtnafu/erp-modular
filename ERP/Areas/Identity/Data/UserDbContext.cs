@@ -11,7 +11,17 @@ public class UserDbContext : IdentityDbContext<User>
     {
     }
 
-    
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder
+                .UseLazyLoadingProxies() // Enable lazy loading
+                .UseSqlServer("UserDbContextConnection");
+        }
+    }
+
 
 
     protected override void OnModelCreating(ModelBuilder builder)
