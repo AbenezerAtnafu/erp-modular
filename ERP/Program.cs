@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ERP;
 using ERP.Areas.Identity.Data;
 using Microsoft.Extensions.FileProviders;
+using ERP.Interface;
+using ERP.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
@@ -17,7 +19,7 @@ builder.Services.AddDbContext<employee_context>(options =>
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>();
-
+builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddIdentityCore<User>().AddUserManager<UserManager<User>>();
 
 // Add services to the container.b
@@ -72,8 +74,8 @@ var userManager = services.GetRequiredService<UserManager<User>>();
 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
 
-//await SeedRoles.SeedRolesAsync(userManager, roleManager);
-//await SeedRoles.SeedSuperAdminAsync(userManager, roleManager);
+await SeedRoles.SeedRolesAsync(userManager, roleManager);
+await SeedRoles.SeedSuperAdminAsync(userManager, roleManager);
 
 //await Task.Delay(Timeout.Infinite);
 app.Run();

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using Newtonsoft.Json;
 
 namespace ERP.Models.HRMS.Employee_managments
 {
@@ -76,8 +77,9 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'place of work' field is required.")]
         [StringLength(200, ErrorMessage = "The 'place of work' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_work { get; set; }
-        public string employee_code { get; set; }
+        public string? employee_code { get; set; }
         public bool? profile_status { get; set; }
+        public int? lastid { get; set; }
         public bool? work_status { get; set; }
         public string? feedback { get; set; }
         [ForeignKey("Marital_Status_Types")]
@@ -88,6 +90,7 @@ namespace ERP.Models.HRMS.Employee_managments
         public Marital_Status_Types Marital_Status_Types { get; set; }
         public User User { get; set; }
         public Employee_Address Employee_Address { get; set; }
+        [JsonIgnore]
         public Employee_Contact Employee_Contact { get; set; }
         public Employee_Office Employee_Office { get; set; }
 
