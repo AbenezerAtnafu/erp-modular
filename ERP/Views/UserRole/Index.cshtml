@@ -3,6 +3,8 @@
 @using X.PagedList
 @using X.PagedList.Web.Common
 @model IPagedList<UserRolesViewModel>
+
+
 @{
     var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
 }
@@ -67,9 +69,9 @@
                         {
                             <tr>
                                 <td>@user.Email</td>
-                         
+
                                 <td>@user.RoleId</td>
-                               
+
                                 <td>
                                     <a asp-controller="UserRole" asp-action="Manage" asp-route-userId="@user.UserId"><i class="fa fa-edit text-green fa-fw"></i></a>
 
