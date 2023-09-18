@@ -15,8 +15,9 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.IO;
 using QRCoder;
-
-
+using ERP.Interface;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ERP.Controllers
 {
@@ -25,11 +26,12 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-      
-        public EmployeesController(employee_context context, UserManager<User> userManager)
+        private readonly ICacheService _cacheService;
+        public EmployeesController(employee_context context, UserManager<User> userManager,ICacheService cacheService)
         {
             _context = context;
             _userManager = userManager;
+            _cacheService = cacheService;
         }
 
         // GET: Employees
@@ -38,10 +40,21 @@ namespace ERP.Controllers
             var users = _userManager.GetUserId(HttpContext.User);
             var employee_list = _context.Employees
                 .Include(e => e.Employee_Office.Department)
-                .Where(q => q.user_id != null); 
-           // var employee_list = _context.Employees.Where(q => q.user_id != users);
+                .Where(q => q.user_id != null);
             var pageSize = 10;
             var pageNumber = page ?? 1;
+            var expiryTime = DateTimeOffset.Now.AddMinutes(5);
+
+            // Remove the cache entry for "Employees" key
+            _cacheService.RemoveData("Employees");
+
+            var cacheData = _cacheService.GetData("Employees");
+            if (!string.IsNullOrEmpty(cacheData))
+            {
+                var deserializedData = JsonConvert.DeserializeObject<IEnumerable<Employee>>(cacheData);
+                var pagedData = new StaticPagedList<Employee>(deserializedData, pageNumber, pageSize, deserializedData.Count());
+                return View(pagedData);
+            }
 
             // Apply search term filter
             if (!string.IsNullOrEmpty(searchTerm))
@@ -67,18 +80,31 @@ namespace ERP.Controllers
             }
 
             var totalCount = await employee_list.CountAsync();
-            var employee_list_final = await employee_list
-                .Include(q=>q.Employee_Office)
-                .Include(q=>q.Marital_Status_Types)
-                .Include(q=>q.Employee_Contact)
+            var employeeListQuery = _context.Employees
+                .Where(q => q.user_id != null)
+                .Select(e => new Employee
+                {
+                    first_name = e.first_name,
+                    father_name = e.father_name,
+                    grand_father_name = e.grand_father_name,
+                    date_of_birth = e.date_of_birth,
+                    gender = e.gender,
+                    Employee_Office = new Employee_Office
+                    {
+                        Department = e.Employee_Office.Department
+                    }
+                })
+                .AsNoTracking();
+
+                 var employee_list_final = await employeeListQuery
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync()
-                ;
+                .ToListAsync();
+
             foreach (var employee in employee_list_final)
             {
                 var employeecode = _context.employeeMolsIds.Where(q => q.employee_id == employee.id);
-                
+
                 if (employeecode == null)
                 {
                     ViewData["employeecode"] = "Pending";
@@ -87,12 +113,19 @@ namespace ERP.Controllers
                 {
                     ViewData["employeecode"] = employeecode.Select(q => q.employee_code);
                 }
-
             }
-           
-            var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
-            return View(pagedEmployees);
 
+            var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            var serializedData = JsonConvert.SerializeObject(pagedEmployees, serializerSettings);
+
+            _cacheService.SetData("Employees", serializedData, expiryTime);
+            return View(pagedEmployees);
         }
 
         // GET: Employees
@@ -247,7 +280,6 @@ namespace ERP.Controllers
                 employee.work_status = true;
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
-                employee.employee_code = "mols1234";
                 employee.salary = Convert.ToDouble(HttpContext.Request.Form["salary"]);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
@@ -496,9 +528,14 @@ namespace ERP.Controllers
             }
             else
             {
-                var employeelast = _context.employeeMolsIds.OrderByDescending(e => e.id_tracker).FirstOrDefault()?.id_tracker ?? 0;
-                return employeelast;
+                var employeelast = _context.Employees
+                    .OrderByDescending(e => e.lastid)
+                    .Select(e => e.lastid)
+                    .FirstOrDefault();
+
+                return employeelast ?? 0;
             }
+
         }
 
         public string getEthiopianMonth()
@@ -512,10 +549,10 @@ namespace ERP.Controllers
         
         public string GenerateEmployeeID()
         {
-            /* int lastID = IDtracker();*/
-            int lastID = 450;
 
-            string idTracker = (lastID + 1).ToString("D4");
+            var lastid = IDtracker();
+
+            string idTracker = string.Format("{0:D4}", lastid + 1);
             string employeeID = $"Mols-{idTracker}-15";
 
             return employeeID;

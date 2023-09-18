@@ -1,11 +1,13 @@
 ﻿using ERP.Areas.Identity.Data;
+using ERP.Interface;
 using ERP.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using X.PagedList;
+using Newtonsoft.Json;
 
 namespace ERP.Controllers.UserManagment
 {
@@ -14,21 +16,33 @@ namespace ERP.Controllers.UserManagment
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly employee_context _context;
-        public UserRoleController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, employee_context context)
+        private readonly ICacheService _cacheService;
+        public UserRoleController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, employee_context context, ICacheService cacheService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            _cacheService = cacheService;
         }
 
         public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
-            var users = _userManager.Users.Where(u => u.Id != currentUser.Id && u.is_active).ToList();
             var pageSize = 10;
             var pageNumber = page ?? 1;
-            var userRolesViewModel = new List<UserRolesViewModel>();
+            _cacheService.RemoveData("UserRoles");
 
+            var cacheData = _cacheService.GetData("UserRoles");
+            if (!string.IsNullOrEmpty(cacheData))
+            {
+                var deserializedData = JsonConvert.DeserializeObject<IEnumerable<UserRolesViewModel>>(cacheData);
+                var pagedData = new StaticPagedList<UserRolesViewModel>(deserializedData, pageNumber, pageSize, deserializedData.Count());
+                return View(pagedData);
+            }
+
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            var users = _userManager.Users.Where(u => u.Id != currentUser.Id && u.is_active).ToList();
+            var userRolesViewModel = new List<UserRolesViewModel>();
+            var expiryTime = DateTimeOffset.Now.AddMinutes(5);
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
@@ -39,14 +53,14 @@ namespace ERP.Controllers.UserManagment
                 ).ToList();
             }
 
-            foreach (User user in users)
+            foreach (var user in users)
             {
                 var thisViewModel = new UserRolesViewModel();
                 List<string> userRoles = await GetUserRoles(user);
 
                 if (userRoles.Count > 0)
                 {
-                    string role = userRoles[0];
+                    var role = userRoles[0];
                     thisViewModel.RoleId = role;
                 }
                 else
@@ -60,21 +74,28 @@ namespace ERP.Controllers.UserManagment
                 userRolesViewModel.Add(thisViewModel);
             }
 
-            IPagedList<UserRolesViewModel> pagedUserRoles = userRolesViewModel.ToPagedList(pageNumber, pageSize);
+          
+
+
+            var pagedUserRoles = userRolesViewModel.ToPagedList(pageNumber, pageSize);
+           
+
+            _cacheService.SetData("UserRoles", pagedUserRoles, expiryTime);
 
             return View(pagedUserRoles);
         }
         private async Task<List<string>> GetUserRoles(User user)
-        {
-            List<string> roles = new List<string>();
-
-            using (var context = new UserDbContext(new DbContextOptions<UserDbContext>())) // Pass the DbContextOptions to the constructor
             {
-                roles = new List<string>(await _userManager.GetRolesAsync(user));
-            }
 
-            return roles;
-        }
+                List<string> roles = new List<string>();
+
+                using (var context = new UserDbContext(new DbContextOptions<UserDbContext>())) // Pass the DbContextOptions to the constructor
+                {
+                    roles = new List<string>(await _userManager.GetRolesAsync(user));
+                }
+
+                return roles;
+            }
 
 
         public async Task<IActionResult> Manage(string userId)
@@ -135,7 +156,7 @@ namespace ERP.Controllers.UserManagment
 
             result = await _userManager.AddToRolesAsync(user, model.Where(x => x.Selected).Select(y => y.RoleName));
             var userAsp = _context.UserRoles.FirstOrDefault(a => a.UserId == user.Id);
-           
+
             if (!result.Succeeded)
             {
                 TempData["Success"] = "Cannot add selected roles to user.";
