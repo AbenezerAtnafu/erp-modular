@@ -31,7 +31,15 @@
                                 <div class="position-relative mx-auto">
                                     @if (employee.profile_picture != null)
                                     {
-                                        <img class="img-radius mx-auto d-block border" width="100" id="profilePictureHolder" src="@Url.Content("~/img/" + employee.profile_picture)" alt="Employee Profile Photo" style="margin-top:-36px;" />
+                                    <img 
+                                        class="img-radius mx-auto d-block border"
+                                        width="100"
+                                        id="profilePictureHolder"
+                                        src="@Url.Content("~/img/" + employee.profile_picture)"
+                                        alt="Employee Profile Photo"
+                                        style="margin-top:-36px;"
+                                        loading="lazy" 
+                                      />
                                     }
                                     else
                                     {
