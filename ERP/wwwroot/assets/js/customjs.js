@@ -214,7 +214,7 @@ function submitFirstTab() {
 function submitSecondTab() {
     var phonepattern = /^(\d{7}|\d{9})$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
-   
+    var kebelepattern = /^[a-zA-Z0-9\s]{2,20}$/;
 
     var dropdownfields = document.getElementsByClassName("second-dropdown");
     var phonevalid = false;

@@ -19,6 +19,7 @@ using ERP.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ERP.Models.HRMS.Address;
+using HRMS.Office;
 
 namespace ERP.Controllers
 {
@@ -205,11 +206,47 @@ namespace ERP.Controllers
             }
 
         }
-     
 
+        public IEnumerable<Subcity> GetSubcitiesByRegionId(int regionId)
+        {
+            return _context.Subcitys
+                .Where(s => s.region_id == regionId)
+                .ToList();
+        }
+        public IEnumerable<Zone> GetZoneByRegionId(int regionId)
+        {
+            return _context.Zones
+                .Where(s => s.region_id == regionId)
+                .ToList();
+        }
 
+        public IEnumerable<Woreda> GetWoredaByZoneId(int zoneId)
+        {
+            return _context.Woredas
+                .Where(s => s.zone_id == zoneId)
+                .ToList();
+        }
 
+        public IEnumerable<Woreda> GetWoredaBySubcityId(int subcityId)
+        {
+            return _context.Woredas
+                .Where(s => s.subcity_id == subcityId)
+                .ToList();
+        }
 
+        public IEnumerable<Department> GetDepartmentByDivisionId(int divisionId)
+        {
+            return _context.Departments
+                .Where(s => s.division_id == divisionId)
+                .ToList();
+        }
+
+        public IEnumerable<Team> GetTeamByDepartmentId(int departmentId)
+        {
+            return _context.Teams
+                .Where(s => s.department_id == departmentId)
+                .ToList();
+        }
 
         // GET: Employees/Create
         public IActionResult Create()
