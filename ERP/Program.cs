@@ -5,6 +5,8 @@ using ERP.Areas.Identity.Data;
 using Microsoft.Extensions.FileProviders;
 using ERP.Interface;
 using ERP.Service;
+using Minio;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
@@ -35,12 +37,15 @@ builder.Services.ConfigureApplicationCookie(options =>
     
 });
 
+
+
+
 string syspath = "";
 builder.Services.AddSingleton<IFileProvider>(
         new PhysicalFileProvider(
             Path.Combine(Directory.GetCurrentDirectory(), syspath)));
 
-
+builder.Services.AddSingleton<MinioClient>();
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

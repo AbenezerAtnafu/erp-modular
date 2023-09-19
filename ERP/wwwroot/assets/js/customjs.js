@@ -214,7 +214,7 @@ function submitFirstTab() {
 function submitSecondTab() {
     var phonepattern = /^(\d{7}|\d{9})$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
-    var kebelepattern = /^[a-zA-Z\s]{2,20}$/;
+   
 
     var dropdownfields = document.getElementsByClassName("second-dropdown");
     var phonevalid = false;
@@ -222,7 +222,7 @@ function submitSecondTab() {
     var intphonevalid = false;
     /*var addressfield = false;*/
     var isLoopValid = false;
-    var iskebeleValid = false;
+  
 
 
     for (var i = 0; i < dropdownfields.length; i++) {
@@ -260,19 +260,7 @@ function submitSecondTab() {
         document.getElementById("PhoneNumberValidation").textContent = ""
     }
 
-    var kebele = document.getElementById('Kebele');
-    if (kebele.value) {
-        if (!kebele.value.match(kebelepattern)) {
-            iskebeleValid = false
-            document.getElementById("kebeleValidation").textContent = "Please enter between 2 and 20 alphabetic characters."
-        } else {
-            iskebeleValid = true
-            document.getElementById("kebeleValidation").textContent = ""
-        }
-    } else {
-        iskebeleValid = true
-        document.getElementById("kebeleValidation").textContent = ""
-    }
+   
 
     var altphone = document.getElementById('AlternativePhoneNumber');
     if (altphone.value) {
@@ -305,7 +293,7 @@ function submitSecondTab() {
 
 
 
-    if (isLoopValid && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
+    if (isLoopValid && altphonevalid && phonevalid && intphonevalid) {
         console.log("ggg")
         nextButton()
     }

@@ -18,6 +18,7 @@ using QRCoder;
 using ERP.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ERP.Models.HRMS.Address;
 
 namespace ERP.Controllers
 {
@@ -204,6 +205,10 @@ namespace ERP.Controllers
             }
 
         }
+     
+
+
+
 
 
         // GET: Employees/Create

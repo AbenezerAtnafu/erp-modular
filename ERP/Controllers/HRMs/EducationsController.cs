@@ -85,7 +85,7 @@ namespace ERP.Controllers.HRMs
 
             var education = await _context.Educations.Include(e => e.Employee)
               .Include(e => e.Employee.User)
-              .Include(a=> a.Education_Level_Type)
+              .Include(a => a.Education_Level_Type)
               .Include(a => a.Education_Program_Type)
 
               .FirstOrDefaultAsync(m => m.id == id);
@@ -804,8 +804,8 @@ namespace ERP.Controllers.HRMs
                 {
                     TempData["Warning"] = "End date must be grater than start date";
                     return View();
-                 }
-             }
+                }
+            }
             else
             {
                 TempData["Warning"] = "Fill in your information first";
@@ -905,7 +905,7 @@ namespace ERP.Controllers.HRMs
             }
             ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
             ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
-           
+
             return View(education);
         }
 
@@ -982,14 +982,14 @@ namespace ERP.Controllers.HRMs
             {
                 _context.Educations.Remove(education);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EducationExists(int id)
         {
-          return (_context.Educations?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Educations?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }
