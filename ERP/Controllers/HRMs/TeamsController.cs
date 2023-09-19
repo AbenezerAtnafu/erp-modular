@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
@@ -16,10 +17,30 @@ namespace ERP.Controllers
         }
 
         // GET: Teams
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-            var employee_context = _context.Teams.Include(t => t.Department);
-            return View(await employee_context.ToListAsync());
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Team> all_teams = _context.Teams.Include(d => d.Department);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_teams = all_teams.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var teams_count = await all_teams.CountAsync();
+            var teams = await all_teams
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_teams = new StaticPagedList<Team>(teams, pageNumber, pageSize, teams_count);
+            return View(paged_teams);
         }
 
         // GET: Teams/Details/5
