@@ -6,7 +6,7 @@ using HRMS.Education_management;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using ERP.Models.HRMS.File_managment;
-
+using X.PagedList;
 
 namespace ERP.Controllers.HRMs
 {
@@ -23,20 +23,66 @@ namespace ERP.Controllers.HRMs
         }
 
         // GET: Educations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-            var employee_context = _context.Educations.Include(e => e.Education_Level_Type).Include(e => e.Education_Program_Type).Include(e => e.Employee);
-            return View(await employee_context.ToListAsync());
+
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Education> all_educations = _context.Educations.Include(d => d.Education_Level_Type).Include(d=>d.Education_Program_Type).Include(d=>d.Employee);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_educations = all_educations.Where(u =>
+                    u.filed_of_study.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var educations_count = await all_educations.CountAsync();
+            var educations = await all_educations
+                .OrderBy(u => u.filed_of_study)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_educations = new StaticPagedList<Education>(educations, pageNumber, pageSize, educations_count);
+            return View(paged_educations);
         }
-        public async Task<IActionResult> Index_Personal()
+
+
+
+
+
+        public async Task<IActionResult> Index_Personal(string searchTerm, int? page)
         {
+
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
             User user = await _userManager.GetUserAsync(User);
             var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
 
             if (check_employee != null)
             {
-                var assign_education = _context.Educations.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(e => e.Education_Level_Type).Include(e => e.Education_Program_Type);
-                return View(assign_education);
+                IQueryable<Education> assign_education = _context.Educations.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(e => e.Education_Level_Type).Include(e => e.Education_Program_Type);
+                
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                    assign_education = assign_education.Where(u =>
+                        u.filed_of_study.ToLower().Contains(searchTerm)
+                    );
+                }
+
+                var educations_count = await assign_education.CountAsync();
+                var educations = await assign_education
+                    .OrderBy(u => u.filed_of_study)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+                var paged_educations = new StaticPagedList<Education>(educations, pageNumber, pageSize, educations_count);
+                return View(paged_educations);
             }
             else
             {
