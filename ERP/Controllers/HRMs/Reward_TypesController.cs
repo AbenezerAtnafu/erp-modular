@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
@@ -20,11 +21,30 @@ namespace ERP.Controllers
         }
 
         // GET: Reward_Types
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-              return _context.Reward_Types != null ? 
-                          View(await _context.Reward_Types.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Reward_Types'  is null.");
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Reward_Types> all_Reward_Types = _context.Reward_Types;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_Reward_Types = all_Reward_Types.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var Reward_Types_Count = await all_Reward_Types.CountAsync();
+            var Reward_Types = await all_Reward_Types
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_result = new StaticPagedList<Reward_Types>(Reward_Types, pageNumber, pageSize, Reward_Types_Count);
+            return View(paged_result);
         }
 
         // GET: Reward_Types/Details/5

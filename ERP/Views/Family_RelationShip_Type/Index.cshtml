@@ -1,9 +1,15 @@
-﻿@model IEnumerable<HRMS.Types.Family_RelationShip_Type>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<HRMS.Types.Family_RelationShip_Type>
+
 
 @{
     ViewData["Title"] = "Family RelationShip Type List";
 }
-
+@{
+    var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
+}
 <div class="container px-1" style="position:initial;">
     <div class="card">
         <div class="card-header">
@@ -72,6 +78,37 @@
                         }
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <ul class="pagination justify-content-center">
+                        <div class="pagination">
+                            <ul class="pagination justify-content-center">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link prev-button" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
+                                    </li>
+                                }
+
+
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link next-button" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Next</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+
+                        @if (Model.PageNumber != 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link first-button" href="@Url.Action("Index", new { page = 1 })">Go to the first page</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

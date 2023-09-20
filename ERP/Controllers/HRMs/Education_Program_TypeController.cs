@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
@@ -20,11 +21,30 @@ namespace ERP.Controllers
         }
 
         // GET: Education_Program_Type
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-            return _context.Education_Program_Types != null ?
-                        View(await _context.Education_Program_Types.ToListAsync()) :
-                        Problem("Entity set 'employee_context.Education_Program_Types'  is null.");
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Education_Program_Type> all_Education_Program_Types = _context.Education_Program_Types;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_Education_Program_Types = all_Education_Program_Types.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var Education_Program_Type_Count = await all_Education_Program_Types.CountAsync();
+            var Education_Program_Type = await all_Education_Program_Types
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_result = new StaticPagedList<Education_Program_Type>(Education_Program_Type, pageNumber, pageSize, Education_Program_Type_Count);
+            return View(paged_result);
         }
 
         // GET: Education_Program_Type/Details/5

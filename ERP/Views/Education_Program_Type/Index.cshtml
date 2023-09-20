@@ -1,9 +1,16 @@
-﻿@model IEnumerable<HRMS.Types.Education_Program_Type>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<HRMS.Types.Education_Program_Type>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
+}
+
 
 <div class="container px-1" style="position:initial;">
     <div class="card">
@@ -13,6 +20,22 @@
                 <span class="d-block m-t-5">The following is a list of  Education Program.</span>
             </div>
             <a class="btn btn-info float-right" asp-action="Create"><i class="feather icon-plus fa-fw"></i>Create New</a>
+            <form asp-action="Index">
+                <div class="d-flex justify-content-end">
+                    @*<div class="mr-3">Flex item 1</div>
+                    <div class="mr-3">Flex item 2</div>*@
+                    <div class="input-group mb-3 w-25">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="feather icon-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search..." name="searchTerm" id="Search" />
+                    </div>
+                    @if (string.IsNullOrEmpty(searchTerm))
+                    {
+                        <a href="@Url.Action("Index")" class="btn btn-light">Clear</a>
+                    }
+                </div>
+            </form>
         </div>
         <div class="card-block table-border-style">
             <div class="table-responsive">
@@ -74,6 +97,37 @@
                         }
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <ul class="pagination justify-content-center">
+                        <div class="pagination">
+                            <ul class="pagination justify-content-center">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link prev-button" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
+                                    </li>
+                                }
+
+
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link next-button" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Next</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+
+                        @if (Model.PageNumber != 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link first-button" href="@Url.Action("Index", new { page = 1 })">Go to the first page</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

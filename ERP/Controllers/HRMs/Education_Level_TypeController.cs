@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using X.PagedList;
 
 namespace ERP.Models.HRMS.Types
 {
@@ -20,11 +21,30 @@ namespace ERP.Models.HRMS.Types
         }
 
         // GET: Education_Level_Type
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-              return _context.Education_Level_Types != null ? 
-                          View(await _context.Education_Level_Types.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Education_Level_Types'  is null.");
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Education_Level_Type> all_Education_Level_Type = _context.Education_Level_Types;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_Education_Level_Type = all_Education_Level_Type.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var Education_Level_Type_count = await all_Education_Level_Type.CountAsync();
+            var Education_Level_Type = await all_Education_Level_Type
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_result = new StaticPagedList<Education_Level_Type>(Education_Level_Type, pageNumber, pageSize, Education_Level_Type_count);
+            return View(paged_result);
         }
 
         // GET: Education_Level_Type/Details/5
