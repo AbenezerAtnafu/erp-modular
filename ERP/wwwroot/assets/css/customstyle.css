@@ -74,6 +74,9 @@ p {
     font-size: 12px;
     margin: 0;
 }
+.gradient-blue {
+    background: linear-gradient(to right, #007bff, #0099cc);
+}
 
 .back {
     background-color: #e8efff;

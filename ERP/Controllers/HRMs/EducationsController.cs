@@ -39,6 +39,10 @@ namespace ERP.Controllers.HRMs
                     u.filed_of_study.ToLower().Contains(searchTerm)
                 );
             }
+            ViewBag.count_total= all_educations.Count();
+            ViewBag.count_Approved = all_educations.Where(q => q.status == true).Count();
+            ViewBag.count_Pending = all_educations.Where(q => q.status == null).Count();
+            ViewBag.count_Rejected = all_educations.Where(q => q.status == false).Count();
 
             var educations_count = await all_educations.CountAsync();
             var educations = await all_educations
