@@ -22,25 +22,16 @@ namespace ERP.Controllers.HRMs
         // GET: Emergency_contact
         public async Task<IActionResult> Index()
         {
-            try
+            User user = await _userManager.GetUserAsync(User);
+            var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
+            if (check_employee != null)
             {
-                User user = await _userManager.GetUserAsync(User);
-                var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
-                if (check_employee != null)
-                {
-                    var emergency_Contacts = _context.emergency_Contacts.Where(t => t.employee_id == check_employee.id);
-                    return View(await emergency_Contacts.ToListAsync());
-                }
-                else
-                {
-                    TempData["Warning"] = "Fill in your information";
-                    return View();
-                }
+                var emergency_Contacts = _context.emergency_Contacts.Where(t => t.employee_id == check_employee.id);
+                return View(await emergency_Contacts.ToListAsync());
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Error"] = "An error occurred while retrieving emergency contacts. Please try again later.";
-                // Log the exception or handle it as needed
+                TempData["Warning"] = "Fill in your information";
                 return View();
             }
         }

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Educations\Index_Personal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Areas\Identity\Data\employee_context.cs" />
     <Content Include="Areas\Identity\Data\Roles.cs" />
     <Content Include="Areas\Identity\Data\SeedRoles.cs" />
@@ -98,6 +102,7 @@
     <None Include="Views\Divisions\Details.cshtml" />
     <None Include="Views\Divisions\Edit.cshtml" />
     <None Include="Views\Divisions\Index.cshtml" />
+    <None Include="Views\Educations\Index_Personal.cshtml" />
     <None Include="Views\Educations\Create.cshtml" />
     <None Include="Views\Educations\Delete.cshtml" />
     <None Include="Views\Educations\Details.cshtml" />

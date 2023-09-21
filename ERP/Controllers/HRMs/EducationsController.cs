@@ -54,10 +54,6 @@ namespace ERP.Controllers.HRMs
             return View(paged_educations);
         }
 
-
-
-
-
         public async Task<IActionResult> Index_Personal(string searchTerm, int? page)
         {
 
