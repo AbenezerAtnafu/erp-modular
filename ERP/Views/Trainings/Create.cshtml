@@ -17,39 +17,39 @@
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
                             <label asp-for="training_institution" class="control-label"></label>
-                            <input asp-for="training_institution" class="form-control" />
+                            <input asp-for="training_institution" class="form-control" placeholder="eg: INSA" />
                             <span asp-validation-for="training_institution" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
                             <label asp-for="country_of_training" class="control-label"></label>
-                            <input asp-for="country_of_training" class="form-control" />
+                            <input asp-for="country_of_training" class="form-control" placeholder="eg: Ethiopia" />
                             <span asp-validation-for="country_of_training" class="text-danger"></span>
                         </div>
                     </div>
-                 </div>
-                 <div class="row p-0 m-0">
+                </div>
+                <div class="row p-0 m-0">
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
                             <label asp-for="email" class="control-label"></label>
-                            <input asp-for="email" class="form-control" />
+                            <input asp-for="email" class="form-control" placeholder="eg: example@gmail.com" />
                             <span asp-validation-for="email" class="text-danger"></span>
                         </div>
                     </div>
-                  @*   <div class="col-md-6 col-sm-12 ">
+                    <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
                             <label asp-for="training_type" class="control-label"></label>
-                            <input asp-for="training_type" class="form-control" />
+                            <select asp-for="training_type" class="form-control" asp-items="ViewBag.training_type"></select>
                             <span asp-validation-for="training_type" class="text-danger"></span>
                         </div>
-                    </div> *@
-                 </div>
-                 <div class="row p-0 m-0">
+                    </div>
+                </div>
+                <div class="row p-0 m-0">
                     <div class="col-md-4 col-sm-12 ">
                         <div class="form-group">
                             <label asp-for="training_situation" class="control-label"></label>
-                            <input asp-for="training_situation" class="form-control" />
+                            <input asp-for="training_situation" class="form-control" placeholder="eg: training situation" />
                             <span asp-validation-for="training_situation" class="text-danger"></span>
                         </div>
                     </div>
@@ -67,14 +67,14 @@
                             <span asp-validation-for="end_date" class="text-danger"></span>
                         </div>
                     </div>
-                 </div>
+                </div>
                 <div class="form-group">
                     <label asp-for="description" class="control-label"></label>
-                    <input asp-for="description" class="form-control" />
+                    <textarea asp-for="description" class="form-control"></textarea>
                     <span asp-validation-for="description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Update" class="btn btn-primary" />
                 </div>
             </form>
         </div>

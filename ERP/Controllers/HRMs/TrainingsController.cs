@@ -63,6 +63,7 @@ namespace ERP.Controllers.HRMs
         // GET: Trainings/Create
         public IActionResult Create()
         {
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name");
             return View();
         }
 
@@ -79,7 +80,7 @@ namespace ERP.Controllers.HRMs
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number", training.employee_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type_id);
             return View(training);
         }
 
@@ -96,7 +97,7 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number", training.employee_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type_id);
             return View(training);
         }
 
@@ -132,7 +133,7 @@ namespace ERP.Controllers.HRMs
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number", training.employee_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type_id);
             return View(training);
         }
 
