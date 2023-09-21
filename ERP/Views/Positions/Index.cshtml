@@ -109,9 +109,6 @@
                                         <a class="page-link prev-button" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
                                     </li>
                                 }
-
-
-
                                 @if (Model.HasNextPage)
                                 {
                                     <li class="page-item">
@@ -120,8 +117,6 @@
                                 }
                             </ul>
                         </div>
-
-
                         @if (Model.PageNumber != 1)
                         {
                             <li class="page-item">
@@ -130,8 +125,6 @@
                         }
                     </ul>
                 </div>
-
-
             </div>
         </div>
     </div>

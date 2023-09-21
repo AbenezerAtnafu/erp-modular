@@ -71,7 +71,7 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,reward_name,description,reason_of_reward,given_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Reward reward)
+        public async Task<IActionResult> Create([Bind("reward_name,description,reason_of_reward,given_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Reward reward)
         {
             if (ModelState.IsValid)
             {

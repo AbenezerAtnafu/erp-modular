@@ -8,14 +8,8 @@ using X.PagedList;
 using System.Drawing;
 using Barcoder.Renderer.Image;
 using Barcoder.Code128;
-using System;
 using System.Globalization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Linq;
-using System.IO;
 using QRCoder;
-using ERP.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ERP.Models.HRMS.Address;
@@ -28,12 +22,12 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-        private readonly ICacheService _cacheService;
-        public EmployeesController(employee_context context, UserManager<User> userManager,ICacheService cacheService)
+        /*private readonly ICacheService _cacheService;*/
+        public EmployeesController(employee_context context, UserManager<User> userManager/*ICacheService cacheService*/)
         {
             _context = context;
             _userManager = userManager;
-            _cacheService = cacheService;
+         /*   _cacheService = cacheService;*/
         }
 
         // GET: Employees
@@ -48,15 +42,15 @@ namespace ERP.Controllers
             var expiryTime = DateTimeOffset.Now.AddMinutes(5);
 
             // Remove the cache entry for "Employees" key
-            _cacheService.RemoveData("Employees");
+           /* _cacheService.RemoveData("Employees");
 
-            var cacheData = _cacheService.GetData("Employees");
-            if (!string.IsNullOrEmpty(cacheData))
+            var cacheData = _cacheService.GetData("Employees");*/
+            /*if (!string.IsNullOrEmpty(cacheData))
             {
                 var deserializedData = JsonConvert.DeserializeObject<IEnumerable<Employee>>(cacheData);
                 var pagedData = new StaticPagedList<Employee>(deserializedData, pageNumber, pageSize, deserializedData.Count());
                 return View(pagedData);
-            }
+            }*/
 
             // Apply search term filter
             if (!string.IsNullOrEmpty(searchTerm))
@@ -125,8 +119,8 @@ namespace ERP.Controllers
             };
 
             var serializedData = JsonConvert.SerializeObject(pagedEmployees, serializerSettings);
-
-            _cacheService.SetData("Employees", serializedData, expiryTime);
+/*
+            _cacheService.SetData("Employees", serializedData, expiryTime);*/
             return View(pagedEmployees);
         }
 
@@ -206,6 +200,7 @@ namespace ERP.Controllers
             }
 
         }
+        [HttpGet]
 
         public IEnumerable<Subcity> GetSubcitiesByRegionId(int regionId)
         {
@@ -213,6 +208,8 @@ namespace ERP.Controllers
                 .Where(s => s.region_id == regionId)
                 .ToList();
         }
+
+        [HttpGet]
         public IEnumerable<Zone> GetZoneByRegionId(int regionId)
         {
             return _context.Zones
@@ -220,6 +217,7 @@ namespace ERP.Controllers
                 .ToList();
         }
 
+        [HttpGet]
         public IEnumerable<Woreda> GetWoredaByZoneId(int zoneId)
         {
             return _context.Woredas
@@ -227,6 +225,7 @@ namespace ERP.Controllers
                 .ToList();
         }
 
+        [HttpGet]
         public IEnumerable<Woreda> GetWoredaBySubcityId(int subcityId)
         {
             return _context.Woredas

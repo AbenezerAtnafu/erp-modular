@@ -54,13 +54,9 @@ namespace ERP.Controllers.HRMs
             return View(paged_educations);
         }
 
-
-
-
-
-        public async Task<IActionResult> Index_Personal(string searchTerm, int? page)
+        // GET: Educations/IndexPersonal
+        public async Task<IActionResult> IndexPersonal(string searchTerm, int? page)
         {
-
             var pageSize = 10;
             var pageNumber = page ?? 1;
             User user = await _userManager.GetUserAsync(User);
@@ -68,8 +64,13 @@ namespace ERP.Controllers.HRMs
 
             if (check_employee != null)
             {
-                IQueryable<Education> assign_education = _context.Educations.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(e => e.Education_Level_Type).Include(e => e.Education_Program_Type);
-                
+
+                IQueryable<Education> assign_education = _context.Educations
+                   .Where(e => e.employee_id == check_employee.id)
+                   .Include(e => e.Employee)
+                   .Include(e => e.Education_Level_Type)
+                   .Include(e => e.Education_Program_Type);
+
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
                     searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
@@ -78,7 +79,10 @@ namespace ERP.Controllers.HRMs
                         u.filed_of_study.ToLower().Contains(searchTerm)
                     );
                 }
-
+                ViewBag.count_total = assign_education.Count();
+                ViewBag.count_Approved = assign_education.Where(q => q.status == true).Count();
+                ViewBag.count_Pending = assign_education.Where(q => q.status == null).Count();
+                ViewBag.count_Rejected = assign_education.Where(q => q.status == false).Count();
                 var educations_count = await assign_education.CountAsync();
                 var educations = await assign_education
                     .OrderBy(u => u.filed_of_study)
@@ -86,10 +90,16 @@ namespace ERP.Controllers.HRMs
                     .Take(pageSize)
                     .ToListAsync();
                 var paged_educations = new StaticPagedList<Education>(educations, pageNumber, pageSize, educations_count);
-                return View(paged_educations);
+                return View("IndexPersonal", paged_educations); // Specify the view name "Index_Personal"
+                
             }
             else
             {
+
+                ViewBag.count_total = 0;
+                ViewBag.count_Approved = 0;
+                ViewBag.count_Pending = 0;
+                ViewBag.count_Rejected = 0;
                 TempData["Warning"] = "No Employee Info";
                 return View();
             }

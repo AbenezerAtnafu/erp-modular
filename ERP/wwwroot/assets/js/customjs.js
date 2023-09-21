@@ -496,3 +496,158 @@ function submitRejectModal() {
         document.getElementById("RejectFormModal").submit()
     }
 }
+
+
+
+/// cascaded drop down
+$(document).ready(function () {
+    $('#RegionSelect').change(function () {
+        var selectedRegion = $(this).val();
+
+        // Clear existing city options
+        $('#ZoneSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetZoneByRegionId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { regionId: selectedRegion },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#ZoneSelect').append($('<option>').text("--select zone--").val(0));
+                $.each(response, function (index, zone) {
+                    $('#ZoneSelect').append($('<option>').text(zone.name).val(zone.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#RegionSelect').change(function () {
+        var selectedSubcity = $(this).val();
+
+        // Clear existing city options
+        $('#SubcitySelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetSubcitiesByRegionId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { regionId: selectedSubcity },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#SubcitySelect').append($('<option>').text("--select subcity--").val(0));
+                $.each(response, function (index, subcity) {
+                    $('#SubcitySelect').append($('<option>').text(subcity.name).val(subcity.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#ZoneSelect').change(function () {
+        var selectedWoreda = $(this).val();
+
+        // Clear existing city options
+        $('#WoredaSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetWoredaByZoneId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { zoneId: selectedWoreda },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#WoredaSelect').append($('<option>').text("--select woreda--").val(0));
+                $.each(response, function (index, woreda) {
+                    $('#WoredaSelect').append($('<option>').text(woreda.name).val(woreda.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#SubcitySelect').change(function () {
+        var selectedSubcity = $(this).val();
+
+        // Clear existing city options
+        $('#WoredaSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetWoredaBySubcityId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { subcityId: selectedSubcity },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#WoredaSelect').append($('<option>').text("--select woreda--").val(0));
+                $.each(response, function (index, woreda) {
+                    $('#WoredaSelect').append($('<option>').text(woreda.name).val(woreda.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#DivisionSelect').change(function () {
+        var selectedDept = $(this).val();
+
+        // Clear existing city options
+        $('#DepartmentSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetDepartmentByDivisionId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { divisionId: selectedDept },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#DepartmentSelect').append($('<option>').text("--select department--").val(0));
+                $.each(response, function (index, dept) {
+                    $('#DepartmentSelect').append($('<option>').text(dept.name).val(dept.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#DepartmentSelect').change(function () {
+        var selectedTeam = $(this).val();
+
+        // Clear existing city options
+        $('#TeamSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetTeamByDepartmentId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { departmentId: selectedTeam },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#TeamSelect').append($('<option>').text("--select team--").val(0));
+                $.each(response, function (index, team) {
+                    $('#TeamSelect').append($('<option>').text(team.name).val(team.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+});

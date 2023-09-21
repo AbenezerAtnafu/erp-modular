@@ -47,7 +47,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.start_date)- @Html.DisplayFor(modelItem => item.end_date)
                                 </td>
-                                <td>
+                               @*  <td>
                                     @if ((@item.training_type != null && @item.training_type != null) && (@item.training_type.Length > 10 || @item.training_type.Length > 10))
                                     {
                                         <p class="m-0">@item.training_type.Substring(0, 10) @item.training_type.Substring(0, 10)...</p>
@@ -56,7 +56,7 @@
                                     {
                                         <p class="m-0">@item.training_type @item.training_type</p>
                                     }
-                                </td>
+                                </td> *@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.status)
                                 </td>
