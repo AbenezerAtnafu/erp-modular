@@ -176,6 +176,8 @@ namespace ERP.Controllers
             .Include(e => e.Family_History)
             .Include(e => e.Language)
             .Include(e => e.Marital_Status_Types)
+            .Include(e => e.Rewards)
+            .Include(e => e.Trainings)
             .FirstOrDefault(e=> e.id == id);
 
             if (employee == null)

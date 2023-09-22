@@ -18,8 +18,8 @@
                     <li><a class="nav-link text-left" id="v-pills-family-tab" data-toggle="pill" href="#v-pills-family" role="tab" aria-controls="v-pills-family" aria-selected="false">Family</a></li>
                     <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Language</a></li>
                     <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Emergency</a></li>
-          @*           <li><a class="nav-link text-left" id="v-pills-language-tab" data-toggle="pill" href="#v-pills-language" role="tab" aria-controls="v-pills-language" aria-selected="false">Reward</a></li>
-                    <li><a class="nav-link text-left" id="v-pills-emergency-tab" data-toggle="pill" href="#v-pills-emergency" role="tab" aria-controls="v-pills-emergency" aria-selected="false">Training</a></li> *@
+                    <li><a class="nav-link text-left" id="v-pills-reward-tab" data-toggle="pill" href="#v-pills-reward" role="tab" aria-controls="v-pills-reward" aria-selected="false">Reward</a></li>
+                    <li><a class="nav-link text-left" id="v-pills-training-tab" data-toggle="pill" href="#v-pills-training" role="tab" aria-controls="v-pills-training" aria-selected="false">Training</a></li>
                     @if (Context.User.IsInRole("HR") && (employee.employee_code != null && employee.employee_code.Length >= 4))
                     {
                         <li><a class="nav-link text-left" id="v-pills-ids-tab" data-toggle="pill" href="#v-pills-ids" role="tab" aria-controls="v-pills-ids" aria-selected="false">Id</a></li>
@@ -577,24 +577,162 @@
                             @if (employee.Emergency_contact != null)
                             {
                                 <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Emergency Contact Information</h5>
-                                @foreach (var item in employee.Emergency_contact)
-                                {
-                                    <div class="d-flex mb-4">
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <h5>@item.full_name</h5><span>@item.phonenumber</span>
-                                            </div>
-                                        </div>
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <span>Occupation</span>
-                                            </div>
-                                            <div class="col-sm-9 border-start">
-                                                <span class="text-muted">@item.alternative_phonenumber</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Relationship
+                                            </th>
+                                            <th>
+                                                Phone Number
+                                            </th>
+                                            <th>
+                                                Alternative Phone Number
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in employee.Emergency_contact)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.full_name)
+                                                </td>
+                                                <td>
+                                                   @item.Relationship
+                                                </td>
+                                                <td>
+                                                    @item.phonenumber
+                                                </td>
+                                                <td>
+                                                    @item.alternative_phonenumber
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
+
+                        <div class="tab-pane fade p-4" id="v-pills-reward" role="tabpanel" aria-labelledby="v-pills-reward-tab">
+                            @if (employee.Rewards != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Reward Information</h5>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Given date 
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in employee.Rewards)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.reward_name)
+                                                </td>
+                                                <td>
+                                                    @item.given_date
+                                                </td>
+                                                <td>
+                                                    @if (item.status == true)
+                                                    {
+                                                        <p class="badge badge-success">Approved</p>
+                                                    }
+                                                    else if (item.status == false)
+                                                    {
+                                                        <p class="badge badge-danger">Rejected</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="badge badge-warning">Pending</p>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <h5 class="py-5 font-weight-bold">Not Found</h5>
+                            }
+                        </div>
+
+
+                        <div class="tab-pane fade p-4" id="v-pills-training" role="tabpanel" aria-labelledby="v-pills-training-tab">
+                            @if (employee.Trainings != null)
+                            {
+                                <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Training Information</h5>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Training Type
+                                            </th>
+                                            <th>
+                                                Duration
+                                            </th>
+                                            <th>
+                                                Institution
+                                            </th>
+                                            <th>
+                                                Country
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in employee.Trainings)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Training_Type)
+                                                </td>
+                                                <td>
+                                                    @item.start_date - @item.end_date
+                                                </td>
+                                                <td>
+                                                    @item.training_institution
+                                                </td>
+                                                <td>
+                                                    @item.country_of_training
+                                                </td>
+                                                <td>
+                                                    @if (item.status == true)
+                                                    {
+                                                        <p class="badge badge-success">Approved</p>
+                                                    }
+                                                    else if (item.status == false)
+                                                    {
+                                                        <p class="badge badge-danger">Rejected</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="badge badge-warning">Pending</p>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             }
                             else
                             {

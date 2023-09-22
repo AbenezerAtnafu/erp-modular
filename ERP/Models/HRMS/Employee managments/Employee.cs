@@ -97,9 +97,7 @@ namespace ERP.Models.HRMS.Employee_managments
         public ICollection<Language> Language { get; set; }
         public ICollection<Family_History> Family_History { get; set; }
         public ICollection<Emergency_contact> Emergency_contact { get; set; }
-
-
-
-
+        public ICollection<Reward> Rewards { get; set; }
+        public ICollection<Training> Trainings { get; set; }
     }
 }

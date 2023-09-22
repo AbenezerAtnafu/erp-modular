@@ -1,10 +1,9 @@
-﻿using ERP.Models.HRMS.Employee_managments;
+﻿
 using ERP.Models.HRMS.Types;
-using Microsoft.Data.SqlClient.DataClassification;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.HRMS.Training
+namespace ERP.Models.HRMS.Employee_managments
 {
     public class Training
     {

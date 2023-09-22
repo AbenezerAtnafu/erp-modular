@@ -1,4 +1,4 @@
-﻿@model ERP.Models.HRMS.Reward_managment.Reward
+﻿@model ERP.Models.HRMS.Employee_managments.Reward
 
 @{
     ViewData["Title"] = "Create";
@@ -13,31 +13,31 @@
         <div class="card-block table-border-style">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
+                <div class="row p-0 m-0">
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label asp-for="reward_name" class="control-label"></label>
+                            <label asp-for="reward_name" class="control-label">Reward Name <span class="text-danger">*</span></label>
                             <input asp-for="reward_name" class="form-control" placeholder="eg. best employee of the year"/>
                             <span asp-validation-for="reward_name" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label asp-for="given_date" class="control-label"></label>
+                            <label asp-for="given_date" class="control-label">Given Date <span class="text-danger">*</span></label>
                             <input asp-for="given_date" class="form-control" />
                             <span asp-validation-for="given_date" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="description" class="control-label"></label>
-                    <textarea asp-for="description" class="form-control" placeholder="add more information here"></textarea>
-                    <span asp-validation-for="description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="reason_of_reward" class="control-label"></label>
+                    <label asp-for="reason_of_reward" class="control-label">Reason of Reward</label>
                     <textarea asp-for="reason_of_reward" class="form-control" placeholder="what was the reason of the reward"></textarea>
                     <span asp-validation-for="reason_of_reward" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="description" class="control-label">Description</label>
+                    <textarea asp-for="description" class="form-control" placeholder="add more information here"></textarea>
+                    <span asp-validation-for="description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />

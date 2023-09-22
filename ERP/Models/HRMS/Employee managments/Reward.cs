@@ -1,8 +1,7 @@
-﻿using ERP.Models.HRMS.Employee_managments;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ERP.Models.HRMS.Reward_managment
+namespace ERP.Models.HRMS.Employee_managments
 {
     public class Reward
     {

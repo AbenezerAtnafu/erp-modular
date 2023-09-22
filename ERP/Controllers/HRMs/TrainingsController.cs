@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
-using ERP.Models.HRMS.Training;
+using ERP.Models.HRMS.Employee_managments;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 

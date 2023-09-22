@@ -1,4 +1,5 @@
-﻿@model ERP.Models.HRMS.Training.Training
+﻿@model ERP.Models.HRMS.Employee_managments.Training
+
 
 @{
     ViewData["Title"] = "Create";
@@ -7,7 +8,7 @@
 <div class="container px-1" style="position:initial;">
     <div class="card">
         <div class="card-header">
-            <h5>Create Training</h5>
+            <h5>Training</h5>
             <span class="d-block m-t-5">Create a new Training.</span>
         </div>
         <div class="card-block table-border-style">
@@ -16,14 +17,14 @@
                 <div class="row p-0 m-0">
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="training_institution" class="control-label"></label>
+                            <label asp-for="training_institution" class="control-label">Traning Institution <span class="text-danger">*</span></label>
                             <input asp-for="training_institution" class="form-control" placeholder="eg: INSA" />
                             <span asp-validation-for="training_institution" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="country_of_training" class="control-label"></label>
+                            <label asp-for="country_of_training" class="control-label">Country of traning <span class="text-danger">*</span></label>
                             <input asp-for="country_of_training" class="form-control" placeholder="eg: Ethiopia" />
                             <span asp-validation-for="country_of_training" class="text-danger"></span>
                         </div>
@@ -32,14 +33,14 @@
                 <div class="row p-0 m-0">
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="email" class="control-label"></label>
+                            <label asp-for="email" class="control-label">Email of the Institution</label>
                             <input asp-for="email" class="form-control" placeholder="eg: example@gmail.com" />
                             <span asp-validation-for="email" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="training_type" class="control-label"></label>
+                            <label asp-for="training_type" class="control-label">Traning Type <span class="text-danger">*</span></label>
                             <select asp-for="training_type" class="form-control" asp-items="ViewBag.training_type"></select>
                             <span asp-validation-for="training_type" class="text-danger"></span>
                         </div>
@@ -48,28 +49,28 @@
                 <div class="row p-0 m-0">
                     <div class="col-md-4 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="training_situation" class="control-label"></label>
+                            <label asp-for="training_situation" class="control-label">Traning situation</label>
                             <input asp-for="training_situation" class="form-control" placeholder="eg: training situation" />
                             <span asp-validation-for="training_situation" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="start_date" class="control-label"></label>
+                            <label asp-for="start_date" class="control-label">Start Date <span class="text-danger">*</span></label>
                             <input asp-for="start_date" class="form-control" />
                             <span asp-validation-for="start_date" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 ">
                         <div class="form-group">
-                            <label asp-for="end_date" class="control-label"></label>
+                            <label asp-for="end_date" class="control-label">End Date <span class="text-danger">*</span></label>
                             <input asp-for="end_date" class="form-control" />
                             <span asp-validation-for="end_date" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="description" class="control-label"></label>
+                    <label asp-for="description" class="control-label">Description</label>
                     <textarea asp-for="description" class="form-control"></textarea>
                     <span asp-validation-for="description" class="text-danger"></span>
                 </div>
