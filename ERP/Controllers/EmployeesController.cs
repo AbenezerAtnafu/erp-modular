@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ERP.Models.HRMS.Address;
 using HRMS.Office;
+using ERP.Interface;
 
 namespace ERP.Controllers
 {
@@ -22,12 +23,12 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-        /*private readonly ICacheService _cacheService;*/
-        public EmployeesController(employee_context context, UserManager<User> userManager/*ICacheService cacheService*/)
+        private readonly ICacheService _cacheService;
+        public EmployeesController(employee_context context, UserManager<User> userManager,ICacheService cacheService)
         {
             _context = context;
             _userManager = userManager;
-         /*   _cacheService = cacheService;*/
+            _cacheService = cacheService;
         }
 
         // GET: Employees
@@ -42,15 +43,15 @@ namespace ERP.Controllers
             var expiryTime = DateTimeOffset.Now.AddMinutes(5);
 
             // Remove the cache entry for "Employees" key
-           /* _cacheService.RemoveData("Employees");
+            _cacheService.RemoveData("Employees");
 
-            var cacheData = _cacheService.GetData("Employees");*/
-            /*if (!string.IsNullOrEmpty(cacheData))
+            var cacheData = _cacheService.GetData("Employees");
+            if (!string.IsNullOrEmpty(cacheData))
             {
                 var deserializedData = JsonConvert.DeserializeObject<IEnumerable<Employee>>(cacheData);
                 var pagedData = new StaticPagedList<Employee>(deserializedData, pageNumber, pageSize, deserializedData.Count());
                 return View(pagedData);
-            }*/
+            }
 
             // Apply search term filter
             if (!string.IsNullOrEmpty(searchTerm))
@@ -119,8 +120,8 @@ namespace ERP.Controllers
             };
 
             var serializedData = JsonConvert.SerializeObject(pagedEmployees, serializerSettings);
-/*
-            _cacheService.SetData("Employees", serializedData, expiryTime);*/
+
+            _cacheService.SetData("Employees", serializedData, expiryTime);
             return View(pagedEmployees);
         }
 
