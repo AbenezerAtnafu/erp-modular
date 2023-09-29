@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ERP.Models.HRMS.Reward_managment.Reward>
+﻿@model IEnumerable<ERP.Models.HRMS.Employee_managments.Reward>
 
 @{
     ViewData["Title"] = "Index";
@@ -29,48 +29,51 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @if (Model != null)
                         {
-                            <tr>
-                                <td>
-                                    @if ((@item.reward_name != null && @item.reward_name != null) && (@item.reward_name.Length > 10 || @item.reward_name.Length > 10))
-                                    {
-                                        <p class="m-0">@item.reward_name.Substring(0, 10) @item.reward_name.Substring(0, 10)...</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="m-0">@item.reward_name @item.reward_name</p>
-                                    }
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.given_date)
-                                </td>
-                                <td>
-                                    @if (item.status == true)
-                                    {
-                                        <p class="badge badge-success">Approved</p>
-                                    }
-                                    else if (item.status == false)
-                                    {
-                                        <p class="badge badge-danger">Rejected</p>
-                                    }
-                                    else
-                                    {
-                                        <p class="badge badge-warning">Pending</p>
-                                    }
-                                </td>
-                                <td class="float-right">
-                                   @*  <a onclick="deleteConf(@item.id)" class="text-danger ml-2" id="DeleteLink">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if ((@item.reward_name != null && @item.reward_name != null) && (@item.reward_name.Length > 10 || @item.reward_name.Length > 10))
+                                        {
+                                            <p class="m-0">@item.reward_name.Substring(0, 10) @item.reward_name.Substring(0, 10)...</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="m-0">@item.reward_name @item.reward_name</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.given_date)
+                                    </td>
+                                    <td>
+                                        @if (item.status == true)
+                                        {
+                                            <p class="badge badge-success">Approved</p>
+                                        }
+                                        else if (item.status == false)
+                                        {
+                                            <p class="badge badge-danger">Rejected</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="badge badge-warning">Pending</p>
+                                        }
+                                    </td>
+                                    <td class="float-right">
+                                        @*  <a onclick="deleteConf(@item.id)" class="text-danger ml-2" id="DeleteLink">
                                         <i class="feather icon-trash-2 fa-fw"></i>
                                     </a>
                                     <a asp-action="Edit" asp-route-id="@item.id" class="text-success ml-2">
                                         <i class="feather icon-edit fa-fw"></i>
                                     </a> *@
-                                    <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
-                                        View
-                                    </a>
-                                </td>
-                            </tr>
+                                        <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>

@@ -60,6 +60,17 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
+                var lastid = _context.Position_Level_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (lastid != 0)
+                {
+                    position_Level_Types.id = lastid + 1;
+                }
+                else
+                {
+                    position_Level_Types.id = 1;
+                }
                 _context.Add(position_Level_Types);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

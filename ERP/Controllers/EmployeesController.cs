@@ -8,16 +8,14 @@ using X.PagedList;
 using System.Drawing;
 using Barcoder.Renderer.Image;
 using Barcoder.Code128;
-using System;
 using System.Globalization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Linq;
-using System.IO;
 using QRCoder;
-using ERP.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ERP.Models.HRMS.Address;
+using HRMS.Office;
+using ERP.Interface;
+using HRMS.Education_management;
 
 namespace ERP.Controllers
 {
@@ -26,12 +24,12 @@ namespace ERP.Controllers
     {
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
-        private readonly ICacheService _cacheService;
-        public EmployeesController(employee_context context, UserManager<User> userManager,ICacheService cacheService)
+        /*private readonly ICacheService _cacheService;*/
+        public EmployeesController(employee_context context, UserManager<User> userManager/*,ICacheService cacheService*/)
         {
             _context = context;
             _userManager = userManager;
-            _cacheService = cacheService;
+        /*    _cacheService = cacheService;*/
         }
 
         // GET: Employees
@@ -46,7 +44,7 @@ namespace ERP.Controllers
             var expiryTime = DateTimeOffset.Now.AddMinutes(5);
 
             // Remove the cache entry for "Employees" key
-            _cacheService.RemoveData("Employees");
+          /*  _cacheService.RemoveData("Employees");
 
             var cacheData = _cacheService.GetData("Employees");
             if (!string.IsNullOrEmpty(cacheData))
@@ -54,7 +52,7 @@ namespace ERP.Controllers
                 var deserializedData = JsonConvert.DeserializeObject<IEnumerable<Employee>>(cacheData);
                 var pagedData = new StaticPagedList<Employee>(deserializedData, pageNumber, pageSize, deserializedData.Count());
                 return View(pagedData);
-            }
+            }*/
 
             // Apply search term filter
             if (!string.IsNullOrEmpty(searchTerm))
@@ -84,6 +82,7 @@ namespace ERP.Controllers
                 .Where(q => q.user_id != null)
                 .Select(e => new Employee
                 {
+                    id = e.id,
                     first_name = e.first_name,
                     father_name = e.father_name,
                     grand_father_name = e.grand_father_name,
@@ -123,8 +122,9 @@ namespace ERP.Controllers
             };
 
             var serializedData = JsonConvert.SerializeObject(pagedEmployees, serializerSettings);
+/*
+            _cacheService.SetData("Employees", serializedData, expiryTime);*/
 
-            _cacheService.SetData("Employees", serializedData, expiryTime);
             return View(pagedEmployees);
         }
 
@@ -146,7 +146,7 @@ namespace ERP.Controllers
                 .Include(e => e.Employee_Office.Position)
                 .Include(e => e.Marital_Status_Types)
                 .Include(e => e.Language)
-                .Include(e => e.Family_History)
+                 .Include(e => e.Family_History)
                 .Include(e => e.Emergency_contact)
                 .FirstOrDefault(a => a.user_id == users);
                 
@@ -161,55 +161,112 @@ namespace ERP.Controllers
             }
             
         }
-
+        
+        [HttpGet]
+        [Route("Detail/{id}")]
         //Hr employee Detail
-        public IActionResult Detail(int? id)
+        public async Task<IActionResult> Detail(int? id)
         {
-            var employee = _context.Employees
-            .Include(e => e.Employee_Address.Region)
-            .Include(e => e.Employee_Address.Zone)
-            .Include(e => e.Employee_Address.Subcity)
-            .Include(e => e.Employee_Address.Woreda)
-            .Include(e => e.Employee_Contact)
-            .Include(e => e.Employee_Office.Division)
-            .Include(e => e.Employee_Office.Department)
-            .Include(e => e.Employee_Office.Team)
-            .Include(e => e.Employee_Office.Employement_Type)
-            .Include(e => e.Employee_Office.Position)
-            .Include(e => e.Emergency_contact)
-            .Include(e => e.Family_History)
-            .Include(e => e.Language)
-            .Include(e => e.Marital_Status_Types)
-            .FirstOrDefault(e=> e.id == id);
-
-            if (employee == null)
+            if(id != 0)
             {
-                ViewData["Employee"] = null;
-                return View();
+                var employee = await _context.Employees
+                    .Include(e => e.Employee_Address.Region)
+                    .Include(e => e.Employee_Address.Zone)
+                    .Include(e => e.Employee_Address.Subcity)
+                    .Include(e => e.Employee_Address.Woreda)
+                    .Include(e => e.Employee_Contact)
+                    .Include(e => e.Employee_Office.Division)
+                    .Include(e => e.Employee_Office.Department)
+                    .Include(e => e.Employee_Office.Team)
+                    .Include(e => e.Employee_Office.Employement_Type)
+                    .Include(e => e.Employee_Office.Position)
+                    .Include(e => e.Marital_Status_Types)
+                    .Include(e => e.Language)
+                     .Include(e => e.Family_History)
+                    .Include(e => e.Emergency_contact)
+                    .FirstOrDefaultAsync(e => e.id == id);
+
+                if (employee == null)
+                {
+                    ViewData["Employee"] = null;
+                    return View();
+                }
+                else
+                {
+                    if (employee.employee_code != null && employee.employee_code.Length >= 4)
+                    {
+                        ViewBag.IssuedMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+                        ViewBag.monthinamh = getEthiopianMonth();
+                        ViewBag.IssuedYear = DateTime.Now.Year;
+                        ViewBag.ExpairyYear = DateTime.Now.Year + 14;
+                        ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
+                        ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
+                    }
+
+                    ViewData["Employee"] = employee;
+                    return View();
+                }
             }
             else
             {
-                if(employee.employee_code != null && employee.employee_code.Length >= 4)
-                {
-                    ViewBag.IssuedMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
-                    ViewBag.monthinamh = getEthiopianMonth();
-                    ViewBag.IssuedYear = DateTime.Now.Year;
-                    ViewBag.ExpairyYear = DateTime.Now.Year + 14;
-                    ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
-                    ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
-                }
-
-                ViewData["Employee"] = employee;
-                return View();
+                return NotFound();
             }
 
         }
 
 
+        [HttpGet]
+
+        public IEnumerable<Subcity> GetSubcitiesByRegionId(int regionId)
+        {
+            return _context.Subcitys
+                .Where(s => s.region_id == regionId)
+                .ToList();
+        }
+
+        [HttpGet]
+        public IEnumerable<Zone> GetZoneByRegionId(int regionId)
+        {
+            return _context.Zones
+                .Where(s => s.region_id == regionId)
+                .ToList();
+        }
+
+        [HttpGet]
+        public IEnumerable<Woreda> GetWoredaByZoneId(int zoneId)
+        {
+            return _context.Woredas
+                .Where(s => s.zone_id == zoneId)
+                .ToList();
+        }
+
+        [HttpGet]
+        public IEnumerable<Woreda> GetWoredaBySubcityId(int subcityId)
+        {
+            return _context.Woredas
+                .Where(s => s.subcity_id == subcityId)
+                .ToList();
+        }
+
+        public IEnumerable<Department> GetDepartmentByDivisionId(int divisionId)
+        {
+            return _context.Departments
+                .Where(s => s.division_id == divisionId)
+                .ToList();
+        }
+
+        public IEnumerable<Team> GetTeamByDepartmentId(int departmentId)
+        {
+            return _context.Teams
+                .Where(s => s.department_id == departmentId)
+                .ToList();
+        }
+
         // GET: Employees/Create
         public IActionResult Create()
         {
             var users = _userManager.GetUserId(HttpContext.User);
+        
             var emp = _context.Employees.
                 Include(e => e.Employee_Address.Region)
                 .Include(e => e.Employee_Address.Zone)
@@ -277,26 +334,47 @@ namespace ERP.Controllers
                 employee.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
                 employee.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 employee.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
+                //employee.end_date = Convert.ToDateTime(HttpContext.Request.Form["EndDate"]);
+                employee.profile_status = null;
+                employee.work_status = null;
+
+                if (double.TryParse(HttpContext.Request.Form["Salary"], out double salary))
+                {
+                    employee.salary = salary;
+                }
+                else
+                {
+                    employee.salary = null;
+                }
+
                 employee.work_status = true;
                 employee.profile_picture = UploadPicture(file);
                 employee.user_id = user.Id;
-                employee.salary = Convert.ToDouble(HttpContext.Request.Form["salary"]);
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
-
 
                 Employee_Address address = new Employee_Address();
               
-;                address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
-                address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
-                address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
+;               address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
+                if (int.TryParse(HttpContext.Request.Form["Subcity"], out int subcity))
+                {
+                    address.subcity_id = subcity;
+                }
+                else
+                {
+                    address.subcity_id = null;
+                }
+                if (int.TryParse(HttpContext.Request.Form["Zone"], out int zone))
+                {
+                    address.zone_id = zone;
+                }
+                else
+                {
+                    address.zone_id = null;
+                }
+
                 address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
                 address.kebele = Convert.ToString(HttpContext.Request.Form["kebele"]);
                 address.primary_address = Convert.ToString(HttpContext.Request.Form["PrimaryAddress"]);
-                address.employee_id = employee.id;
-                _context.Add(address);
-                await _context.SaveChangesAsync();
-
+               
 
                 Employee_Contact contact = new Employee_Contact();
 
@@ -304,10 +382,7 @@ namespace ERP.Controllers
                 contact.alternative_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
                 contact.home_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
                 contact.internal_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
-                contact.employee_id = employee.id;
-                _context.Add(contact);
-                await _context.SaveChangesAsync();
-
+                
 
                 Employee_Office office = new Employee_Office();
 
@@ -316,7 +391,26 @@ namespace ERP.Controllers
                 office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-                office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);
+                if (int.TryParse(HttpContext.Request.Form["OfficeNumber"], out int offices))
+                {
+                    office.office_number = offices;
+                }
+                else
+                {
+                    office.office_number = null;
+                }
+
+                _context.Add(employee);
+                await _context.SaveChangesAsync(); 
+
+                address.employee_id = employee.id;
+                _context.Add(address);
+                await _context.SaveChangesAsync();
+
+                contact.employee_id = employee.id;
+                _context.Add(contact);
+                await _context.SaveChangesAsync();
+
                 office.employee_id = employee.id;
                 _context.Add(office);
                 await _context.SaveChangesAsync();
@@ -344,33 +438,64 @@ namespace ERP.Controllers
                 emp.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
                 emp.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 emp.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
-                _context.Update(emp);
-                await _context.SaveChangesAsync();
+                //emp.end_date = Convert.ToDateTime(HttpContext.Request.Form["EndDate"]);
+
+                if (double.TryParse(HttpContext.Request.Form["Salary"], out double salary))
+                {
+                    emp.salary = salary;
+                }
+                else
+                {
+                    emp.salary = null;
+                }
 
                 emp_address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
-                emp_address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
-                emp_address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
-                emp_address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
+                if (Convert.ToInt32(HttpContext.Request.Form["Subcity"]) != 0)
+                {
+                    emp_address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
+                }
+
+                if (Convert.ToInt32(HttpContext.Request.Form["Zone"]) != 0)
+                {
+                    emp_address.zone_id = Convert.ToInt32(HttpContext.Request.Form["Zone"]);
+                }
+
+                if (Convert.ToInt32(HttpContext.Request.Form["Woreda"]) != 0)
+                {
+                    emp_address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
+                }
+
                 emp_address.kebele = Convert.ToString(HttpContext.Request.Form["kebele"]);
                 emp_address.primary_address = Convert.ToString(HttpContext.Request.Form["PrimaryAddress"]);
-                _context.Update(emp_address);
-                await _context.SaveChangesAsync();
-
-
+               
                 emp_contact.phonenumber = Convert.ToString(HttpContext.Request.Form["PhoneNumber"]);
                 emp_contact.alternative_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
                 emp_contact.home_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
                 emp_contact.internal_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
-                _context.Update(emp_contact);
-                await _context.SaveChangesAsync();
-
 
                 emp_office.division_id = Convert.ToInt32(HttpContext.Request.Form["Division"]);
                 emp_office.department_id = Convert.ToInt32(HttpContext.Request.Form["Department"]);
                 emp_office.team_id = Convert.ToInt32(HttpContext.Request.Form["Team"]);
                 emp_office.position_id = Convert.ToInt32(HttpContext.Request.Form["Position"]);
                 emp_office.employment_type_id = Convert.ToInt32(HttpContext.Request.Form["EmploymentType"]);
-                emp_office.office_number = Convert.ToInt32(HttpContext.Request.Form["OfficeNumber"]);
+                if (int.TryParse(HttpContext.Request.Form["OfficeNumber"], out int office))
+                {
+                    emp_office.office_number = office;
+                }
+                else
+                {
+                    emp_office.office_number = null;
+                }
+
+                _context.Update(emp);
+                await _context.SaveChangesAsync();
+
+                _context.Update(emp_address);
+                await _context.SaveChangesAsync();
+
+                _context.Update(emp_contact);
+                await _context.SaveChangesAsync();
+
                 _context.Update(emp_office);
                 await _context.SaveChangesAsync();
 

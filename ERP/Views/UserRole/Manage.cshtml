@@ -9,7 +9,21 @@
         <div class="card-header border-bottom-0">
             <div class="card-title mb-5">
                 <h5 class="text-muted text-"> Manage Roles</h5><br />
-                Add/Remove Roles for User / @ViewBag.UserName.
+                @{
+                    var userName = ViewBag.UserName as string;
+                    var isUserNameNull = string.IsNullOrEmpty(userName);
+                }
+
+                @if (!isUserNameNull)
+                {
+                    <h3>User: @userName</h3>
+                    // Code to add or remove roles for the user
+                }
+                else
+                {
+                    <h3>No user specified</h3>
+                    // Handle the case when @ViewBag.UserName is null
+                }
                 <form method="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="card-body">

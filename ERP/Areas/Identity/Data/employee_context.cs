@@ -7,8 +7,6 @@ using HRMS.Types;
 using HRMS.Education_management;
 using ERP.Models.HRMS.File_managment;
 using ERP.Models.HRMS.Employee_id;
-using ERP.Models.HRMS.Training;
-using ERP.Models.HRMS.Reward_managment;
 using ERP.Models.HRMS.Types;
 
 namespace ERP.Areas.Identity.Data

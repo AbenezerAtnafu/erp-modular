@@ -6,6 +6,8 @@ using HRMS.Education_management;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using ERP.Models.HRMS.File_managment;
+using X.PagedList;
+using ERP.Models.HRMS.Employee_managments;
 
 
 namespace ERP.Controllers.HRMs
@@ -15,31 +17,92 @@ namespace ERP.Controllers.HRMs
         private readonly employee_context _context;
         private readonly UserManager<User> _userManager;
         private readonly IFileProvider fileProvider;
-        public EducationsController(employee_context context, UserManager<User> userManager, IFileProvider fileProvider)
+
+        public EducationsController(employee_context context, UserManager<User> userManager, IFileProvider fileProviderMinioClient)
         {
             _context = context;
             _userManager = userManager;
             this.fileProvider = fileProvider;
+
         }
 
         // GET: Educations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index( int? page)
         {
-            var employee_context = _context.Educations.Include(e => e.Education_Level_Type).Include(e => e.Education_Program_Type).Include(e => e.Employee);
-            return View(await employee_context.ToListAsync());
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            // Query to retrieve all educations including related entities
+            IQueryable<Education> all_educations = _context.Educations.Include(d => d.Education_Level_Type)
+                .Include(d => d.Education_Program_Type).Include(d => d.Employee);
+
+       
+
+            // Retrieve counts for different education statuses
+            ViewBag.count_total = all_educations.Count();
+            ViewBag.count_Approved = all_educations.Where(q => q.status == true).Count();
+            ViewBag.count_Pending = all_educations.Where(q => q.status == null).Count();
+            ViewBag.count_Rejected = all_educations.Where(q => q.status == false).Count();
+
+            // Retrieve paginated educations
+            var educations_count = await all_educations.CountAsync();
+            var educations = await all_educations.OrderBy(u => u.created_date)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Create a StaticPagedList with the paginated educations
+            var paged_educations = new StaticPagedList<Education>(educations, pageNumber, pageSize, educations_count);
+
+            return View(paged_educations);
         }
-        public async Task<IActionResult> Index_Personal()
+
+        // GET: Educations/IndexPersonal
+        public async Task<IActionResult> IndexPersonal(string searchTerm, int? page)
         {
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
             User user = await _userManager.GetUserAsync(User);
             var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
 
             if (check_employee != null)
             {
-                var assign_education = _context.Educations.Where(e => e.employee_id == check_employee.id).Include(e => e.Employee).Include(e => e.Education_Level_Type).Include(e => e.Education_Program_Type);
-                return View(assign_education);
+
+                IQueryable<Education> assign_education = _context.Educations
+                   .Where(e => e.employee_id == check_employee.id)
+                   .Include(e => e.Employee)
+                   .Include(e => e.Education_Level_Type)
+                   .Include(e => e.Education_Program_Type);
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                    assign_education = assign_education.Where(u =>
+                        u.filed_of_study.ToLower().Contains(searchTerm)
+                    );
+                }
+                ViewBag.count_total = assign_education.Count();
+                ViewBag.count_Approved = assign_education.Where(q => q.status == true).Count();
+                ViewBag.count_Pending = assign_education.Where(q => q.status == null).Count();
+                ViewBag.count_Rejected = assign_education.Where(q => q.status == false).Count();
+                var educations_count = await assign_education.CountAsync();
+                var educations = await assign_education
+                    .OrderBy(u => u.filed_of_study)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+                var paged_educations = new StaticPagedList<Education>(educations, pageNumber, pageSize, educations_count);
+                return View("IndexPersonal", paged_educations); // Specify the view name "Index_Personal"
+
             }
             else
             {
+
+                ViewBag.count_total = 0;
+                ViewBag.count_Approved = 0;
+                ViewBag.count_Pending = 0;
+                ViewBag.count_Rejected = 0;
                 TempData["Warning"] = "No Employee Info";
                 return View();
             }
@@ -84,8 +147,8 @@ namespace ERP.Controllers.HRMs
             }
 
             var education = await _context.Educations.Include(e => e.Employee)
-              .Include(e => e.Employee.User)
-              .Include(a=> a.Education_Level_Type)
+             
+              .Include(a => a.Education_Level_Type)
               .Include(a => a.Education_Program_Type)
 
               .FirstOrDefaultAsync(m => m.id == id);
@@ -100,29 +163,10 @@ namespace ERP.Controllers.HRMs
 
         }
 
-        /* public async Task<IActionResult> Details(int id)
-         {
-             var education = await _context.Educations.FindAsync(id);
 
-             if (education == null)
-             {
-                 return NotFound();
-             }
-             int currentPage = 1;
-
-             // Pass the currentPage variable to the view
-             ViewData["CurrentPage"] = currentPage;
-             education.EducationDocumentPaths = education.EducationDocumentPathsField?
-                 .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)?
-                 .Select(path => path.Trim())
-                 .Where(path => !string.IsNullOrEmpty(path))
-                 .ToArray();
-
-             return View(education);
+   
 
 
-         }
- */
         // download file uploaded 
         public async Task<IActionResult> Download(string filename)
         {
@@ -735,7 +779,7 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,institution_name,institution_email,institution_website,filed_of_study,description,start_date,end_date,Identificationnumber,status,filestatus,feedback,created_date,updated_date,employee_id,educational_program_id,educational_level_type_id")] Education education, FileUpload FileUpload, List<IFormFile> FormFile)
+        public async Task<IActionResult> Create([Bind("id,institution_name,institution_email,institution_website,filed_of_study,description,start_date,end_date,Identificationnumber,status,filestatus,feedback,created_date,updated_date,employee_id,educational_program_id,educational_level_type_id,gpa")] Education education, FileUpload FileUpload, List<IFormFile> FormFile)
         {
 
             User users = await _userManager.GetUserAsync(User);
@@ -748,7 +792,7 @@ namespace ERP.Controllers.HRMs
             education.updated_date = DateTime.Now;
             ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
             ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
-
+            
             if (check_employee != null)
             {
                 if (education.end_date >= education.start_date)
@@ -781,11 +825,14 @@ namespace ERP.Controllers.HRMs
                                       Directory.GetCurrentDirectory(), syspath, formFile.FileName);
                                     var files = new FileUpload
                                     {
+
                                         id = 0,
                                         created_at = DateTime.Now.Date,
                                         name = filePath,
                                         Identificationnumbers = random_max
                                     };
+                                    
+
 
                                     _context.Add(files);
                                     await _context.SaveChangesAsync();
@@ -804,8 +851,8 @@ namespace ERP.Controllers.HRMs
                 {
                     TempData["Warning"] = "End date must be grater than start date";
                     return View();
-                 }
-             }
+                }
+            }
             else
             {
                 TempData["Warning"] = "Fill in your information first";
@@ -815,13 +862,32 @@ namespace ERP.Controllers.HRMs
 
 
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexPersonal));
         }
 
 
 
 
 
+        public static async Task<List<string>> GetFilePaths(List<IFormFile> formFiles, string directoryPath)
+        {
+            List<string> filePaths = new List<string>();
+
+            foreach (var formFile in formFiles)
+            {
+                var fileName = Path.GetFileName(formFile.FileName);
+                var filePath = Path.Combine(directoryPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+                filePaths.Add(filePath);
+            }
+
+            return filePaths;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -905,7 +971,7 @@ namespace ERP.Controllers.HRMs
             }
             ViewData["educational_level_type_id"] = new SelectList(_context.Education_Level_Types, "id", "name", education.educational_level_type_id);
             ViewData["educational_program_id"] = new SelectList(_context.Education_Program_Types, "id", "name", education.educational_program_id);
-           
+
             return View(education);
         }
 
@@ -982,14 +1048,14 @@ namespace ERP.Controllers.HRMs
             {
                 _context.Educations.Remove(education);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EducationExists(int id)
         {
-          return (_context.Educations?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Educations?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
-using ERP.Models.HRMS.Reward_managment;
+using ERP.Models.HRMS.Employee_managments;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.FileProviders;
 
 namespace ERP.Controllers.HRMs
 {
@@ -71,10 +67,21 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,reward_name,description,reason_of_reward,given_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Reward reward)
+        public async Task<IActionResult> Create([Bind("reward_name,description,reason_of_reward,given_date,status,feedback,created_date,updated_date,employee_id,Created_by,Updated_by,approved_by")] Reward reward)
         {
             if (ModelState.IsValid)
             {
+                var lastid = _context.Rewards.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (lastid != 0)
+                {
+                    reward.id = lastid + 1;
+                }
+                else
+                {
+                    reward.id = 1;
+                }
                 _context.Add(reward);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

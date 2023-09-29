@@ -15,7 +15,7 @@ namespace HRMS.Education_management
         
         [Required(ErrorMessage = "The 'institution_name' field is required.")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "The 'institution_name' field must be between 2 and 100 characters.")]
-        public string institution_name { get; set; }
+        public string? institution_name { get; set; }
         [StringLength(100, MinimumLength = 2, ErrorMessage = "The 'institution email' field must be between 2 and 100 characters.")]
         public string? institution_email { get; set; }
         [StringLength(100, MinimumLength = 2, ErrorMessage = "The 'institution website' field must be between 2 and 100 characters.")]
@@ -23,8 +23,9 @@ namespace HRMS.Education_management
 
         [Required(ErrorMessage = "The 'filed of study' field is required.")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "The 'filed of study' field must be between 2 and 100 characters.")]
-        public string filed_of_study { get; set; }
-        public float? gpa { get;}
+        public string? filed_of_study { get; set; }
+        public double? gpa { get; set; }
+
         [StringLength(200, ErrorMessage = "The 'description' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string? description { get; set; }
 

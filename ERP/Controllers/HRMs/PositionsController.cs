@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
@@ -20,11 +21,30 @@ namespace ERP.Controllers
         }
 
         // GET: Positions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-              return _context.Position != null ? 
-                          View(await _context.Position.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Position'  is null.");
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Position> all_positions = _context.Position;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_positions = all_positions.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var positons_count = await all_positions.CountAsync();
+            var positions = await all_positions
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_positions = new StaticPagedList<Position>(positions, pageNumber, pageSize, positons_count);
+            return View(paged_positions);
         }
 
         // GET: Positions/Details/5
@@ -59,6 +79,7 @@ namespace ERP.Controllers
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Position position)
         {
             if(ModelState.IsValid){
+               
                 position.created_date = DateTime.Now.Date;
                 position.updated_date = DateTime.Now.Date;
                 _context.Add(position);

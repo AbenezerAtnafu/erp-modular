@@ -52,6 +52,7 @@
     <PackageReference Include="Barcoder" Version="2.0.0" />
     <PackageReference Include="Barcoder.Renderer.Image" Version="2.0.0" />
     <PackageReference Include="Barcoder.Renderer.Svg" Version="2.0.0" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="MessagePackAnalyzer" Version="2.3.75" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
@@ -68,6 +69,8 @@
     <PackageReference Include="Microsoft.Playwright" Version="1.37.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Minio" Version="5.0.0" />
+    <PackageReference Include="Minio.AspNetCore" Version="5.0.0" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
     <PackageReference Include="X.PagedList.Mvc.core" Version="8.4.7" />

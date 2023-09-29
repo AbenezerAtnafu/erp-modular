@@ -1,0 +1,243 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model X.PagedList.IPagedList<HRMS.Education_management.Education>
+@{
+    ViewData["Title"] = "IndexPersonal";
+}
+@{
+    var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
+}
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div>
+            <br />
+            <h5 style="margin-left: 5px;"> Employee Education  List</h5>
+            <br />
+        </div>
+        <div class="d-flex justify-content-center">
+            @* Total Request *@
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 ">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="mb-4 fas fa-chart-bar total-request-icon" style="color: #007bff;font-size: 24px; margin-right: 5px;"></i>
+                                <span class="mb-4 text-primary" style="margin-bottom: 0;">Total Request</span>
+                            </div>
+                            <h6 class="mb-4" style="margin-bottom: 0;">@ViewBag.count_total</h6>
+                        </div>
+
+                        <div class="progress m-t-30" style="height: 7px;">
+                            <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Approved Request *@
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="mb-4 fas fa-check-circle approved-icon" style="color: #28a745;font-size: 24px; margin-right: 5px;"></i>
+                                <span class="mb-4 text-success" style="margin-bottom: 0;">Approved Requests</span>
+                            </div>
+                            <h6 class="mb-4" style="margin-bottom: 0;">@ViewBag.count_Approved</h6>
+                        </div>
+
+                        <div class="progress m-t-30" style="height: 7px;">
+                            <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Pending Requests *@
+
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="mb-4 fas fa-clock pending-icon" style="color: #ffc107;font-size: 24px; margin-right: 5px;"></i>
+                                <span class="mb-4 text-warning" style="margin-bottom: 0;">Pending Requests</span>
+                            </div>
+                            <h6 class="mb-4" style="margin-bottom: 0;">@ViewBag.count_Pending</h6>
+                        </div>
+                        <div class="progress m-t-30" style="height: 7px;">
+                            <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @* Rejected Requests *@
+
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="mb-4 fas fa-times-circle rejected-icon" style="color:#dc3545; font-size: 24px; margin-right: 5px;"></i>
+                                <span class="mb-4 text-danger" style="margin-bottom: 0;">Rejected Requests</span>
+                            </div>
+                            <h6 class="mb-4" style="margin-bottom: 0;">@ViewBag.count_Rejected</h6>
+                        </div>
+                        <div class="progress m-t-30" style="height: 7px;">
+                            <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* End of card *@
+
+        </div>
+        <div class="card-header">
+            <a class="btn btn-info float-right" asp-action="Create"><i class="feather icon-plus fa-fw"></i>Create New</a>
+            <form asp-action="IndexPersonal">
+                <div class="d-flex justify-content">
+                    <!-- Input field -->
+                    <div class="input-group mb-3 w-25">
+                        <input type="text" class="form-control" placeholder="Search by field of study" name="searchTerm" id="Search" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="feather icon-search"></i></span>
+                        </div>
+                    </div>
+                    <!-- Clear button -->
+
+                    <div>
+                        @if (string.IsNullOrEmpty(searchTerm))
+                        {
+                            <a class="btn btn-secondary" style="margin-right:10px;" asp-action="IndexPersonal">Clear</a>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Employee Full Name
+                            </th>
+                            <th>
+                                Institution Name
+                            </th>
+                            <th>
+                                Filed of Study
+                            </th>
+                            <th>
+                                Last Updated
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.first_name) @Html.DisplayFor(modelItem => item.Employee.father_name)
+                                </td>
+
+                                <td>
+                                    @if (@item.institution_name != null && @item.institution_name.Length > 10)
+                                    {
+                                        <h6 class="mb-1">@item.institution_name.Substring(0, 10)...</h6>
+                                    }
+                                    else
+                                    {
+                                        <h6 class="mb-1">@Html.DisplayFor(modelItem => @item.institution_name)</h6>
+                                    }
+                                </td>
+                                <td>
+                                    @if (@item.filed_of_study != null && @item.filed_of_study.Length > 15)
+                                    {
+                                        <h6 class="mb-1">@item.filed_of_study.Substring(0, 15)...</h6>
+                                    }
+                                    else
+                                    {
+                                        <h6 class="mb-1">@Html.DisplayFor(modelItem => @item.filed_of_study)</h6>
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.updated_date)
+                                </td>
+                                <td>
+                                    @if (item.status == true)
+                                    {
+                                        <span class="badge badge-success">Approved</span>
+                                    }
+                                    else if (item.status == false)
+                                    {
+                                        <span class="badge badge-danger">Rejected</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning">Pending </span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.id">
+
+                                        <i class="fa fa-angle-double-right fa-fw"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        }
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <ul class="pagination justify-content-center">
+                        <div class="pagination">
+                            <ul class="pagination justify-content-center">
+                                @if (Model != null && Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link prev-button" href="@Url.Action("IndexPersonal", new { page = Model.PageNumber - 1 })">Previous</a>
+                                    </li>
+                                }
+
+                                @if (Model != null && Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link next-button" href="@Url.Action("IndexPersonal", new { page = Model.PageNumber + 1 })">Next</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        @if (Model != null && Model.PageNumber != 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link first-button" href="@Url.Action("IndexPersonal", new { page = 1 })">Go to the first page</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

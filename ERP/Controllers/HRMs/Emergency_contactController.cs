@@ -4,6 +4,7 @@ using ERP.Areas.Identity.Data;
 using ERP.Models.HRMS.Employee_managments;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
+using HRMS.Types;
 
 namespace ERP.Controllers.HRMs
 {
@@ -68,13 +69,16 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id")] Emergency_contact emergency_contact)
         {
-         
+
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
 
+            
+
+
             if (employee != null)
             {
-                emergency_contact.employee_id= employee.id; 
+                emergency_contact.employee_id = employee.id;
                 emergency_contact.created_date = DateTime.Now.Date;
                 emergency_contact.updated_date = DateTime.Now.Date;
                 _context.Add(emergency_contact);
@@ -114,7 +118,7 @@ namespace ERP.Controllers.HRMs
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,full_name,phonenumber,alternative_phonenumber,Relationship,employee_id,created_date,updated_date")] Emergency_contact emergency_contact)
         {
-            
+
             if (id != emergency_contact.id)
             {
                 return NotFound();
@@ -175,14 +179,16 @@ namespace ERP.Controllers.HRMs
             {
                 _context.emergency_Contacts.Remove(emergency_contact);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool Emergency_contactExists(int id)
         {
-          return (_context.emergency_Contacts?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.emergency_Contacts?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
+
+
 }

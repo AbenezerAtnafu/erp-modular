@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
@@ -20,13 +21,31 @@ namespace ERP.Controllers
         }
 
         // GET: Employement_Type
-        public async Task<IActionResult> Index()
+     public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-              return _context.Employement_Types != null ? 
-                          View(await _context.Employement_Types.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Employement_Types'  is null.");
-        }
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
 
+            IQueryable<Employement_Type> all_employement_types= _context.Employement_Types;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_employement_types = all_employement_types.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var all_employement_types_count= await all_employement_types.CountAsync();
+            var employement_types = await all_employement_types
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_employement_types = new StaticPagedList<Employement_Type>(employement_types, pageNumber, pageSize, all_employement_types_count);
+            return View(paged_employement_types);
+        }
         // GET: Employement_Type/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -60,6 +79,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                
+
                 _context.Add(employement_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -61,7 +61,8 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,subcity_id,zone_id")] Woreda woreda)
         {
-   
+                
+
                 woreda.created_date = DateTime.Now;
                 woreda.updated_date = DateTime.Now;
                 _context.Add(woreda);

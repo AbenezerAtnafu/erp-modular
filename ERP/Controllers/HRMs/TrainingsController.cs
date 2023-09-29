@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
-using ERP.Models.HRMS.Training;
+using ERP.Models.HRMS.Employee_managments;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
@@ -63,6 +60,7 @@ namespace ERP.Controllers.HRMs
         // GET: Trainings/Create
         public IActionResult Create()
         {
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name");
             return View();
         }
 
@@ -79,7 +77,7 @@ namespace ERP.Controllers.HRMs
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number", training.employee_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type);
             return View(training);
         }
 
@@ -96,7 +94,7 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number", training.employee_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type);
             return View(training);
         }
 
@@ -132,7 +130,7 @@ namespace ERP.Controllers.HRMs
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["employee_id"] = new SelectList(_context.Employees, "id", "back_account_number", training.employee_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type);
             return View(training);
         }
 

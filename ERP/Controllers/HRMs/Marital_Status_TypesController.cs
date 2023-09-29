@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using X.PagedList;
 
 namespace ERP.Controllers
 {
@@ -20,11 +21,30 @@ namespace ERP.Controllers
         }
 
         // GET: Marital_Status_Types
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-              return _context.Marital_Status_Types != null ? 
-                          View(await _context.Marital_Status_Types.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Marital_Status_Types'  is null.");
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Marital_Status_Types> all_Marital_Status_Types = _context.Marital_Status_Types;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_Marital_Status_Types = all_Marital_Status_Types.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var Marital_Status_Types_Count = await all_Marital_Status_Types.CountAsync();
+            var Marital_Status_Types = await all_Marital_Status_Types
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_result = new StaticPagedList<Marital_Status_Types>(Marital_Status_Types, pageNumber, pageSize, Marital_Status_Types_Count);
+            return View(paged_result);
         }
 
         // GET: Marital_Status_Types/Details/5
@@ -60,6 +80,7 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 marital_Status_Types.created_date = DateTime.Now.Date;
                 marital_Status_Types.updated_date= DateTime.Now.Date;
                 _context.Add(marital_Status_Types);

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
+using X.PagedList;
+using ERP.Models.HRMS.Employee_managments;
 
 namespace ERP.Controllers
 {
@@ -20,11 +22,30 @@ namespace ERP.Controllers
         }
 
         // GET: Family_RelationShip_Type
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-              return _context.Family_RelationShip_Types != null ? 
-                          View(await _context.Family_RelationShip_Types.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Family_RelationShip_Types'  is null.");
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Family_RelationShip_Type> all_Family_RelationShip_Types = _context.Family_RelationShip_Types;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_Family_RelationShip_Types = all_Family_RelationShip_Types.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var Family_RelationShip_Types_Count = await all_Family_RelationShip_Types.CountAsync();
+            var Family_RelationShip_Types = await all_Family_RelationShip_Types
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_result = new StaticPagedList<Family_RelationShip_Type>(Family_RelationShip_Types, pageNumber, pageSize, Family_RelationShip_Types_Count);
+            return View(paged_result);
         }
 
         // GET: Family_RelationShip_Type/Details/5
@@ -60,10 +81,15 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+               
+
+
                 family_RelationShip_Type.created_date = DateTime.Now.Date;
                 family_RelationShip_Type.updated_date = DateTime.Now.Date;
                 _context.Add(family_RelationShip_Type);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "New Family relationship type is added.";
                 return RedirectToAction(nameof(Index));
             }
             return View(family_RelationShip_Type);

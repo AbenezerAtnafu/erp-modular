@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Office;
+using X.PagedList;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace ERP.Controllers.HRMs
 {
@@ -20,10 +22,30 @@ namespace ERP.Controllers.HRMs
         }
 
         // GET: Departments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
-            var employee_context = _context.Departments.Include(d => d.Division);
-            return View(await employee_context.ToListAsync());
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
+
+            IQueryable<Department> all_departments = _context.Departments.Include(d => d.Division);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower(); // Convert the search term to lowercase
+
+                all_departments = all_departments.Where(u =>
+                    u.name.ToLower().Contains(searchTerm)
+                );
+            }
+
+            var department_count = await all_departments.CountAsync();
+            var departments = await all_departments
+                .OrderBy(u => u.name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            var paged_departments = new StaticPagedList<Department>(departments, pageNumber, pageSize, department_count);
+            return View(paged_departments);
         }
 
         // GET: Departments/Details/5
@@ -61,6 +83,12 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
+
+               
+
+
+
+
                 department.created_date = DateTime.Now;
                 department.updated_date = DateTime.Now;
                 _context.Add(department);

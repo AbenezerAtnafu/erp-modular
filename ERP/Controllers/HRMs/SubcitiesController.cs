@@ -59,8 +59,11 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,region_id")] Subcity subcity)
         {
+
            
-                subcity.created_date = DateTime.Now;
+
+
+            subcity.created_date = DateTime.Now;
                 subcity.updated_date = DateTime.Now;
                 _context.Add(subcity);
             ViewData["region_id"] = new SelectList(_context.Regions, "id", "name", subcity.region_id);

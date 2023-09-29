@@ -24,7 +24,7 @@ function closeAlert() {
 
 
 //show end date if not currently working
-function hideEndDate() {
+/*function hideEndDate() {
     var checkbox = document.getElementById("AlreadyWorking");
         if (checkbox.checked) {
             // hide end date
@@ -33,7 +33,7 @@ function hideEndDate() {
             // show end date
             document.getElementById("EmpEndDate").style.display = "block";
         }
-}
+}*/
 
 //show end date if not currently working
 function hideMessagInput() {
@@ -214,7 +214,7 @@ function submitFirstTab() {
 function submitSecondTab() {
     var phonepattern = /^(\d{7}|\d{9})$/;
     var addresspattern = /^[a-zA-Z\s]{2,30}$/;
-    var kebelepattern = /^[a-zA-Z\s]{2,20}$/;
+    var kebelepattern = /^[a-zA-Z0-9\s]{2,20}$/;
 
     var dropdownfields = document.getElementsByClassName("second-dropdown");
     var phonevalid = false;
@@ -222,7 +222,7 @@ function submitSecondTab() {
     var intphonevalid = false;
     /*var addressfield = false;*/
     var isLoopValid = false;
-    var iskebeleValid = false;
+  
 
 
     for (var i = 0; i < dropdownfields.length; i++) {
@@ -260,19 +260,7 @@ function submitSecondTab() {
         document.getElementById("PhoneNumberValidation").textContent = ""
     }
 
-    var kebele = document.getElementById('Kebele');
-    if (kebele.value) {
-        if (!kebele.value.match(kebelepattern)) {
-            iskebeleValid = false
-            document.getElementById("kebeleValidation").textContent = "Please enter between 2 and 20 alphabetic characters."
-        } else {
-            iskebeleValid = true
-            document.getElementById("kebeleValidation").textContent = ""
-        }
-    } else {
-        iskebeleValid = true
-        document.getElementById("kebeleValidation").textContent = ""
-    }
+   
 
     var altphone = document.getElementById('AlternativePhoneNumber');
     if (altphone.value) {
@@ -305,7 +293,7 @@ function submitSecondTab() {
 
 
 
-    if (isLoopValid && altphonevalid && phonevalid && iskebeleValid && intphonevalid) {
+    if (isLoopValid && altphonevalid && phonevalid && intphonevalid) {
         console.log("ggg")
         nextButton()
     }
@@ -315,12 +303,12 @@ function submitSecondTab() {
 //third tab validation
 function submitThirdTab() {
     var tinpattern = /^[0-9]{10}$/;
-    var penpattern = /^[0-9]{4}$/;
+    // var penpattern = /^[0-9]{4}$/;
     var accountpattern = /^[0-9]{4,30}$/;
 
     var istinValid = false
     var isbankValid = false
-    var penValid = false
+/*    var penValid = false*/
 
 
     var tin = document.getElementById('TinNumber');
@@ -338,7 +326,7 @@ function submitThirdTab() {
         istinValid = true
         document.getElementById("TinNumberValidation").textContent = ""
     }
-
+/*
     var pension = document.getElementById('PensionNumber');
     if (pension.value) {
         if (!pension.value.match(penpattern)) {
@@ -351,7 +339,7 @@ function submitThirdTab() {
     } else {
         penValid = true
         document.getElementById("PensionNumberValidation").textContent = ""
-    }
+    }*/
 
     var bank = document.getElementById('BankNumber').value;
     if (!bank.match(accountpattern)) {
@@ -364,7 +352,7 @@ function submitThirdTab() {
         document.getElementById("BankNumberValidation").textContent = ""
     }
 
-    if (isbankValid && istinValid && penValid) {
+    if (isbankValid && istinValid) {
         nextButton()
     }
 }
@@ -378,7 +366,6 @@ function submitfinalTab() {
     var isLoopValid = false
     var placeValid = false
     var officeValid = false
-    var currentValid = false
     var startValid = false
 
     for (var i = 0; i < dropdownfields.length; i++) {
@@ -433,7 +420,7 @@ function submitfinalTab() {
     }
 
 
-    if (document.getElementById("AlreadyWorking").checked) {
+    /*if (document.getElementById("AlreadyWorking").checked) {
         currentValid = true
 
     } else {
@@ -446,10 +433,10 @@ function submitfinalTab() {
             document.getElementById("EndDateValidation").textContent = ""
             currentValid = true
         }
-    }
+    }*/
 
 
-    if (isLoopValid && placeValid && officeValid && currentValid && startValid) {
+    if (isLoopValid && placeValid && officeValid && startValid) {
          document.getElementById("CreateEmpForm").submit();
     }
 }
@@ -508,3 +495,158 @@ function submitRejectModal() {
         document.getElementById("RejectFormModal").submit()
     }
 }
+
+
+
+/// cascaded drop down
+$(document).ready(function () {
+    $('#RegionSelect').change(function () {
+        var selectedRegion = $(this).val();
+
+        // Clear existing city options
+        $('#ZoneSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetZoneByRegionId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { regionId: selectedRegion },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#ZoneSelect').append($('<option>').text("--select zone--").val(0));
+                $.each(response, function (index, zone) {
+                    $('#ZoneSelect').append($('<option>').text(zone.name).val(zone.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#RegionSelect').change(function () {
+        var selectedSubcity = $(this).val();
+
+        // Clear existing city options
+        $('#SubcitySelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetSubcitiesByRegionId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { regionId: selectedSubcity },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#SubcitySelect').append($('<option>').text("--select subcity--").val(0));
+                $.each(response, function (index, subcity) {
+                    $('#SubcitySelect').append($('<option>').text(subcity.name).val(subcity.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#ZoneSelect').change(function () {
+        var selectedWoreda = $(this).val();
+
+        // Clear existing city options
+        $('#WoredaSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetWoredaByZoneId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { zoneId: selectedWoreda },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#WoredaSelect').append($('<option>').text("--select woreda--").val(0));
+                $.each(response, function (index, woreda) {
+                    $('#WoredaSelect').append($('<option>').text(woreda.name).val(woreda.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#SubcitySelect').change(function () {
+        var selectedSubcity = $(this).val();
+
+        // Clear existing city options
+        $('#WoredaSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetWoredaBySubcityId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { subcityId: selectedSubcity },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#WoredaSelect').append($('<option>').text("--select woreda--").val(0));
+                $.each(response, function (index, woreda) {
+                    $('#WoredaSelect').append($('<option>').text(woreda.name).val(woreda.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#DivisionSelect').change(function () {
+        var selectedDept = $(this).val();
+
+        // Clear existing city options
+        $('#DepartmentSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetDepartmentByDivisionId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { divisionId: selectedDept },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#DepartmentSelect').append($('<option>').text("--select department--").val(0));
+                $.each(response, function (index, dept) {
+                    $('#DepartmentSelect').append($('<option>').text(dept.name).val(dept.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+
+    $('#DepartmentSelect').change(function () {
+        var selectedTeam = $(this).val();
+
+        // Clear existing city options
+        $('#TeamSelect').empty();
+
+        // Make an AJAX request to fetch cities for the selected region
+        $.ajax({
+            url: '/Employees/GetTeamByDepartmentId',     // Update the URL as per your project structure
+            type: 'GET',
+            dataType: 'json',
+            data: { departmentId: selectedTeam },
+            success: function (response) {
+                // Populate city options based on the response
+                $('#TeamSelect').append($('<option>').text("--select team--").val(0));
+                $.each(response, function (index, team) {
+                    $('#TeamSelect').append($('<option>').text(team.name).val(team.id));
+                });
+            },
+            error: function () {
+                alert('An error occurred while fetching cities.');
+            }
+        });
+    });
+});

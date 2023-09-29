@@ -1,4 +1,4 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "Register Employee";
     var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address;
     var contact = ViewData["Employee_Contact"] as ERP.Models.HRMS.Employee_managments.Employee_Contact;
@@ -169,12 +169,12 @@
                                         <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
                                         <div class="form-check pt-2">
                                             <span class="mx-2">
-                                                <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
+                                                <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
                                                 <label for="Female" class="form-check-label">Female</label>
                                             </span>
                                             <span class="mx-2">
 
-                                                <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
+                                                <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
                                                 <label for="Male" class="form-check-label">Male</label>
                                             </span>
                                         </div>
@@ -222,7 +222,10 @@
                                         <select name="Region" class="form-control second-dropdown" asp-items="ViewBag.Region" id="RegionSelect">
                                             @if (address != null)
                                             {
-                                                <option value="@address.Region.id" selected>@address.Region.name</option>
+                                                @if (address.Region != null)
+                                                {
+                                                    <option value="@address.Region.id" selected>@address.Region.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -232,13 +235,16 @@
                                         <small id="RegionValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-4 col-sm-12" id="ZoneInputTab">
                                     <div class="form-group p-2">
                                         <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
                                         <select name="Zone" class="form-control second-dropdown" asp-items="ViewBag.zone" id="ZoneSelect">
                                             @if (address != null)
                                             {
-                                                <option value="@address.Zone.id">@address.Zone.name</option>
+                                                @if (address.Zone != null)
+                                                {
+                                                    <option value="@address.Zone.id">@address.Zone.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -248,13 +254,16 @@
                                         <small id="ZoneValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-4 col-sm-12" id="SubcityInputTab">
                                     <div class="form-group p-2">
                                         <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
                                         <select name="Subcity" class="form-control second-dropdown" asp-items="ViewBag.subcity" id="SubcitySelect">
                                             @if (address != null)
                                             {
-                                                <option value="@address.Subcity.id">@address.Subcity.name</option>
+                                                @if (address.Subcity != null)
+                                                {
+                                                    <option value="@address.Subcity.id">@address.Subcity.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -271,10 +280,13 @@
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="Woreda" class="control-label">Woreda <span class="text-danger">*</span></label>
-                                        <select name="Woreda" class="form-control  second-dropdown" asp-items="ViewBag.Woreda">
+                                        <select name="Woreda" class="form-control  second-dropdown" asp-items="ViewBag.Woreda" id="WoredaSelect">
                                             @if (address != null)
                                             {
-                                                <option value="@address.Woreda.id">@address.Woreda.name</option>
+                                                @if (address.Woreda != null)
+                                                {
+                                                    <option value="@address.Woreda.id">@address.Woreda.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -347,31 +359,46 @@
                         </div>
                         <div class="tab-pane fade  mt-4" id="financial" role="tabpanel" aria-labelledby="contact-tab">
                             <div class="row p-0 m-0">
-                                <div class="col-md-4 col-sm-12 ">
+                                <div class="col-md-6 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="BankNumber" class="control-label">Bank Account Number <span class="text-danger">*</span></label>
                                         <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="eg:10001842693" value="@((employee != null) ? employee.back_account_number : "")" />
                                         <small id="BankNumberValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group p-2">
-                                        <label for="PensionNumber" class="control-label">Phone Number <span class="text-danger">*</span></label>
+                                        <label for="PensionNumber" class="control-label">Pension Number</label>
                                         <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
+                                             @*  <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">ሰ/</span>
-                                            </div>
-                                            <input type="number" class="form-control" placeholder="eg:1245" name="PensionNumber" id="PensionNumber" aria-label="PensionNumber" aria-describedby="Phone-Number" value="@((employee != null) ? employee.pension_number : "")" />
+                                            </div>   *@
+                                            <input type="text" class="form-control" placeholder="eg:1245" name="PensionNumber" id="PensionNumber" aria-label="PensionNumber" aria-describedby="Phone-Number" value="@((employee != null) ? employee.pension_number : "")" />
                                             <small id="PensionNumberValidation" class="text-danger bg-white"></small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12 ">
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-6 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="TinNumber" class="control-label">Tin Number</label>
                                         <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="eg:1236578952" value="@((employee != null) ? employee.tin_number : "")" />
                                         <small id="TinNumberValidation" class="text-danger"></small>
                                     </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Salary" class="control-label">Salary</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">ETB</span>
+                                            </div>
+                                            <input type="number" class="form-control" placeholder="eg:9697.23" name="Salary" id="Salary" aria-label="Salary"  value="@((employee != null) ? employee.salary : "")" />
+                                            <small id="SalaryValidation" class="text-danger bg-white"></small>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="px-3 py-4 mt-2">
@@ -384,15 +411,17 @@
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="Division" class="control-label">Division <span class="text-danger">*</span></label>
-                                        <select name="Division" class="form-control thrid-dropdown" asp-items="ViewBag.Division">
+                                        <select name="Division" class="form-control thrid-dropdown" asp-items="ViewBag.Division" id="DivisionSelect">
                                             @if (office != null)
                                             {
-                                                <option value="@office.Division.id" selected>@office.Division.name</option>
+                                                @if (office.Division != null)
+                                                {
+                                                    <option value="@office.Division.id" selected>@office.Division.name</option>
+                                                }
                                             }
                                             else
                                             {
                                                 <option value="">-- select Division --</option>
-
                                             }
                                         </select>
                                         <small id="DivisionValidation" class="text-danger"></small>
@@ -401,10 +430,13 @@
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="Department" class="control-label">Department <span class="text-danger">*</span></label>
-                                        <select name="Department" class="form-control thrid-dropdown" asp-items="ViewBag.Department">
+                                        <select name="Department" class="form-control thrid-dropdown" asp-items="ViewBag.Department" id="DepartmentSelect">
                                             @if (office != null)
                                             {
-                                                <option value="@office.Department.id" selected>@office.Department.name</option>
+                                                @if (office.Department != null)
+                                                {
+                                                    <option value="@office.Department.id" selected>@office.Department.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -418,10 +450,13 @@
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="Team" class="control-label">Team <span class="text-danger">*</span></label>
-                                        <select name="Team" class="form-control thrid-dropdown" asp-items="ViewBag.Team">
+                                        <select name="Team" class="form-control thrid-dropdown" asp-items="ViewBag.Team" id="TeamSelect">
                                             @if (office != null)
                                             {
-                                                <option value="@office.Team.id" selected>@office.Team.name</option>
+                                                @if (office.Team != null)
+                                                {
+                                                    <option value="@office.Team.id" selected>@office.Team.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -440,7 +475,10 @@
                                         <select name="Position" class="form-control thrid-dropdown" asp-items="ViewBag.Position">
                                             @if (office != null)
                                             {
-                                                <option value="@office.Position.id" selected>@office.Position.name</option>
+                                                @if (office.Position != null)
+                                                {
+                                                    <option value="@office.Position.id" selected>@office.Position.name</option>
+                                                }
                                             }
                                             else
                                             {
@@ -490,19 +528,20 @@
                                         <small id="StartDateValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                @*<div class="col-md-6 col-sm-12">
                                     <div class="form-group mb-2">
                                         <div class="checkbox checkbox-fill d-inline">
-                                            <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()">
+                                            <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()"
+                                            @((employee != null) ? (employee.end_date == null ? "checked='checked'" : "") : "")>
                                             <label for="AlreadyWorking" class="cr">I am currently working at mols.</label>
                                         </div>
                                     </div>
                                     <div class="form-group p-2" id="EmpEndDate">
                                         <label for="EndDate" class="control-label">End date</label>
-                                        <input type="date" id="EndDate" name="EndDate" class="form-control" />
+                                        <input type="date" id="EndDate" name="EndDate" class="form-control" value="@((employee?.end_date != null ?  employee.end_date?.ToString("yyyy-MM-dd") : null))" />
                                         <small id="EndDateValidation" class="text-danger"></small>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                             <div class="px-3 py-4 mt-2">
                                 <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>

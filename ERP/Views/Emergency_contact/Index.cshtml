@@ -31,46 +31,52 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model) {
-                            <tr>
-                                <td>
-                                    @if (@item.full_name != null && @item.full_name.Length > 10)
-                                    {
-                                        <h6 class="mb-1">@item.full_name.Substring(0, 10)...</h6>
-                                    }
-                                    else
-                                    {
-                                        <h6 class="mb-1">@Html.DisplayFor(modelItem => @item.full_name)</h6>
-                                    }
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.phonenumber)
-                                </td>
-                                <td>
-                                    @if (@item.Relationship != null && @item.Relationship.Length > 10)
-                                    {
-                                        <h6 class="mb-1">@item.Relationship.Substring(0, 10)...</h6>
-                                    }
-                                    else
-                                    {
-                                        <h6 class="mb-1">@Html.DisplayFor(modelItem => @item.Relationship)</h6>
-                                    }
-                                </td>
-                                <td>
-                                <td class="float-right">
-                                    <a onclick="deleteConf(@item.id)" class="text-danger ml-2" id="DeleteLink">
-                                        <i class="feather icon-trash-2 fa-fw"></i>
-                                    </a>
-                                    <a asp-action="Edit" asp-route-id="@item.id" class="text-success ml-2">
-                                        <i class="feather icon-edit fa-fw"></i>
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
-                                        View
-                                    </a>
-                                </td>
-                            </tr>
+                        @if (Model != null)
+                        {
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (@item.full_name != null && @item.full_name.Length > 10)
+                                        {
+                                            <h6 class="mb-1">@item.full_name.Substring(0, 10)...</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="mb-1">@Html.DisplayFor(modelItem => @item.full_name)</h6>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.phonenumber)
+                                    </td>
+                                    <td>
+                                        @if (@item.Relationship != null && @item.Relationship.Length > 10)
+                                        {
+                                            <h6 class="mb-1">@item.Relationship.Substring(0, 10)...</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="mb-1">@Html.DisplayFor(modelItem => @item.Relationship)</h6>
+                                        }
+                                    </td>
+                                    <td>
+                                        <td class="float-right">
+                                            <a onclick="deleteConf(@item.id)" class="text-danger ml-2" id="DeleteLink">
+                                                <i class="feather icon-trash-2 fa-fw"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.id" class="text-success ml-2">
+                                                <i class="feather icon-edit fa-fw"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-outline-info ml-2">
+                                                View
+                                            </a>
+                                        </td>
+                                </tr>
+                            }
                         }
-                        
+
                     </tbody>
                 </table>
             </div>

@@ -1,4 +1,4 @@
-﻿@model ERP.Models.HRMS.Reward_managment.Reward
+﻿@model ERP.Models.HRMS.Employee_managments.Reward
 
 @{
     ViewData["Title"] = "Details";
@@ -25,7 +25,7 @@
                     @Html.DisplayFor(model => model.given_date)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.status)
+                    Status
                 </dt>
                 <dd class="col-sm-10">
                     @if (Model.status == true)
@@ -41,17 +41,18 @@
                         <p class="badge badge-warning">Pending</p>
                     }
                 </dd>
-                <dt class = "col-sm-2">
-                    Description
-                </dt>
-                <dd class = "col-sm-10">
-                    @Html.DisplayFor(model => model.description)
-                </dd>
+                
                 <dt class = "col-sm-2">
                     Reason of Reward
                 </dt>
                 <dd class = "col-sm-10">
                     @Html.DisplayFor(model => model.reason_of_reward)
+                </dd>
+                <dt class="col-sm-2">
+                    Description
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.description)
                 </dd>
             </dl>
         </div>
