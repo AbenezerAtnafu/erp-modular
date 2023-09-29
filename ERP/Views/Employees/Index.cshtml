@@ -1,4 +1,4 @@
-﻿@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core
 @using X.PagedList
 @using X.PagedList.Web.Common
 @model X.PagedList.IPagedList<ERP.Models.HRMS.Employee_managments.Employee>
@@ -6,6 +6,8 @@
 @{
     ViewData["Title"] = "Employee List";
 }
+
+
 
 @{
     var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
@@ -105,7 +107,7 @@
                                         <p class="m-0">@employee.first_name @employee.father_name</p>
                                     }
                                 </td>
-                                <td>@employee.date_of_birth.ToShortDateString()</td>
+                                <td>@employee.date_of_birth.ToShortDateString()</td>-+
                                 <td>@employee.gender</td>
                                 <td>
                                     @if (@employee.Employee_Office.Department.name != null && @employee.Employee_Office.Department.name.Length > 10)
@@ -131,13 +133,8 @@
                                         <p class="badge badge-warning">Pending</p>
                                     }
                                 </td>
+
                                 <td class="float-right">
-                                    @* <a onclick="deleteConf(@employee.id)" class="text-danger ml-2" id="DeleteLink">
-                                        <i class="feather icon-trash-2 fa-fw"></i>
-                                    </a>
-                                    <a asp-action="Edit" asp-route-id="@employee.id" class="text-success ml-2">
-                                        <i class="feather icon-edit fa-fw"></i>
-                                    </a> *@
                                     <a asp-action="Detail" asp-route-id="@employee.id" class="btn btn-outline-info ml-2">
                                         View
                                     </a>
@@ -146,18 +143,23 @@
                         }
                     </tbody>
                 </table>
+                <div class="pagination">
+                    <ul class="pagination justify-content-center">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, searchTerm = ViewBag.SearchTerm })">Previous</a>
+                            </li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, searchTerm = ViewBag.SearchTerm })">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="pagination">
-    <ul class="pagination justify-content-center">
-        @if (Model.HasPreviousPage)
-        {
-            <li class="page-item">
-                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">Previous</a>
-            </li>
-        }
-    </ul>
 </div>

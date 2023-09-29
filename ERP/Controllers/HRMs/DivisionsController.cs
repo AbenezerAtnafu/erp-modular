@@ -84,6 +84,9 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
+
+
+
                 division.created_date = DateTime.Now.Date;
                 division.updated_date = DateTime.Now.Date;
                 _context.Add(division);

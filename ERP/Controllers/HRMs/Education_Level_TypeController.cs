@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
 using X.PagedList;
+using HRMS.Education_management;
 
 namespace ERP.Models.HRMS.Types
 {
@@ -81,11 +82,15 @@ namespace ERP.Models.HRMS.Types
         {
             if (ModelState.IsValid)
             {
+
+               
                 education_Level_Type.created_date = DateTime.Now.Date;
                 education_Level_Type.updated_date = DateTime.Now.Date;
                 _context.Add(education_Level_Type);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "New Education is added.";
                 return RedirectToAction(nameof(Index));
+
             }
             return View(education_Level_Type);
         }

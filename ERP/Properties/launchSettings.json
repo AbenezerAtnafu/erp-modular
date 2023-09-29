@@ -1,35 +1,12 @@
 {
   "profiles": {
-    "ERP": {
+    "Erp": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7070;http://localhost:5040"
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true,
-      "useSSL": true
-    }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:20288",
-      "sslPort": 44382
+      "applicationUrl": "https://localhost:6920;http://localhost:6921"
     }
   }
 }

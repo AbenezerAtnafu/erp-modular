@@ -71,6 +71,17 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
+                var lastid = _context.Rewards.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (lastid != 0)
+                {
+                    reward.id = lastid + 1;
+                }
+                else
+                {
+                    reward.id = 1;
+                }
                 _context.Add(reward);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

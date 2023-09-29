@@ -60,6 +60,20 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+                var lastid = _context.Disability_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (lastid != 0)
+                {
+                    disability_Type.id = lastid + 1;
+                }
+                else
+                {
+                    disability_Type.id = 1;
+                }
+
                 _context.Add(disability_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

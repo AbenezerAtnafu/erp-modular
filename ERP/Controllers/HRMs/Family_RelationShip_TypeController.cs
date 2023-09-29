@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
 using X.PagedList;
+using ERP.Models.HRMS.Employee_managments;
 
 namespace ERP.Controllers
 {
@@ -80,10 +81,15 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+               
+
+
                 family_RelationShip_Type.created_date = DateTime.Now.Date;
                 family_RelationShip_Type.updated_date = DateTime.Now.Date;
                 _context.Add(family_RelationShip_Type);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "New Family relationship type is added.";
                 return RedirectToAction(nameof(Index));
             }
             return View(family_RelationShip_Type);

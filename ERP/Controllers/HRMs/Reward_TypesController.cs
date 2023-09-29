@@ -80,6 +80,15 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                var lastid = _context.Reward_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+                if (lastid != 0)
+                {
+                    reward_Types.id = lastid + 1;
+                }
+                else
+                {
+                    reward_Types.id = 1;
+                }
                 _context.Add(reward_Types);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

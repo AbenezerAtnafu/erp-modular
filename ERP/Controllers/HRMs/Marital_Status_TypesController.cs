@@ -80,6 +80,7 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 marital_Status_Types.created_date = DateTime.Now.Date;
                 marital_Status_Types.updated_date= DateTime.Now.Date;
                 _context.Add(marital_Status_Types);

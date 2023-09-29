@@ -6,7 +6,8 @@ using Microsoft.Extensions.FileProviders;
 using ERP.Interface;
 using ERP.Service;
 using Minio;
-
+using Minio.AspNetCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("UserDbContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDbContextConnection' not found.");
@@ -34,21 +35,26 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
-    
+
 });
-
-
-
 
 string syspath = "";
 builder.Services.AddSingleton<IFileProvider>(
         new PhysicalFileProvider(
             Path.Combine(Directory.GetCurrentDirectory(), syspath)));
 
-builder.Services.AddSingleton<MinioClient>();
+
+
+// ...
+
+
+
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,7 +69,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 

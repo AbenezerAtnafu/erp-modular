@@ -62,36 +62,30 @@ namespace ERP.Controllers.HRMs
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+       
         public async Task<IActionResult> Create([Bind("Id,name,ability_to_listen,ability_to_Speak,ability_to_Read,ability_to_write,employee_id,created_date,updated_date")] Language language)
         {
-            if (ModelState.IsValid)
+            var users = _userManager.GetUserId(HttpContext.User);
+            var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
+           
+
+            if (employee != null)
             {
-                var users = _userManager.GetUserId(HttpContext.User);
-                var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
+               
+                language.employee_id = employee.id;
+                language.created_date = DateTime.Now;
+                language.updated_date = DateTime.Now;
+                _context.Add(language);
+                await _context.SaveChangesAsync();
 
-                if (employee != null)
-                {
-                    language.employee_id = employee.id;
-                    language.created_date = DateTime.Now;
-                    language.updated_date = DateTime.Now;
-                    _context.Add(language);
-                    await _context.SaveChangesAsync();
-
-                    TempData["Success"] = "New Language is added.";
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    TempData["Warning"] = "You should First fill in Your detail.";
-                    return RedirectToAction(nameof(Index));
-                }
+                TempData["Success"] = "New Language is added.";
+                return RedirectToAction(nameof(Index));
             }
             else
             {
-                return View(language);
+                TempData["Warning"] = "You should First fill in Your detail.";
+                return RedirectToAction(nameof(Index));
             }
-                
         }
 
         // GET: Languages/Edit/5

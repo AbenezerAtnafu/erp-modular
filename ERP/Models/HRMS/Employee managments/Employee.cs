@@ -14,26 +14,18 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required]
         [StringLength(200, ErrorMessage = "The 'profile picture' is can not be empty ", MinimumLength = 0)]
         public string profile_picture { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'first name ' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+       
         public string first_name { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'first name in amharic' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        
         public string first_name_am { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'father name' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        
         public string father_name { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'father name in amharic' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        
         public string father_name_am { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'grand father name' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        
         public string grand_father_name { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'grand father name in amharic' field must be between {2} and {1} characters long.", MinimumLength = 0)]
+        
         public string grand_father_name_am { get; set; }
-        [Required]
-        [StringLength(200, ErrorMessage = "The 'gender' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string gender { get; set; }
 
         [Required(ErrorMessage = "The 'date of birth' field is required.")]
@@ -43,6 +35,8 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The Start date field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'date of birth' field must be a valid Date.")]
         public DateTime start_date { get; set; }
+       // public DateTime? end_date { get; set; }
+      
 
         [Required(ErrorMessage = "The 'nationality' field is required.")]
         [StringLength(200, ErrorMessage = "The 'nationality' field must be between {2} and {1} characters long.", MinimumLength = 0)]
@@ -60,12 +54,10 @@ namespace ERP.Models.HRMS.Employee_managments
         [Required(ErrorMessage = "The 'back account number' field is required.")]
         [MinLength(4, ErrorMessage = "The 'back account number' field must be a 4-digit number.")]
         public string back_account_number { get; set; }
-        [Required(ErrorMessage = "The 'tin number' field is required.")]
-        [MinLength(10, ErrorMessage = "The 'tin number' field must be a 10-digit number.")]
-        public string tin_number { get; set; }
-        [Required(ErrorMessage = "The 'pension number' field is required.")]
-        [MinLength(4, ErrorMessage = "The 'pension number' field must be a 4-digit number.")]
-        public string pension_number { get; set; }
+        
+        public string? tin_number { get; set; }
+       
+        public string? pension_number { get; set; }
 
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]

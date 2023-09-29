@@ -28,7 +28,7 @@ namespace ERP.Models.HRMS.Employee_managments
         public string? email { get; set; }
 
         [ForeignKey("Trainign_Type")]
-        public int training_type_id { get; set; }
+        public int training_type { get; set; }
         
     
         [StringLength(200, MinimumLength = 5, ErrorMessage = "The training situation  must be between {2} and {1} characters long.")]

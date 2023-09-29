@@ -77,7 +77,7 @@ namespace ERP.Controllers.HRMs
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type);
             return View(training);
         }
 
@@ -94,7 +94,7 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
-            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type);
             return View(training);
         }
 
@@ -130,7 +130,7 @@ namespace ERP.Controllers.HRMs
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type_id);
+            ViewData["training_type"] = new SelectList(_context.Trainign_Types, "id", "name", training.training_type);
             return View(training);
         }
 

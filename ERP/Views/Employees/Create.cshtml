@@ -1,4 +1,4 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "Register Employee";
     var address = ViewData["Employee_Address"] as ERP.Models.HRMS.Employee_managments.Employee_Address;
     var contact = ViewData["Employee_Contact"] as ERP.Models.HRMS.Employee_managments.Employee_Contact;
@@ -169,12 +169,12 @@
                                         <label name="Gender" class="control-label">Gender <span class="text-danger">*</span></label>
                                         <div class="form-check pt-2">
                                             <span class="mx-2">
-                                                <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
+                                                <input id="Female" name="Gender" type="radio" value="Female" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
                                                 <label for="Female" class="form-check-label">Female</label>
                                             </span>
                                             <span class="mx-2">
 
-                                                <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Female" ? "checked" : "") : "") />
+                                                <input id="Male" name="Gender" type="radio" value="Male" class="mx-1" @((employee != null) ? (employee.gender == "Male" ? "checked" : "") : "") />
                                                 <label for="Male" class="form-check-label">Male</label>
                                             </span>
                                         </div>
@@ -235,7 +235,7 @@
                                         <small id="RegionValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-4 col-sm-12" id="ZoneInputTab">
                                     <div class="form-group p-2">
                                         <label for="Zone" class="control-label">Zone <span class="text-danger">*</span></label>
                                         <select name="Zone" class="form-control second-dropdown" asp-items="ViewBag.zone" id="ZoneSelect">
@@ -254,7 +254,7 @@
                                         <small id="ZoneValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-4 col-sm-12" id="SubcityInputTab">
                                     <div class="form-group p-2">
                                         <label for="Subcity" class="control-label">Subcity <span class="text-danger">*</span></label>
                                         <select name="Subcity" class="form-control second-dropdown" asp-items="ViewBag.subcity" id="SubcitySelect">
@@ -359,31 +359,46 @@
                         </div>
                         <div class="tab-pane fade  mt-4" id="financial" role="tabpanel" aria-labelledby="contact-tab">
                             <div class="row p-0 m-0">
-                                <div class="col-md-4 col-sm-12 ">
+                                <div class="col-md-6 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="BankNumber" class="control-label">Bank Account Number <span class="text-danger">*</span></label>
                                         <input type="number" id="BankNumber" name="BankNumber" class="form-control" placeholder="eg:10001842693" value="@((employee != null) ? employee.back_account_number : "")" />
                                         <small id="BankNumberValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group p-2">
                                         <label for="PensionNumber" class="control-label">Pension Number</label>
                                         <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
+                                             @*  <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">ሰ/</span>
-                                            </div>
-                                            <input type="number" class="form-control" placeholder="eg:1245" name="PensionNumber" id="PensionNumber" aria-label="PensionNumber" aria-describedby="Phone-Number" value="@((employee != null) ? employee.pension_number : "")" />
+                                            </div>   *@
+                                            <input type="text" class="form-control" placeholder="eg:1245" name="PensionNumber" id="PensionNumber" aria-label="PensionNumber" aria-describedby="Phone-Number" value="@((employee != null) ? employee.pension_number : "")" />
                                             <small id="PensionNumberValidation" class="text-danger bg-white"></small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 col-sm-12 ">
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-6 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="TinNumber" class="control-label">Tin Number</label>
                                         <input type="number" id="TinNumber" name="TinNumber" class="form-control" placeholder="eg:1236578952" value="@((employee != null) ? employee.tin_number : "")" />
                                         <small id="TinNumberValidation" class="text-danger"></small>
                                     </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 ">
+                                    <div class="form-group p-2">
+                                        <label for="Salary" class="control-label">Salary</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">ETB</span>
+                                            </div>
+                                            <input type="number" class="form-control" placeholder="eg:9697.23" name="Salary" id="Salary" aria-label="Salary"  value="@((employee != null) ? employee.salary : "")" />
+                                            <small id="SalaryValidation" class="text-danger bg-white"></small>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="px-3 py-4 mt-2">
@@ -513,19 +528,20 @@
                                         <small id="StartDateValidation" class="text-danger"></small>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                @*<div class="col-md-6 col-sm-12">
                                     <div class="form-group mb-2">
                                         <div class="checkbox checkbox-fill d-inline">
-                                            <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()">
+                                            <input type="checkbox" name="checkbox-fill-1" id="AlreadyWorking" onclick="hideEndDate()"
+                                            @((employee != null) ? (employee.end_date == null ? "checked='checked'" : "") : "")>
                                             <label for="AlreadyWorking" class="cr">I am currently working at mols.</label>
                                         </div>
                                     </div>
                                     <div class="form-group p-2" id="EmpEndDate">
                                         <label for="EndDate" class="control-label">End date</label>
-                                        <input type="date" id="EndDate" name="EndDate" class="form-control" />
+                                        <input type="date" id="EndDate" name="EndDate" class="form-control" value="@((employee?.end_date != null ?  employee.end_date?.ToString("yyyy-MM-dd") : null))" />
                                         <small id="EndDateValidation" class="text-danger"></small>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                             <div class="px-3 py-4 mt-2">
                                 <button id="prevtab" class="btn btn-info float-left" onclick="prevButton()" type="button"><i class="fa fa-arrow-left fa-fw"></i>Previous</button>

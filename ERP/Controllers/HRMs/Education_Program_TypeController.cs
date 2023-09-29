@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ERP.Areas.Identity.Data;
 using HRMS.Types;
 using X.PagedList;
+using HRMS.Education_management;
 
 namespace ERP.Controllers
 {
@@ -80,6 +81,8 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+               
+
                 education_Program_Type.created_date = DateTime.Now.Date;
                 education_Program_Type.updated_date = DateTime.Now.Date;
                 _context.Add(education_Program_Type);

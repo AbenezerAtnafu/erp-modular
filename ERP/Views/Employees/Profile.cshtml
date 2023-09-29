@@ -146,7 +146,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                           </div>
+                           </div>`
 
 
                         </div>
@@ -159,11 +159,23 @@
                                         <td class="py-1">:</td>
                                         <td class="py-1">@employee.Employee_Address.Region.name</td>
                                     </tr>
-                                    <tr>
-                                        <td class="py-1">Subcity</td>
-                                        <td class="py-1">:</td>
-                                        <td class="py-1">@employee.Employee_Address.Subcity.name</td>
-                                    </tr>
+                                    @if(@employee.Employee_Address.Subcity != null)
+                                    {
+                                        <tr>
+                                            <td class="py-1">Subcity</td>
+                                            <td class="py-1">:</td>
+                                            <td class="py-1">@employee.Employee_Address.Subcity.name</td>
+                                        </tr>
+                                    }
+                                    @if (@employee.Employee_Address.Zone != null)
+                                    {
+                                        <tr>
+                                            <td class="py-1">Zone</td>
+                                            <td class="py-1">:</td>
+                                            <td class="py-1">@employee.Employee_Address.Zone.name</td>
+                                        </tr>
+                                    }
+                                  
                                     <tr>
                                         <td class="py-1">Woreda</td>
                                         <td class="py-1">:</td>
@@ -385,24 +397,52 @@
                             @if (employee.Emergency_contact != null)
                             {
                                 <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Emergency Contact Information</h5>
-                                @foreach (var item in employee.Emergency_contact)
-                                {
-                                    <div class="d-flex">
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <h5>@item.full_name</h5><span>@item.phonenumber</span>
-                                            </div>
-                                        </div>
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <span>Occupation</span>
-                                            </div>
-                                            <div class="col-sm-9 border-start">
-                                                <span class="text-muted">@item.alternative_phonenumber</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Relationship
+                                            </th>
+                                            <th>
+                                                Phone Number
+                                            </th>
+                                            <th>
+                                                Alternative Phone Number
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in employee.Emergency_contact)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.full_name)
+                                                </td>
+                                                <td>
+                                                    @if ((@item.Relationship != null) && (@item.Relationship.Length > 25))
+                                                    {
+                                                        <p class="m-0">@item.Relationship.Substring(0, 25)</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="m-0">@item.Relationship</p>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.phonenumber)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.alternative_phonenumber)
+                                                </td>
+                                                
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                
                             }
                             else
                             {

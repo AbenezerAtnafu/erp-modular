@@ -78,6 +78,7 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 team.created_date = DateTime.Now;
                 team.updated_date = DateTime.Now;
                 _context.Add(team);

@@ -83,6 +83,12 @@ namespace ERP.Controllers.HRMs
         {
             if (ModelState.IsValid)
             {
+
+               
+
+
+
+
                 department.created_date = DateTime.Now;
                 department.updated_date = DateTime.Now;
                 _context.Add(department);

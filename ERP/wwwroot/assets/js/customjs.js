@@ -24,7 +24,7 @@ function closeAlert() {
 
 
 //show end date if not currently working
-function hideEndDate() {
+/*function hideEndDate() {
     var checkbox = document.getElementById("AlreadyWorking");
         if (checkbox.checked) {
             // hide end date
@@ -33,7 +33,7 @@ function hideEndDate() {
             // show end date
             document.getElementById("EmpEndDate").style.display = "block";
         }
-}
+}*/
 
 //show end date if not currently working
 function hideMessagInput() {
@@ -303,12 +303,12 @@ function submitSecondTab() {
 //third tab validation
 function submitThirdTab() {
     var tinpattern = /^[0-9]{10}$/;
-    var penpattern = /^[0-9]{4}$/;
+    // var penpattern = /^[0-9]{4}$/;
     var accountpattern = /^[0-9]{4,30}$/;
 
     var istinValid = false
     var isbankValid = false
-    var penValid = false
+/*    var penValid = false*/
 
 
     var tin = document.getElementById('TinNumber');
@@ -326,7 +326,7 @@ function submitThirdTab() {
         istinValid = true
         document.getElementById("TinNumberValidation").textContent = ""
     }
-
+/*
     var pension = document.getElementById('PensionNumber');
     if (pension.value) {
         if (!pension.value.match(penpattern)) {
@@ -339,7 +339,7 @@ function submitThirdTab() {
     } else {
         penValid = true
         document.getElementById("PensionNumberValidation").textContent = ""
-    }
+    }*/
 
     var bank = document.getElementById('BankNumber').value;
     if (!bank.match(accountpattern)) {
@@ -352,7 +352,7 @@ function submitThirdTab() {
         document.getElementById("BankNumberValidation").textContent = ""
     }
 
-    if (isbankValid && istinValid && penValid) {
+    if (isbankValid && istinValid) {
         nextButton()
     }
 }
@@ -366,7 +366,6 @@ function submitfinalTab() {
     var isLoopValid = false
     var placeValid = false
     var officeValid = false
-    var currentValid = false
     var startValid = false
 
     for (var i = 0; i < dropdownfields.length; i++) {
@@ -421,7 +420,7 @@ function submitfinalTab() {
     }
 
 
-    if (document.getElementById("AlreadyWorking").checked) {
+    /*if (document.getElementById("AlreadyWorking").checked) {
         currentValid = true
 
     } else {
@@ -434,10 +433,10 @@ function submitfinalTab() {
             document.getElementById("EndDateValidation").textContent = ""
             currentValid = true
         }
-    }
+    }*/
 
 
-    if (isLoopValid && placeValid && officeValid && currentValid && startValid) {
+    if (isLoopValid && placeValid && officeValid && startValid) {
          document.getElementById("CreateEmpForm").submit();
     }
 }

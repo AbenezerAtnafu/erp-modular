@@ -60,6 +60,7 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+              
                 organization.created_date=DateTime.Now;
                 organization.updated_date=DateTime.Now;
                 _context.Add(organization);

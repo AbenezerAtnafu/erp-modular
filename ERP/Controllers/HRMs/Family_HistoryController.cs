@@ -86,14 +86,18 @@ namespace ERP.Controllers.HRMs
         {
             
 
-                var users = _userManager.GetUserId(HttpContext.User);
-                var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
+            var users = _userManager.GetUserId(HttpContext.User);
+            var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
 
-                if (employee != null)
+           
+
+            if (employee != null)
                 {
                     family_History.created_date = DateTime.Now.Date;
                     family_History.updated_date = DateTime.Now.Date;
                     family_History.employee_id = employee.id;
+                   
+                    
                     ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                     _context.Add(family_History);
                     await _context.SaveChangesAsync();

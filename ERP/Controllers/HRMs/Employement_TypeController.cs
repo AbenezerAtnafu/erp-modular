@@ -79,6 +79,9 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                
+
                 _context.Add(employement_Type);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
