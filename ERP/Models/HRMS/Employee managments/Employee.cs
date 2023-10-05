@@ -33,9 +33,8 @@ namespace ERP.Models.HRMS.Employee_managments
         public DateTime date_of_birth { get; set; } 
         
         [Required(ErrorMessage = "The Start date field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The 'date of birth' field must be a valid Date.")]
+        [DataType(DataType.Date, ErrorMessage = "The 'start date' field must be a valid Date.")]
         public DateTime start_date { get; set; }
-       // public DateTime? end_date { get; set; }
       
 
         [Required(ErrorMessage = "The 'nationality' field is required.")]
@@ -70,7 +69,7 @@ namespace ERP.Models.HRMS.Employee_managments
         [StringLength(200, ErrorMessage = "The 'place of work' field must be between {2} and {1} characters long.", MinimumLength = 0)]
         public string place_of_work { get; set; }
         public string? employee_code { get; set; }
-        public bool? profile_status { get; set; }
+        public bool? profile_status { get; set; } = null;
         public int? lastid { get; set; }
         public bool? work_status { get; set; }
         public string? feedback { get; set; }

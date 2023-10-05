@@ -58,7 +58,18 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Region region)
         {
-            
+            var regionid = _context.Regions.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+            if (regionid != 0)
+            {
+                regionid = regionid + 1;
+            }
+            else
+            {
+                regionid = 1;
+            }
+            region.id = regionid;
 
             region.created_date = DateTime.Now.Date;
                 region.updated_date = DateTime.Now.Date;

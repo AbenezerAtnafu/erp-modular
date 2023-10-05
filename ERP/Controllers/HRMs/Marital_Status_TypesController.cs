@@ -80,7 +80,19 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                var marital_Status_Typesid = _context.Marital_Status_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (marital_Status_Typesid != 0)
+                {
+                    marital_Status_Typesid = marital_Status_Typesid + 1;
+                }
+                else
+                {
+                    marital_Status_Typesid = 1;
+                }
+                marital_Status_Types.id = marital_Status_Typesid;
+
                 marital_Status_Types.created_date = DateTime.Now.Date;
                 marital_Status_Types.updated_date= DateTime.Now.Date;
                 _context.Add(marital_Status_Types);

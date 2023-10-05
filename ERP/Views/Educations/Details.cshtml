@@ -67,13 +67,14 @@
             }
         </dd>
         <div>
-          
+          @if (Context.User.IsInRole("HR"))
+                {
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLive">
                 Change Status
             </button>
          
          
-
+                }
 
 
 </div>

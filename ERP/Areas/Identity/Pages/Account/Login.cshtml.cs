@@ -127,6 +127,7 @@ namespace ERP.Areas.Identity.Pages.Account
                 if (IsValidEmail(Input.Email))
                 {
                     var user = await _userManager.FindByEmailAsync(Input.Email);
+   
 
                     if (user != null)
                     {

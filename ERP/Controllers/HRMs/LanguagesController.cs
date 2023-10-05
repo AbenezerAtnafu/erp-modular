@@ -67,11 +67,22 @@ namespace ERP.Controllers.HRMs
         {
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
-           
 
-            if (employee != null)
+
+            var languageid = _context.languages.OrderByDescending(l => l.Id).Select(l => l.Id).FirstOrDefault();
+
+
+            if (languageid != 0)
             {
-               
+                languageid = languageid + 1;
+            }
+            else
+            {
+                languageid = 1;
+            }
+            language.Id = languageid;
+            if (employee != null)
+            {               
                 language.employee_id = employee.id;
                 language.created_date = DateTime.Now;
                 language.updated_date = DateTime.Now;

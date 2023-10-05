@@ -80,7 +80,19 @@ namespace ERP.Controllers
             if (ModelState.IsValid)
             {
 
-                
+                var employement_Typeid = _context.Employement_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (employement_Typeid != 0)
+                {
+                    employement_Typeid = employement_Typeid + 1;
+                }
+                else
+                {
+                    employement_Typeid = 1;
+                }
+                employement_Type.id = employement_Typeid;
+
 
                 _context.Add(employement_Type);
                 await _context.SaveChangesAsync();

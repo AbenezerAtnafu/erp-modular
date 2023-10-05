@@ -33,27 +33,15 @@ namespace ERP.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index(string searchTerm, int? page, string sortOrder, DateTime? birthdateFilter, string maritalStatusFilter)
+        public async Task<IActionResult> Index(string searchTerm, int? page)
         {
+            var pageSize = 10;
+            var pageNumber = page ?? 1;
             var users = _userManager.GetUserId(HttpContext.User);
             var employee_list = _context.Employees
                 .Include(e => e.Employee_Office.Department)
                 .Where(q => q.user_id != null);
-            var pageSize = 10;
-            var pageNumber = page ?? 1;
-            var expiryTime = DateTimeOffset.Now.AddMinutes(5);
-
-            // Remove the cache entry for "Employees" key
-          /*  _cacheService.RemoveData("Employees");
-
-            var cacheData = _cacheService.GetData("Employees");
-            if (!string.IsNullOrEmpty(cacheData))
-            {
-                var deserializedData = JsonConvert.DeserializeObject<IEnumerable<Employee>>(cacheData);
-                var pagedData = new StaticPagedList<Employee>(deserializedData, pageNumber, pageSize, deserializedData.Count());
-                return View(pagedData);
-            }*/
-
+          
             // Apply search term filter
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -63,92 +51,38 @@ namespace ERP.Controllers
                     u.father_name.ToLower().Contains(searchTerm)
                 );
             }
-            // Apply sorting
-            switch (sortOrder)
-            {
-                case "asc":
-                    employee_list = employee_list.OrderBy(u => u.first_name);
-                    break;
-                case "desc":
-                    employee_list = employee_list.OrderByDescending(u => u.first_name);
-                    break;
-                default:
-                    employee_list = employee_list.OrderBy(u => u.first_name);
-                    break;
-            }
 
             var totalCount = await employee_list.CountAsync();
-            var employeeListQuery = _context.Employees
-                .Where(q => q.user_id != null)
-                .Select(e => new Employee
-                {
-                    id = e.id,
-                    first_name = e.first_name,
-                    father_name = e.father_name,
-                    grand_father_name = e.grand_father_name,
-                    date_of_birth = e.date_of_birth,
-                    gender = e.gender,
-                    Employee_Office = new Employee_Office
-                    {
-                        Department = e.Employee_Office.Department
-                    }
-                })
-                .AsNoTracking();
-
-                 var employee_list_final = await employeeListQuery
+            var employee_list_final = await employee_list
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            foreach (var employee in employee_list_final)
-            {
-                var employeecode = _context.employeeMolsIds.Where(q => q.employee_id == employee.id);
-
-                if (employeecode == null)
-                {
-                    ViewData["employeecode"] = "Pending";
-                }
-                else
-                {
-                    ViewData["employeecode"] = employeecode.Select(q => q.employee_code);
-                }
-            }
-
             var pagedEmployees = new StaticPagedList<Employee>(employee_list_final, pageNumber, pageSize, totalCount);
-            var serializerSettings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-
-            var serializedData = JsonConvert.SerializeObject(pagedEmployees, serializerSettings);
-/*
-            _cacheService.SetData("Employees", serializedData, expiryTime);*/
-
             return View(pagedEmployees);
         }
 
         // GET: Employees
-        public  IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
             var users =  _userManager.GetUserId(HttpContext.User);
-            
-            var employee = _context.Employees
-                .Include(e => e.Employee_Address.Region)
-                .Include(e => e.Employee_Address.Zone)
-                .Include(e => e.Employee_Address.Subcity)
-                .Include(e => e.Employee_Address.Woreda)
-                .Include(e => e.Employee_Contact)
-                .Include(e => e.Employee_Office.Division)
-                .Include(e => e.Employee_Office.Department)
-                .Include(e => e.Employee_Office.Team)
-                .Include(e => e.Employee_Office.Employement_Type)
-                .Include(e => e.Employee_Office.Position)
-                .Include(e => e.Marital_Status_Types)
-                .Include(e => e.Language)
-                 .Include(e => e.Family_History)
-                .Include(e => e.Emergency_contact)
-                .FirstOrDefault(a => a.user_id == users);
+
+            var employee = await _context.Employees
+                     .Include(e => e.Employee_Address.Region)
+                     .Include(e => e.Employee_Address.Zone)
+                     .Include(e => e.Employee_Address.Subcity)
+                     .Include(e => e.Employee_Address.Woreda)
+                     .Include(e => e.Employee_Contact)
+                    .Include(e => e.Employee_Office.Division)
+                   .Include(e => e.Employee_Office.Department)
+                   .Include(e => e.Employee_Office.Team)
+                   .Include(e => e.Employee_Office.Employement_Type)
+                   .Include(e => e.Employee_Office.Position)
+                    .Include(e => e.Marital_Status_Types)
+                    .Include(e => e.Language)
+                     .Include(e => e.Family_History)
+                    .Include(e => e.Emergency_contact)
+                .FirstOrDefaultAsync(a => a.user_id == users);
                 
             if (employee == null)
             {
@@ -170,20 +104,21 @@ namespace ERP.Controllers
             if(id != 0)
             {
                 var employee = await _context.Employees
-                    .Include(e => e.Employee_Address.Region)
-                    .Include(e => e.Employee_Address.Zone)
-                    .Include(e => e.Employee_Address.Subcity)
-                    .Include(e => e.Employee_Address.Woreda)
-                    .Include(e => e.Employee_Contact)
-                    .Include(e => e.Employee_Office.Division)
-                    .Include(e => e.Employee_Office.Department)
-                    .Include(e => e.Employee_Office.Team)
-                    .Include(e => e.Employee_Office.Employement_Type)
-                    .Include(e => e.Employee_Office.Position)
-                    .Include(e => e.Marital_Status_Types)
-                    .Include(e => e.Language)
-                     .Include(e => e.Family_History)
-                    .Include(e => e.Emergency_contact)
+                      .Include(e => e.Employee_Address.Region)
+                      .Include(e => e.Employee_Address.Zone)
+                      .Include(e => e.Employee_Address.Subcity)
+                      .Include(e => e.Employee_Address.Woreda)
+                      .Include(e => e.Employee_Contact)
+                       .Include(e => e.Employee_Office.Division)
+                        .Include(e => e.Employee_Office.Department)
+                        .Include(e => e.Employee_Office.Team)
+                          .Include(e => e.Employee_Office.Position)
+                           .Include(e => e.Employee_Office.Employement_Type)
+                              .Include(e => e.Marital_Status_Types)
+                                 .Include(e => e.Emergency_contact)
+                               .Include(e => e.Family_History)
+                               .Include(e => e.Language)
+                 
                     .FirstOrDefaultAsync(e => e.id == id);
 
                 if (employee == null)
@@ -334,9 +269,20 @@ namespace ERP.Controllers
                 employee.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
                 employee.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 employee.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
-                //employee.end_date = Convert.ToDateTime(HttpContext.Request.Form["EndDate"]);
+                employee.lastid = IDtracker();
                 employee.profile_status = null;
                 employee.work_status = null;
+                var employeesid = _context.Employees.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+                if (employeesid != 0)
+                {
+                    employeesid = employeesid + 1;
+                }
+                else
+                {
+                    employeesid = 1;
+                }
+                employee.id = employeesid;
+
 
                 if (double.TryParse(HttpContext.Request.Form["Salary"], out double salary))
                 {
@@ -371,12 +317,57 @@ namespace ERP.Controllers
                     address.zone_id = null;
                 }
 
+            
+
+
+                if (double.TryParse(HttpContext.Request.Form["Salary"], out double Salary))
+                {
+                    employee.salary = Salary;
+                }
+                else
+                {
+                    employee.salary = null;
+                }
+
+                var addressid = _context.Employee_Addresss.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (addressid != 0)
+                {
+                    addressid = addressid + 1;
+                }
+                else
+                {
+                    addressid = 1;
+                }
+                address.id = addressid;
+
+
+
+
                 address.woreda_id = Convert.ToInt32(HttpContext.Request.Form["Woreda"]);
                 address.kebele = Convert.ToString(HttpContext.Request.Form["kebele"]);
                 address.primary_address = Convert.ToString(HttpContext.Request.Form["PrimaryAddress"]);
                
 
                 Employee_Contact contact = new Employee_Contact();
+
+
+
+                var contactid = _context.Employee_Contacts.OrderByDescending(l => l.Id).Select(l => l.Id).FirstOrDefault();
+
+
+                if (contactid != 0)
+                {
+                    contactid = contactid + 1;
+                }
+                else
+                {
+                    contactid = 1;
+                }
+                contact.Id = contactid;
+
+
 
                 contact.phonenumber = Convert.ToString(HttpContext.Request.Form["PhoneNumber"]);
                 contact.alternative_phonenumber = Convert.ToString(HttpContext.Request.Form["AlternativePhoneNumber"]);
@@ -385,6 +376,22 @@ namespace ERP.Controllers
                 
 
                 Employee_Office office = new Employee_Office();
+
+                var officeid = _context.Employee_Offices.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (officeid != 0)
+                {
+                    officeid = officeid + 1;
+                }
+                else
+                {
+                    officeid = 1;
+                }
+                office.id = officeid;
+
+
+
 
                 office.division_id = Convert.ToInt32(HttpContext.Request.Form["Division"]);
                 office.department_id = Convert.ToInt32(HttpContext.Request.Form["Department"]);
@@ -438,8 +445,7 @@ namespace ERP.Controllers
                 emp.tin_number = Convert.ToString(HttpContext.Request.Form["TinNumber"]);
                 emp.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 emp.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
-                //emp.end_date = Convert.ToDateTime(HttpContext.Request.Form["EndDate"]);
-
+                emp.profile_status = null;
                 if (double.TryParse(HttpContext.Request.Form["Salary"], out double salary))
                 {
                     emp.salary = salary;
@@ -448,8 +454,11 @@ namespace ERP.Controllers
                 {
                     emp.salary = null;
                 }
+                if (file != null)
+                {
+                    emp.profile_picture = UploadPicture(file);
 
-                emp_address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
+                }
                 if (Convert.ToInt32(HttpContext.Request.Form["Subcity"]) != 0)
                 {
                     emp_address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
@@ -647,7 +656,7 @@ namespace ERP.Controllers
 
         public int IDtracker()
         {
-            if (_context.employeeMolsIds.Count() == 0)
+            if (_context.Employees.Count() == 0)
             {
                 return 0;
             }

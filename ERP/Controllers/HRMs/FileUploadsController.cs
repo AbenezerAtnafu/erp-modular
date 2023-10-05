@@ -68,6 +68,8 @@ namespace Erp.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    
                     var filename = Path.GetFileName(fileUpload.name);
                     var fileExtension = Path.GetExtension(filename);
                     var newFileName = String.Concat(Convert.ToString(Guid.NewGuid()), fileExtension);

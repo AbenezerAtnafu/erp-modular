@@ -85,6 +85,18 @@ namespace ERP.Controllers.HRMs
             if (ModelState.IsValid)
             {
 
+                var divisionsid = _context.Divisions.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (divisionsid != 0)
+                {
+                    divisionsid = divisionsid + 1;
+                }
+                else
+                {
+                    divisionsid = 1;
+                }
+                division.id = divisionsid;
 
 
                 division.created_date = DateTime.Now.Date;

@@ -78,7 +78,19 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                var teamid = _context.Teams.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (teamid != 0)
+                {
+                    teamid = teamid + 1;
+                }
+                else
+                {
+                    teamid = 1;
+                }
+                team.id = teamid;
+
                 team.created_date = DateTime.Now;
                 team.updated_date = DateTime.Now;
                 _context.Add(team);

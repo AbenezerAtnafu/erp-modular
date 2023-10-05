@@ -21,12 +21,7 @@ namespace ERP.Models.HRMS.Employee_managments
         [ForeignKey("Employement_Type")]
         public int employment_type_id { get; set; }
         public int? office_number { get; set; }
-        [Required(ErrorMessage = "The 'start date' field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The start date' field must be a valid Date.")]
-        public DateTime start_date { get; set; }
-        [Required(ErrorMessage = "The 'end date' field is required.")]
-        [DataType(DataType.Date, ErrorMessage = "The end date' field must be a valid Date.")]
-        public DateTime end_date { get; set;}
+     
         [Required(ErrorMessage = "The 'created_date' field is required.")]
         [DataType(DataType.Date, ErrorMessage = "The 'created_date' field must be a valid Date.")]
         public DateTime created_date { get; set; }

@@ -11,7 +11,7 @@
                 <h5>Organization List</h5>
                 <span class="d-block m-t-5">The following is a list of Organization.</span>
             </div>
-            <a class="btn btn-info float-right" asp-action="Create"><i class="feather icon-plus fa-fw"></i>Create New</a>
+           
         </div>
         <div class="card-block table-border-style">
             <div class="table-responsive">
@@ -35,9 +35,9 @@
                         {
                             <tr>
                                 <td>
-                                    @if (@item.name != null && @item.name.Length > 10)
+                                    @if (@item.name != null && @item.name.Length > 50)
                                     {
-                                    <h6 class="mb-1">@item.name.Substring(0, 10)...</h6>
+                                    <h6 class="mb-1">@item.name.Substring(0, 50)...</h6>
                                     }
                                     else
                                     {
@@ -46,9 +46,9 @@
 
                                 </td>
                                 <td>
-                                    @if (@item.description != null && @item.description.Length > 10)
+                                    @if (@item.description != null && @item.description.Length > 50)
                                     {
-                                        <p class="m-0">@item.description.Substring(0, 10)...</p>
+                                        <p class="m-0">@item.description.Substring(0, 50)...</p>
                                     }
                                     else
                                     {

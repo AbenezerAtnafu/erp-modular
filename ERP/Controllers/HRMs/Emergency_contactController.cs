@@ -73,8 +73,19 @@ namespace ERP.Controllers.HRMs
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
 
-            
 
+            var emergency_contactid = _context.emergency_Contacts.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+            if (emergency_contactid != 0)
+            {
+                emergency_contactid = emergency_contactid + 1;
+            }
+            else
+            {
+                emergency_contactid = 1;
+            }
+            emergency_contact.id = emergency_contactid;
 
             if (employee != null)
             {
