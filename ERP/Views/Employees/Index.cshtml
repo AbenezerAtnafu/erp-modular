@@ -11,52 +11,8 @@
 
 @{
     var searchTerm = ViewContext.HttpContext.Request.Query["searchTerm"];
-    var sortOrder = ViewContext.HttpContext.Request.Query["sortOrder"];
-    var birthdateFilter = ViewContext.HttpContext.Request.Query["birthdateFilter"];
-    var maritalStatusFilter = ViewContext.HttpContext.Request.Query["maritalStatusFilter"];
 }
 
-@* @using (Html.BeginForm("Index", "Employees", FormMethod.Get))
-{
-    <div class="form-group">
-        @Html.TextBox("searchTerm", searchTerm, new { @class = "form-control", placeholder = "Search by First name or Last name" })
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-
-    <div class="form-group">
-        <label for="sortOrder">Sort By:</label>
-        <select name="sortOrder" id="sortOrder" class="form-control">
-            <option value="">None</option>
-            <option value="asc" selected="@(sortOrder == "asc")">First Name (Ascending)</option>
-            <option value="desc" selected="@(sortOrder == "desc")">First Name (Descending)</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="birthdateFilter">Filter By Birthdate:</label>
-        <input type="date" name="birthdateFilter" id="birthdateFilter" class="form-control" value="@birthdateFilter" />
-    </div>
-
-    <div class="form-group">
-        <label for="maritalStatusFilter">Filter By Marital Status:</label>
-        <select name="maritalStatusFilter" id="maritalStatusFilter" class="form-control">
-
-            <option value="Single" selected="@(maritalStatusFilter == "Single" ? "selected" : null)">Single</option>
-            <option value="Married" selected="@(maritalStatusFilter == "Married" ? "selected" : null)">Married</option>
-            <option value="Divorced" selected="@(maritalStatusFilter == "Divorced" ? "selected" : null)">Divorced</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
-    </div>
-    @if (!string.IsNullOrEmpty(searchTerm) || !string.IsNullOrEmpty(sortOrder) || !string.IsNullOrEmpty(birthdateFilter) || !string.IsNullOrEmpty(maritalStatusFilter))
-    {
-        <a href="@Url.Action("Index")" class="btn btn-secondary">Clear Filters</a>
-    }
-} *@
 
 <div class="container px-1" style="position: initial;">
     <div class="card">
@@ -86,10 +42,9 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Birth Date</th>
                             <th>Gender</th>
                             <th>Department</th>
-                            <th></th>
+                            <th>Status</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -107,12 +62,12 @@
                                         <p class="m-0">@employee.first_name @employee.father_name</p>
                                     }
                                 </td>
-                                <td>@employee.date_of_birth.ToShortDateString()</td>-+
+                               
                                 <td>@employee.gender</td>
                                 <td>
-                                    @if (@employee.Employee_Office.Department.name != null && @employee.Employee_Office.Department.name.Length > 10)
+                                    @if (@employee.Employee_Office.Department.name != null && @employee.Employee_Office.Department.name.Length > 50)
                                     {
-                                        <p class="m-0">@employee.Employee_Office.Department.name.Substring(0, 10)...</p>
+                                        <p class="m-0">@employee.Employee_Office.Department.name.Substring(0, 50)...</p>
                                     }
                                     else
                                     {

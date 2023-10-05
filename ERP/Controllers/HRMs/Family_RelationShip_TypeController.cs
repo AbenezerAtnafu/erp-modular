@@ -82,7 +82,19 @@ namespace ERP.Controllers
             if (ModelState.IsValid)
             {
 
-               
+
+                var family_RelationShip_Typeid = _context.family_Histories.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (family_RelationShip_Typeid != 0)
+                {
+                    family_RelationShip_Typeid = family_RelationShip_Typeid + 1;
+                }
+                else
+                {
+                    family_RelationShip_Typeid = 1;
+                }
+                family_RelationShip_Type.id = family_RelationShip_Typeid;
 
 
                 family_RelationShip_Type.created_date = DateTime.Now.Date;

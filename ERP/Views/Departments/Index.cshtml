@@ -67,9 +67,9 @@
                             <tr>
                                
                                 <td>
-                                    @if (@item.name != null && @item.name.Length > 10)
+                                    @if (@item.name != null && @item.name.Length > 50)
                                     {
-                                        <h6 class="mb-1">@item.name.Substring(0, 10)...</h6>
+                                        <h6 class="mb-1">@item.name.Substring(0, 50)...</h6>
                                     }
                                     else
                                     {
@@ -78,9 +78,9 @@
 
                                 </td>
                                 <td>
-                                    @if (@item.Division.name != null && @item.Division.name.Length > 10)
+                                    @if (@item.Division.name != null && @item.Division.name.Length > 50)
                                     {
-                                        <h6 class="mb-1">@item.Division.name.Substring(0, 10)...</h6>
+                                        <h6 class="mb-1">@item.Division.name.Substring(0, 50)...</h6>
                                     }
                                     else
                                     {
@@ -89,9 +89,9 @@
 
                                 </td>
                                 <td>
-                                    @if (@item.description != null && @item.description.Length > 10)
+                                    @if (@item.description != null && @item.description.Length > 50)
                                     {
-                                        <p class="m-0">@item.description.Substring(0, 10)...</p>
+                                        <p class="m-0">@item.description.Substring(0, 50)...</p>
                                     }
                                     else
                                     {

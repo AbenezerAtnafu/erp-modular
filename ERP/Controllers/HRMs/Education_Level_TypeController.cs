@@ -82,8 +82,19 @@ namespace ERP.Models.HRMS.Types
         {
             if (ModelState.IsValid)
             {
+                var education_Level_Typeid = _context.Education_Level_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
 
-               
+
+                if (education_Level_Typeid != 0)
+                {
+                    education_Level_Typeid = education_Level_Typeid + 1;
+                }
+                else
+                {
+                    education_Level_Typeid = 1;
+                }
+                education_Level_Type.id = education_Level_Typeid;
+
                 education_Level_Type.created_date = DateTime.Now.Date;
                 education_Level_Type.updated_date = DateTime.Now.Date;
                 _context.Add(education_Level_Type);

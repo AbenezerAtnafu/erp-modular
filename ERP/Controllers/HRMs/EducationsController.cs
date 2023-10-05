@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 using ERP.Models.HRMS.File_managment;
 using X.PagedList;
 using ERP.Models.HRMS.Employee_managments;
+using HRMS.Office;
 
 
 namespace ERP.Controllers.HRMs
@@ -33,10 +34,11 @@ namespace ERP.Controllers.HRMs
             var pageNumber = page ?? 1;
 
             // Query to retrieve all educations including related entities
-            IQueryable<Education> all_educations = _context.Educations.Include(d => d.Education_Level_Type)
+            var all_educations = _context.Educations
+            .Include(d => d.Education_Level_Type)
                 .Include(d => d.Education_Program_Type).Include(d => d.Employee);
 
-       
+
 
             // Retrieve counts for different education statuses
             ViewBag.count_total = all_educations.Count();
@@ -46,7 +48,7 @@ namespace ERP.Controllers.HRMs
 
             // Retrieve paginated educations
             var educations_count = await all_educations.CountAsync();
-            var educations = await all_educations.OrderBy(u => u.created_date)
+            var educations = await all_educations
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -797,9 +799,21 @@ namespace ERP.Controllers.HRMs
             {
                 if (education.end_date >= education.start_date)
                 {
+                    var educationid = _context.Educations.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                    if (educationid != 0)
+                    {
+                        educationid = educationid + 1;
+                    }
+                    else
+                    {
+                        educationid = 1;
+                    }
                     education.status = null;
                     if (FormFile == null)
                     {
+                        education.id= educationid;  
                         education.filestatus = false;
                         education.employee_id = check_employee.id;
                         _context.Add(education);
@@ -809,6 +823,7 @@ namespace ERP.Controllers.HRMs
                     {
                         if (file_size < 524288000)
                         {
+                            education.id = educationid;
                             education.filestatus = true;
                             education.employee_id = check_employee.id;
                             education.Identificationnumber = random_max;
@@ -826,14 +841,24 @@ namespace ERP.Controllers.HRMs
                                     var files = new FileUpload
                                     {
 
-                                        id = 0,
-                                        created_at = DateTime.Now.Date,
+                                        
+                                        created_date = DateTime.Now.Date,
                                         name = filePath,
                                         Identificationnumbers = random_max
                                     };
-                                    
+
+                                    var filesid = _context.FileUploads.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
 
 
+                                    if (filesid != 0)
+                                    {
+                                        filesid = filesid + 1;
+                                    }
+                                    else
+                                    {
+                                        filesid = 1;
+                                    }
+                                    files.id= filesid;
                                     _context.Add(files);
                                     await _context.SaveChangesAsync();
 

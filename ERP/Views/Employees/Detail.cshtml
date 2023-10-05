@@ -487,80 +487,16 @@
                                                     @Html.DisplayFor(modelItem => item.name)
                                                 </td>
                                                 <td>
-                                                    @if (item.ability_to_Speak >= 0 && item.ability_to_Speak <= 25)
-                                                    {
-                                                        <span>Beginner</span>
-                                                    }
-                                                    else if (item.ability_to_Speak >= 26 && item.ability_to_Speak <= 50)
-                                                    {
-                                                        <span>Intermidiate</span>
-
-                                                    }
-                                                    else if (item.ability_to_Speak >= 51 && item.ability_to_Speak <= 75)
-                                                    {
-                                                        <span>Advanced</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>Native</span>
-                                                    }
+                                                   @item.ability_to_Speak
                                                 </td>
                                                 <td>
-                                                    @if (item.ability_to_listen >= 0 && item.ability_to_listen <= 25)
-                                                    {
-                                                        <span>Beginner</span>
-                                                    }
-                                                    else if (item.ability_to_listen >= 26 && item.ability_to_listen <= 50)
-                                                    {
-                                                        <span>Intermidiate</span>
-
-                                                    }
-                                                    else if (item.ability_to_listen >= 51 && item.ability_to_listen <= 75)
-                                                    {
-                                                        <span>Advanced</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>Native</span>
-                                                    }
+                                                    @item.ability_to_listen
                                                 </td>
                                                 <td>
-                                                    @if (item.ability_to_Speak >= 0 && item.ability_to_Speak <= 25)
-                                                    {
-                                                        <span>Beginner</span>
-                                                    }
-                                                    else if (item.ability_to_Speak >= 26 && item.ability_to_Speak <= 50)
-                                                    {
-                                                        <span>Intermidiate</span>
-
-                                                    }
-                                                    else if (item.ability_to_Speak >= 51 && item.ability_to_Speak <= 75)
-                                                    {
-                                                        <span>Advanced</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>Native</span>
-                                                    }
+                                                    @item.ability_to_Read
                                                 </td>
                                                 <td>
-                                                    @if (item.ability_to_write >= 0 && item.ability_to_write <= 25)
-                                                    {
-                                                        <span>Beginner</span>
-                                                    }
-                                                    else if (item.ability_to_write >= 26 && item.ability_to_write <= 50)
-                                                    {
-                                                        <span>Intermidiate</span>
-
-                                                    }
-                                                    else if (item.ability_to_write >= 51 && item.ability_to_write <= 75)
-                                                    {
-                                                        <span>Advanced</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>Native</span>
-                                                    }
+                                                    @item.ability_to_write
                                                 </td>
                                             </tr>
                                         }

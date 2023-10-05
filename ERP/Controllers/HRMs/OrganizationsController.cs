@@ -60,7 +60,20 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-              
+                var organizationid = _context.Organizations.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (organizationid != 0)
+                {
+                    organizationid = organizationid + 1;
+                }
+                else
+                {
+                    organizationid = 1;
+                }
+                organization.id = organizationid;
+
+
                 organization.created_date=DateTime.Now;
                 organization.updated_date=DateTime.Now;
                 _context.Add(organization);

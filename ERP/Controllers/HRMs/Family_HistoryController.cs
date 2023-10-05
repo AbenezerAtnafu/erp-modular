@@ -36,14 +36,14 @@ namespace ERP.Controllers.HRMs
             }
         }
 
-        public async Task<IActionResult> Index_Personal()
+        public async Task<IActionResult> IndexPersonal()
         {
             User user = await _userManager.GetUserAsync(User);
             var check_employee = _context.Employees.FirstOrDefault(a => a.user_id == user.Id);
 
             if (check_employee != null)
             {
-                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id).Include(e => e.Employees).Include(a=>a.Family_RelationShip_Type);
+                var assign_family_history = _context.family_Histories.Where(e => e.employee_id == check_employee.id);
                 return View(assign_family_history);
             }
             else
@@ -82,22 +82,36 @@ namespace ERP.Controllers.HRMs
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,full_name,job_name,house_number,phonenumber,alternative_phonenumber,gender,family_relationship_id,primary_address,employee_id,created_date,updated_date")] Family_History family_History)
+        public async Task<IActionResult> Create([Bind("id,full_name,job_name,house_number,phonenumber,alternative_phonenumber,gender,family_relationship_id,primary_address,Employeesid,employee_id,created_date,updated_date")] Family_History family_History)
         {
             
 
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
 
-           
+            var family_Historyid = _context.family_Histories.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+            if (family_Historyid != 0)
+            {
+                family_Historyid = family_Historyid + 1;
+            }
+            else
+            {
+                family_Historyid = 1;
+            }
+            family_History.id = family_Historyid;
 
             if (employee != null)
                 {
                     family_History.created_date = DateTime.Now.Date;
                     family_History.updated_date = DateTime.Now.Date;
                     family_History.employee_id = employee.id;
-                   
+                   // family_History.Employees.id = employee.id;
                     
+                
+
+
                     ViewData["family_relationship_id"] = new SelectList(_context.Family_RelationShip_Types, "id", "name", family_History.family_relationship_id);
                     _context.Add(family_History);
                     await _context.SaveChangesAsync();

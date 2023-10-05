@@ -84,7 +84,18 @@ namespace ERP.Controllers.HRMs
             if (ModelState.IsValid)
             {
 
-               
+                var departmentsid = _context.Departments.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (departmentsid != 0)
+                {
+                    departmentsid = departmentsid + 1;
+                }
+                else
+                {
+                    departmentsid = 1;
+                }
+                department.id = departmentsid;
 
 
 

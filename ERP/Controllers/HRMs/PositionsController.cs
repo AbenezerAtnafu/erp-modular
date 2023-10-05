@@ -79,7 +79,18 @@ namespace ERP.Controllers
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date")] Position position)
         {
             if(ModelState.IsValid){
-               
+                var positionid = _context.Position.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (positionid != 0)
+                {
+                    positionid = positionid + 1;
+                }
+                else
+                {
+                    positionid = 1;
+                }
+                position.id = positionid;
                 position.created_date = DateTime.Now.Date;
                 position.updated_date = DateTime.Now.Date;
                 _context.Add(position);

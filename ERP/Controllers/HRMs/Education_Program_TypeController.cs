@@ -81,7 +81,20 @@ namespace ERP.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
+                var education_Program_Typeid = _context.Education_Program_Types.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
+
+
+                if (education_Program_Typeid != 0)
+                {
+                    education_Program_Typeid = education_Program_Typeid + 1;
+                }
+                else
+                {
+                    education_Program_Typeid = 1;
+                }
+                education_Program_Type.id = education_Program_Typeid;
+
 
                 education_Program_Type.created_date = DateTime.Now.Date;
                 education_Program_Type.updated_date = DateTime.Now.Date;
