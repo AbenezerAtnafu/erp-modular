@@ -73,8 +73,8 @@
                     </div>
                     <div class="col-md-6 col-sm-12 ">
                         <label asp-for="gpa" class="control-label">GPA <span class="text-danger"></span></label>
-                        <input type="number" asp-for="gpa" step="any" class="form-control" placeholder="3.5" />
-                       
+                        <input type="number" step="any" asp-for="gpa" class="form-control" placeholder="3.5" />
+                        <small><span asp-validation-for="gpa" class="text-danger"></span></small>
                     </div>
                 </div>
                 <br/>

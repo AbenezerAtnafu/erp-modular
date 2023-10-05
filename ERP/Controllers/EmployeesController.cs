@@ -109,18 +109,17 @@ namespace ERP.Controllers
                       .Include(e => e.Employee_Address.Subcity)
                       .Include(e => e.Employee_Address.Woreda)
                       .Include(e => e.Employee_Contact)
-                       .Include(e => e.Employee_Office.Division)
+                      .Include(e => e.Employee_Office.Division)
                         .Include(e => e.Employee_Office.Department)
                         .Include(e => e.Employee_Office.Team)
-                          .Include(e => e.Employee_Office.Position)
-                           .Include(e => e.Employee_Office.Employement_Type)
-                              .Include(e => e.Marital_Status_Types)
-                                 .Include(e => e.Emergency_contact)
-                               .Include(e => e.Family_History)
-                               .Include(e => e.Language)
-                 
-                    .FirstOrDefaultAsync(e => e.id == id);
-
+                        .Include(e => e.Employee_Office.Position)
+                        .Include(e => e.Employee_Office.Employement_Type)
+                        .Include(e => e.Marital_Status_Types)
+                         .Include(e => e.Emergency_contact)
+                         .Include(e => e.Family_History)
+                         .Include(e => e.Language)
+                      .FirstOrDefaultAsync(e => e.id == id);
+              
                 if (employee == null)
                 {
                     ViewData["Employee"] = null;
@@ -136,6 +135,7 @@ namespace ERP.Controllers
                         ViewBag.ExpairyYear = DateTime.Now.Year + 14;
                         ViewBag.QrCodeUri = GenerateQRCode(employee.employee_code);
                         ViewBag.BarCodeUri = GenerateBarCode(employee.employee_code);
+                      
                     }
 
                     ViewData["Employee"] = employee;
@@ -446,6 +446,11 @@ namespace ERP.Controllers
                 emp.back_account_number = Convert.ToString(HttpContext.Request.Form["BankNumber"]);
                 emp.place_of_work = Convert.ToString(HttpContext.Request.Form["PlaceofWork"]);
                 emp.profile_status = null;
+
+                if(file!= null)
+                {
+                    emp.profile_picture = UploadPicture(file);
+                }
                 if (double.TryParse(HttpContext.Request.Form["Salary"], out double salary))
                 {
                     emp.salary = salary;
