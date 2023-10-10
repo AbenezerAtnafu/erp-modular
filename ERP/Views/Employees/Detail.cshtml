@@ -243,6 +243,14 @@
                                     <span class="text-muted">@employee.place_of_work</span>
                                 </div>
                             </div>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-sm-3">
+                                    <h6>Employment Type</h6>
+                                </div>
+                                <div class="col-sm-9 border-start">
+                                    <h6 class="text-muted">@employee.Employee_Office.Employement_Type.name</h6>
+                                </div>
+                            </div>
                         </div>
                         @if (Context.User.IsInRole("HR") && (employee.employee_code != null && employee.employee_code.Length >= 4))
                         {
@@ -261,13 +269,13 @@
                                                 <div class="text-center" style="width: 200px;">
                                                     @if (employee.profile_picture != null)
                                                     {
-                                                        <img src="~/img/male_img_avatar.png"
+                                                        <img src="@Url.Content("~/img/" + employee.profile_picture)"
                                                              class="thumbnail"
                                                              alt="John">
                                                     }
                                                     else
                                                     {
-                                                        <img src="@Url.Content("~/img/" + employee.profile_picture)"
+                                                        <img src="~/img/male_img_avatar.png"
                                                              class="thumbnail"
                                                              alt="John">
                                                     }
@@ -277,7 +285,7 @@
                                                     <p class="font-weight-bold" style="font-size:12px;">
                                                         @employee.first_name @employee.father_name @employee.grand_father_name
                                                     </p>
-                                                    <p class="font-weight-bold" style="font-size:10px;"></p>
+                                                    <p class="font-weight-bold" style="font-size:10px;">@employee.Employee_Office.Position.name</p>
 
                                                 </div>
                                                 <!-- side to side blue badges -->
@@ -431,24 +439,58 @@
                             @if (employee.Family_History != null)
                             {
                                 <h5 class="mb-4 pb-3 border-bottom font-weight-bold">Family Information</h5>
-                                @foreach (var item in employee.Family_History)
-                                {
-                                    <div class="d-flex">
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <h5>@item.full_name</h5><span>@item.gender</span>
-                                            </div>
-                                        </div>
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-sm-3">
-                                                <span>Occupation</span>
-                                            </div>
-                                            <div class="col-sm-9 border-start">
-                                                <span class="text-muted">@item.job_name</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Gender
+                                            </th>
+                                            <th>
+                                                Occupation
+                                            </th>
+                                            <th>
+                                                Relationship
+                                            </th>
+                                            <th>
+                                                Phone No
+                                            </th>
+                                            <th>
+                                                Alternative Phone No
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in employee.Family_History)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.full_name)
+                                                </td>
+                                                <td>
+                                                    @item.gender
+                                                </td>
+                                                <td>
+                                                    @item.job_name
+                                                </td>
+                                                <td>
+                                                    @item.Family_RelationShip_Type?.name
+                                                </td>
+                                                <td>
+                                                    @item.phonenumber
+                                                </td>
+                                                <td>
+                                                    @item.alternative_phonenumber
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
                             }
                             else
                             {
@@ -487,7 +529,7 @@
                                                     @Html.DisplayFor(modelItem => item.name)
                                                 </td>
                                                 <td>
-                                                   @item.ability_to_Speak
+                                                    @item.ability_to_Speak
                                                 </td>
                                                 <td>
                                                     @item.ability_to_listen

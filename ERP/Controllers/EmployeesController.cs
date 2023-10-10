@@ -454,7 +454,10 @@ namespace ERP.Controllers
                 {
                     emp.salary = null;
                 }
-
+                if(file != null)
+                {
+                    emp.profile_picture = UploadPicture(file);
+                }
                 emp_address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
                 if (Convert.ToInt32(HttpContext.Request.Form["Subcity"]) != 0)
                 {
@@ -674,7 +677,7 @@ namespace ERP.Controllers
             int gregorianMonth = DateTime.Now.Month;
             int ethiopianYear = (gregorianMonth < 9) ? DateTime.Now.Year - 8 : DateTime.Now.Year - 7;
             int ethiopianMonth = (gregorianMonth - 8 <= 0) ? gregorianMonth - 8 + 12 : gregorianMonth - 8;
-            string[] monthNames = { "መስከረም", "ትቅምት", "ሂዳር", "ታህሳስ", "ጥር", "Yekatit", "የካቲት", "መጋቢት", "ግንቦት", "ሰኔ", "ሃምሌ", "ነሃሴ", "ጳጉሜ" };
+            string[] monthNames = { "መስከረም", "ጥቅምት", "ሂዳር", "ታህሳስ", "ጥር", "Yekatit", "የካቲት", "መጋቢት", "ግንቦት", "ሰኔ", "ሃምሌ", "ነሃሴ", "ጳጉሜ" };
            return monthNames[ethiopianMonth - 1];
         }
         
