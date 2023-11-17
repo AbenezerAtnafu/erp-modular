@@ -3,6 +3,12 @@
 }
 
 <div class="text-center">
+    
+    @if (Context.User.IsInRole("HR")){
+    <iframe title="erp-dashbord" class="w-100" style="height: 90vh;" src="https://app.powerbi.com/view?r=eyJrIjoiZmUyOGQxY2EtYzczNC00MTFjLWIxZGMtNTliYjk1ZDg3Y2VmIiwidCI6IjdlYzdjZGQ2LTI2Y2MtNGIwMS1iOTA3LTI5MzllZGI5Y2Y1MyJ9" frameborder="0" allowFullScreen="true"></iframe>
+
+    }else{
     <h1 class="display-4">Welcome to Mols ERP </h1>
+    }
     
 </div>

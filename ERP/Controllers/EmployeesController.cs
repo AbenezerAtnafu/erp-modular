@@ -431,9 +431,13 @@ namespace ERP.Controllers
                 var emp_contact = _context.Employee_Contacts.FirstOrDefault(e => e.employee_id == emp.id);
                 var emp_office = _context.Employee_Offices.FirstOrDefault(e => e.employee_id == emp.id);
 
+
                 emp.first_name = Convert.ToString(HttpContext.Request.Form["FirstName"]);
                 emp.father_name = Convert.ToString(HttpContext.Request.Form["FatherName"]);
                 emp.grand_father_name = Convert.ToString(HttpContext.Request.Form["GrandFatherName"]);
+                emp.first_name_am = Convert.ToString(HttpContext.Request.Form["FirstNameAm"]);
+                emp.father_name_am = Convert.ToString(HttpContext.Request.Form["FatherNameAm"]);
+                emp.grand_father_name_am = Convert.ToString(HttpContext.Request.Form["GrandFatherNameAm"]);
                 emp.place_of_birth = Convert.ToString(HttpContext.Request.Form["PlaceofBirth"]);
                 emp.date_of_birth = Convert.ToDateTime(HttpContext.Request.Form["DateofBirth"]);
                 emp.start_date = Convert.ToDateTime(HttpContext.Request.Form["StartDate"]);
@@ -459,11 +463,11 @@ namespace ERP.Controllers
                 {
                     emp.salary = null;
                 }
-                if (file != null)
+                if(file != null)
                 {
                     emp.profile_picture = UploadPicture(file);
-
                 }
+                emp_address.region_id = Convert.ToInt32(HttpContext.Request.Form["Region"]);
                 if (Convert.ToInt32(HttpContext.Request.Form["Subcity"]) != 0)
                 {
                     emp_address.subcity_id = Convert.ToInt32(HttpContext.Request.Form["Subcity"]);
@@ -682,7 +686,7 @@ namespace ERP.Controllers
             int gregorianMonth = DateTime.Now.Month;
             int ethiopianYear = (gregorianMonth < 9) ? DateTime.Now.Year - 8 : DateTime.Now.Year - 7;
             int ethiopianMonth = (gregorianMonth - 8 <= 0) ? gregorianMonth - 8 + 12 : gregorianMonth - 8;
-            string[] monthNames = { "መስከረም", "ትቅምት", "ሂዳር", "ታህሳስ", "ጥር", "Yekatit", "የካቲት", "መጋቢት", "ግንቦት", "ሰኔ", "ሃምሌ", "ነሃሴ", "ጳጉሜ" };
+            string[] monthNames = { "መስከረም", "ጥቅምት", "ህዳር", "ታህሳስ", "ጥር", "Yekatit", "የካቲት", "መጋቢት", "ግንቦት", "ሰኔ", "ሃምሌ", "ነሃሴ", "ጳጉሜ" };
            return monthNames[ethiopianMonth - 1];
         }
         

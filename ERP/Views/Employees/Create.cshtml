@@ -108,7 +108,8 @@
                                         <input type="text"
                                                id="FirstName"
                                                name="FirstNameAm"
-                                               class="form-control name-input"
+                                               class="form-control"
+                                               min="1"
                                                placeholder="eg:አበበ" value="@((employee != null) ? employee.first_name_am : "")" />
                                         <small id="FirstNameValidation" class="text-danger"></small>
                                     </div>
@@ -116,14 +117,19 @@
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="FatherName" class="control-label">የአባት ስም <span class="text-danger">*</span></label>
-                                        <input type="text" id="FatherName" name="FatherNameAm" class="form-control name-input" placeholder="eg:ከበደ" value="@((employee != null) ? employee.father_name_am : "")" />
+                                        <input type="text" id="FatherName" name="FatherNameAm"  class="form-control"
+                                        min="1" 
+                                        placeholder="eg:ከበደ" value="@((employee != null) ? employee.father_name_am : "")" />
                                         <small id="FatherNameValidation" class="text-danger"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12 ">
                                     <div class="form-group p-2">
                                         <label for="GrandFatherName" class="control-label">የአያት ስም <span class="text-danger">*</span></label>
-                                        <input type="text" id="GrandFatherName" name="GrandFatherNameAm" class="form-control name-input" placeholder="eg:ጫላ" value="@((employee != null) ? employee.grand_father_name_am : "")" />
+                                        <input type="text" id="GrandFatherName" name="GrandFatherNameAm" 
+                                         class="form-control"
+                                         min="1"
+                                         placeholder="eg:ጫላ" value="@((employee != null) ? employee.grand_father_name_am : "")" />
                                         <small id="GrandFatherNameValidation" class="text-danger"></small>
                                     </div>
                                 </div>
