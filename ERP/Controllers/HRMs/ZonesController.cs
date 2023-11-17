@@ -59,7 +59,17 @@ namespace ERP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,name,description,created_date,updated_date,region_id")] Zone zone)
         {
+            var zoneid = _context.Zones.OrderByDescending(l => l.id).Select(l => l.id).FirstOrDefault();
 
+
+            if (zoneid != 0)
+            {
+                zoneid = zoneid + 1;
+            }
+            else
+            {
+                zoneid = 1;
+            }
 
             zone.updated_date = DateTime.Now;
                 zone.created_date = DateTime.Now;
