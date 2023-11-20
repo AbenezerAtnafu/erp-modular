@@ -1,13 +1,10 @@
 ﻿using ERP.Areas.Identity.Data;
-using ERP.Interface;
 using ERP.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using X.PagedList;
-using Newtonsoft.Json;
 
 namespace ERP.Controllers.UserManagment
 {
@@ -16,28 +13,21 @@ namespace ERP.Controllers.UserManagment
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly employee_context _context;
-        private readonly ICacheService _cacheService;
-        public UserRoleController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, employee_context context, ICacheService cacheService)
+      
+        public UserRoleController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, employee_context context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
-            _cacheService = cacheService;
+          
         }
 
         public async Task<IActionResult> Index(string searchTerm, int? page)
         {
             var pageSize = 10;
             var pageNumber = page ?? 1;
-            _cacheService.RemoveData("UserRoles");
+         
 
-            var cacheData = _cacheService.GetData("UserRoles");
-            if (!string.IsNullOrEmpty(cacheData))
-            {
-                var deserializedData = JsonConvert.DeserializeObject<IEnumerable<UserRolesViewModel>>(cacheData);
-                var pagedData = new StaticPagedList<UserRolesViewModel>(deserializedData, pageNumber, pageSize, deserializedData.Count());
-                return View(pagedData);
-            }
 
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);
             var users = _userManager.Users.Where(u => u.Id != currentUser.Id && u.is_active).ToList();
@@ -74,13 +64,8 @@ namespace ERP.Controllers.UserManagment
                 userRolesViewModel.Add(thisViewModel);
             }
 
-          
-
-
+      
             var pagedUserRoles = userRolesViewModel.ToPagedList(pageNumber, pageSize);
-           
-
-            _cacheService.SetData("UserRoles", pagedUserRoles, expiryTime);
 
             return View(pagedUserRoles);
         }
@@ -150,7 +135,7 @@ namespace ERP.Controllers.UserManagment
             var result = await _userManager.RemoveFromRolesAsync(user, roles);
             if (!result.Succeeded)
             {
-                TempData["Success"] = "Cannot remove user's existing roles.";
+                TempData["Error"] = "Cannot remove user's existing roles.";
                 return View(model);
             }
 

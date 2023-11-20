@@ -9,7 +9,6 @@ namespace ERP.Models.HRMS.Employee_managments
     public class Employee
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         [Required]
         [StringLength(200, ErrorMessage = "The 'profile picture' is can not be empty ", MinimumLength = 0)]
