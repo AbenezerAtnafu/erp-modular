@@ -1,4 +1,5 @@
-﻿using ERP.Areas.Identity.Data;
+﻿using Castle.Core.Internal;
+using ERP.Areas.Identity.Data;
 using ERP.Interface;
 using ERP.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,12 @@ namespace ERP.Controllers.AccountManagment
     {
         private readonly UserManager<User> _userManager;
         private readonly employee_context _context;
-        private readonly ICacheService _cacheService;
-        public UsersController(UserManager<User> userManager, employee_context context, ICacheService cacheService)
+      
+        public UsersController(UserManager<User> userManager, employee_context context)
         {
             _userManager = userManager;
             _context = context;
-            _cacheService = cacheService;
+          
         }
 
         public async Task<IActionResult> Index(string searchTerm, int? page)
@@ -62,15 +63,7 @@ namespace ERP.Controllers.AccountManagment
             var currentUser = await _userManager.GetUserAsync(User);
             var pageSize = 10;
             var pageNumber = page ?? 1;
-            _cacheService.RemoveData("Users");
-
-            var cacheData = _cacheService.GetData("Users");
-            if (!string.IsNullOrEmpty(cacheData))
-            {
-                var deserializedData = JsonConvert.DeserializeObject<IEnumerable<User>>(cacheData);
-                var pagedData = new StaticPagedList<User>(deserializedData, pageNumber, pageSize, deserializedData.Count());
-                return View(pagedData);
-            }
+       
 
             var usersQuery = _context.Users.Where(u => u.Id != currentUser.Id && u.is_active);
             var expiryTime = DateTimeOffset.Now.AddMinutes(5);
@@ -92,7 +85,7 @@ namespace ERP.Controllers.AccountManagment
                 .ToListAsync();
 
             var pagedUsers = new StaticPagedList<User>(users, pageNumber, pageSize, totalCount);
-            _cacheService.SetData("Users", pagedUsers, expiryTime);
+           
 
             return View(pagedUsers);
         }
@@ -105,20 +98,8 @@ namespace ERP.Controllers.AccountManagment
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var pageSize = 10;
-
-
-      
             var pageNumber = page ?? 1;
-            _cacheService.RemoveData("Users");
 
-
-            var cacheData = _cacheService.GetData("Users");
-            if (!string.IsNullOrEmpty(cacheData))
-            {
-                var deserializedData = JsonConvert.DeserializeObject<IEnumerable<User>>(cacheData);
-                var pagedData = new StaticPagedList<User>(deserializedData, pageNumber, pageSize, deserializedData.Count());
-                return View(pagedData);
-            }
 
             var usersQuery = _context.Users.Where(u => u.Id != currentUser.Id && !u.is_active);
 
@@ -142,8 +123,6 @@ namespace ERP.Controllers.AccountManagment
                 .ToListAsync();
 
             var pagedUsers = new StaticPagedList<User>(users, pageNumber, pageSize, totalCount);
-            _cacheService.SetData("Users", pagedUsers, expiryTime);
-
             return View(pagedUsers);
         }
 
@@ -164,7 +143,6 @@ namespace ERP.Controllers.AccountManagment
                 _userManager.UpdateAsync(user).Wait();
 
                 TempData["Success"] = "User is InActive.";
-                _cacheService.RemoveData("Users");
                 return RedirectToAction(nameof(ActiveUsers));
             }
         }
@@ -184,7 +162,6 @@ namespace ERP.Controllers.AccountManagment
                 _userManager.UpdateAsync(user).Wait();
 
                 TempData["Success"] = "User is Active. You can find it in active users.";
-                _cacheService.RemoveData("Users");
                 return RedirectToAction(nameof(InActiveUsers));
             }
         }
