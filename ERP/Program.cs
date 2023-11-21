@@ -4,7 +4,7 @@ using ERP;
 using ERP.Areas.Identity.Data;
 using Microsoft.Extensions.FileProviders;
 using ERP.Interface;
-/*using ERP.Service;*/
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +20,6 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>();
 
-/*builder.Services.AddScoped<ICacheService, CacheService>();*/
 builder.Services.AddIdentityCore<User>().AddUserManager<UserManager<User>>();
 
 builder.Services.ConfigureApplicationCookie(options =>

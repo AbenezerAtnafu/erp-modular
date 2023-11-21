@@ -1,0 +1,32 @@
+﻿@model ERP.Models.HRMS.Surety.Surety
+
+@{
+    ViewData["Title"] = "Surety Create";
+}
+
+<div class="container px-1" style="position:initial;">
+    <div class="card">
+        <div class="card-header">
+            <h5>Create New Surety</h5>
+            <span class="d-block m-t-5">Create a new Surety.</span>
+        </div>
+        <div class="card-block table-border-style">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="company_name" class="control-label">Company Name <span class="text-danger">*</span></label>
+                    <input asp-for="company_name" class="form-control" placeholder="Mols" />
+                    <small><span asp-validation-for="company_name" class="text-danger"></span></small>
+                </div>
+                <div class="form-group">
+                    <label asp-for="reason" class="control-label">Reason</label>
+                    <textarea asp-for="reason" class="form-control" placeholder="your reason "></textarea>
+                    <small><span asp-validation-for="reason" class="text-danger"></span></small>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

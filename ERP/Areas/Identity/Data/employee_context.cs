@@ -8,6 +8,8 @@ using HRMS.Education_management;
 using ERP.Models.HRMS.File_managment;
 using ERP.Models.HRMS.Employee_id;
 using ERP.Models.HRMS.Types;
+using ERP.Models.HRMS.Work_history;
+using ERP.Models.HRMS.Surety;
 
 namespace ERP.Areas.Identity.Data
 {
@@ -62,6 +64,9 @@ namespace ERP.Areas.Identity.Data
         public DbSet<Reward> Rewards { get; set; }
         public DbSet<Reward_Types> Reward_Types { get; set; }
         public DbSet<Position_Level_Types> Position_Level_Types { get; set; }
+        public DbSet<Organization_type> Organization_types { get; set; }
+        public DbSet<Work_history> Work_historys { get; set; }
+        public DbSet<Surety> Sureties { get; set; }
 
     }
 }
