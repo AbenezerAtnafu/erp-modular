@@ -15,6 +15,8 @@ namespace ERP.Models.HRMS.Surety
         public DateTime created_date { get; set; }
         public DateTime updated_date { get; set; }
         public Employee? Employee { get; set; }
+        public Employee_Office? Employee_Office { get; set; }
+        
 
     }
 }

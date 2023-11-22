@@ -43,15 +43,7 @@
                         {
                             <tr>
                                 <td>
-                                    @if (@item.Employee.employee_code != null && @item.Employee.employee_code.Length > 50)
-                                    {
-                                        <h6 class="mb-1">@item.Employee.employee_code.Substring(0, 50)...</h6>
-                                    }
-                                    else
-                                    {
                                         <h6 class="mb-1">@Html.DisplayFor(modelItem => item.Employee.employee_code)</h6>
-                                    }
-
                                 </td>
                                 <td>
 

@@ -26,9 +26,9 @@ namespace ERP.Controllers.HRMs
         // GET: Sureties
         public async Task<IActionResult> Index()
         {
-              return _context.Sureties != null ? 
-                          View(await _context.Sureties.ToListAsync()) :
-                          Problem("Entity set 'employee_context.Sureties'  is null.");
+            return _context.Sureties != null ?
+                        View(await _context.Sureties.Include(a=>a.Employee).ToListAsync()) :
+                        Problem("Entity set 'employee_context.Sureties'  is null.");
         }
         public async Task<IActionResult> IndexPersonal()
         {
@@ -37,7 +37,7 @@ namespace ERP.Controllers.HRMs
 
             if (check_employee != null)
             {
-                var assign_sureties = _context.Sureties.Where(e => e.emp_id == check_employee.id);
+                var assign_sureties = _context.Sureties.Where(e => e.emp_id == check_employee.id).Include(a => a.Employee);
                 return View(assign_sureties);
             }
             else
@@ -80,25 +80,35 @@ namespace ERP.Controllers.HRMs
             var a = surety.created_date;
             var users = _userManager.GetUserId(HttpContext.User);
             var employee = _context.Employees.FirstOrDefault(a => a.user_id == users);
-            if (employee != null && employee.Employee_Office.Employement_Type.name== "Permanent")
+            var employment_type_id = _context.Employee_Offices.FirstOrDefault(e => e.employee_id == employee.id);
+
+            if (employee != null)
             {
-                surety.created_date = DateTime.Now;
-                surety.updated_date = DateTime.Now;
-                bool valueExists = _context.Sureties.Any(a => a.emp_id == employee.id);
-                if (valueExists)
+                if (employment_type_id.employment_type_id == 4)
                 {
-                    TempData["Warning"] = "you alrady have a record on surity table " +
-                        "detail:" + a;
+                    surety.created_date = DateTime.Now;
+                    surety.updated_date = DateTime.Now;
+                    bool valueExists = _context.Sureties.Any(a => a.emp_id == employee.id);
+                    if (valueExists)
+                    {
+                        TempData["Warning"] = "you alrady have a record on surity table " + 
+                            "detail:" + "date:" + surety.created_date.Date + "company name:" + surety.company_name;
+                        return RedirectToAction(nameof(Create));
+                    }
+                    else
+                    {
+                        surety.emp_id = employee.id;
+                        _context.Add(surety);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(IndexPersonal));
+                    }
                 }
                 else
                 {
-                    surety.emp_id = employee.id;
-                }
-                _context.Add(surety);
-                await _context.SaveChangesAsync();
+                    TempData["Warning"] = "You are not Permanent Employee";
+                    return RedirectToAction(nameof(Create));
 
-                TempData["Success"] = "New surety is added.";
-                return RedirectToAction(nameof(IndexPersonal));
+                }
             }
             else
             {
@@ -135,11 +145,11 @@ namespace ERP.Controllers.HRMs
             {
                 return NotFound();
             }
-                
+
             surety.created_date = DateTime.Now;
             surety.updated_date = DateTime.Now;
             surety.emp_id = id;
-              
+
             return View(surety);
         }
 
@@ -175,14 +185,14 @@ namespace ERP.Controllers.HRMs
             {
                 _context.Sureties.Remove(surety);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SuretyExists(int id)
         {
-          return (_context.Sureties?.Any(e => e.id == id)).GetValueOrDefault();
+            return (_context.Sureties?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }
