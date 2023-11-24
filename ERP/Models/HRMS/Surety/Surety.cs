@@ -7,15 +7,14 @@ namespace ERP.Models.HRMS.Surety
     public class Surety
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public int emp_id { get; set; }
         public string? company_name { get; set;}
         public string? reason { get; set; }
         public DateTime created_date { get; set; }
         public DateTime updated_date { get; set; }
-        public Employee? Employee { get; set; }
-        public Employee_Office? Employee_Office { get; set; }
+        public Employee? Employees { get; set; }
+        /*public Employee_Office Employee_Offices { get; set; }*/
         
 
     }

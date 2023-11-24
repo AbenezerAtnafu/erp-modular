@@ -26,9 +26,9 @@ namespace ERP.Controllers.HRMs
         // GET: Sureties
         public async Task<IActionResult> Index()
         {
-            return _context.Sureties != null ?
-                        View(await _context.Sureties.Include(a=>a.Employee).ToListAsync()) :
-                        Problem("Entity set 'employee_context.Sureties'  is null.");
+            var employee_context = _context.Sureties.Include(a => a.Employees);
+            return View(employee_context);
+                       
         }
         public async Task<IActionResult> IndexPersonal()
         {
@@ -37,7 +37,7 @@ namespace ERP.Controllers.HRMs
 
             if (check_employee != null)
             {
-                var assign_sureties = _context.Sureties.Where(e => e.emp_id == check_employee.id).Include(a => a.Employee);
+                var assign_sureties = _context.Sureties.Where(e => e.emp_id == check_employee.id).Include(a => a.Employees);
                 return View(assign_sureties);
             }
             else
@@ -86,8 +86,8 @@ namespace ERP.Controllers.HRMs
             {
                 if (employment_type_id.employment_type_id == 4)
                 {
-                    surety.created_date = DateTime.Now;
-                    surety.updated_date = DateTime.Now;
+                    surety.created_date = DateTime.Now.Date;
+                    surety.updated_date = DateTime.Now.Date;
                     bool valueExists = _context.Sureties.Any(a => a.emp_id == employee.id);
                     if (valueExists)
                     {
