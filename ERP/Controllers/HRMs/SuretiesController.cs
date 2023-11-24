@@ -107,7 +107,6 @@ namespace ERP.Controllers.HRMs
                 {
                     TempData["Warning"] = "You are not Permanent Employee";
                     return RedirectToAction(nameof(Create));
-
                 }
             }
             else
