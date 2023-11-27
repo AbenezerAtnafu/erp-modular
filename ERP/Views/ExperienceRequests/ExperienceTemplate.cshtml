@@ -1,0 +1,50 @@
+﻿@model ERP.Models.HRMS.Surety.ExperienceRequest
+
+@{
+    ViewData["Title"] = "Request Experience";
+}
+
+
+<div>
+    <div class="template-head">
+        <img src="" alt="MOls" />
+    </div>
+    <div class="template-aside">
+        <ul>
+            <li>ቁጥር:</li>
+            <li>Ref. No</li>
+            <li>ቀን:</li>
+            <li>Date</li>
+        </ul>
+    </div>
+
+    <div class="template-body">
+        <h3>ለሚመለከተው ሁሉ</h3>
+        <h3>
+            <span style="text-decoration: none;">
+                ጉዳዩ:-
+            </span>
+            የስራ ልምድ ማስረጃ ለመስጠት
+        </h3>
+        <div>
+            <p>
+                የሚንስትር መ/ቤታችን የስራ ባልደረባ የነበሩት አቶ ወይዘሮ ያገለገሉበት የስራ ልምድ ማስረጃ ደብዳቤ አንዲፃፍላቸው በቀን ዓ.ም በፃፉት ማመልከቻ ጠይቀውናል።
+            </p>
+            <p>
+                በሚኒስቴር መ/ቤታችን:- <br />
+                ዓ.ም ጀምሮ ውስጥ የስራ መደብ ላይ የወር ደመወዝ አየተከፈላቸው እስከ ድረስ ያገለገሉ መሆኑን አገልጻፃለን።
+            </p>
+            <p class="end">
+                ከሠላምታ ጋር
+            </p>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

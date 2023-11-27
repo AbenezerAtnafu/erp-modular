@@ -67,6 +67,7 @@ namespace ERP.Areas.Identity.Data
         public DbSet<Organization_type> Organization_types { get; set; }
         public DbSet<Work_history> Work_historys { get; set; }
         public DbSet<Surety> Sureties { get; set; }
+        public DbSet<ERP.Models.HRMS.Surety.ExperienceRequest>? ExperienceRequest { get; set; }
 
     }
 }

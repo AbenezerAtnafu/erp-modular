@@ -1,0 +1,168 @@
+﻿@model ERP.Models.HRMS.Surety.ExperienceRequest
+
+@{
+    ViewData["Title"] = "Request Experience";
+}
+
+
+<div>
+    <div class="template-head">
+        <img src="" alt="MOls" />
+    </div>
+    <div class="template-aside">
+        <ul>
+            <li>ቁጥር:</li>
+            <li>Ref. No</li>
+            <li>ቀን: </li>
+            <li>Date </li>
+        </ul>
+    </div>
+
+    <div class="template-body">
+        <h3>ለሚመለከተው ሁሉ</h3>
+        <h3>
+            <span style="text-decoration: none;">
+                ጉዳዩ:-
+            </span>
+            የስራ ልምድ ማስረጃ ለመስጠት
+        </h3>
+        <div>
+            <p>
+                የሚንስትር መ/ቤታችን የስራ ባልደረባ የነበሩት 
+                @if(Model.Employee.gender == "Male")
+                {
+                    <strong>አቶ</strong>
+                }
+                else
+                {
+                     <strong>ወይዘሮ</strong>
+                }
+                @Model.Employee.first_name_am 
+                @Model.Employee.father_name_am
+                @Model.Employee.grand_father_name_am
+                  ያገለገሉበት የስራ ልምድ ማስረጃ ደብዳቤ አንዲፃፍላቸው በቀን @Model.created_date ዓ.ም በፃፉት ማመልከቻ ጠይቀውናል።
+            </p>
+            <p>
+                በሚኒስቴር መ/ቤታችን:- <br />
+                @Model.Employee.start_date ዓ.ም ጀምሮ 
+                @Model.Employee.Employee_Office.Team.name ውስጥ
+                @Model.Employee.Employee_Office.Position.name
+                የስራ መደብ ላይ የወር ደመወዝ 
+                @Model.Employee.salary
+                አየተከፈላቸው እስከ
+                --- add dynamic end date using the model
+                ድረስ ያገለገሉ መሆኑን አገልጻፃለን።
+            </p>
+            <p class="end">
+                ከሠላምታ ጋር
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="margin-top: 10%;">
+    <div class="template-head">
+        <img src="" alt="MOls" />
+    </div>
+    <div class="template-aside">
+        <ul>
+            <li>ቁጥር:</li>
+            <li>Ref. No</li>
+            <li>ቀን: </li>
+            <li>Date </li>
+        </ul>
+    </div>
+
+    <div class="template-body">
+        <h3>To whom it may concern</h3>
+        <div>
+            <p>
+                This is to certify that
+                @if (Model.Employee.gender == "Male")
+                {
+                    <strong>Mr</strong>
+                }
+                else
+                {
+                    <strong>Mrs</strong>
+                }
+                @Model.Employee.first_name
+                @Model.Employee.father_name
+                @Model.Employee.grand_father_name, an employee of our Ministry, has requested us to provide
+                @if (Model.Employee.gender == "Male")
+                {
+                    <span>him</span>
+                }
+                else
+                {
+                    <span>her</span>
+                }
+                a letter of confirmation that states
+                @if (Model.Employee.gender == "Male")
+                {
+                    <span>his</span>
+                }
+                else
+                {
+                    <span>her</span>
+                }
+                work experience.
+                <br />   <br />   <br />
+                Accordingly, we confirm that 
+                @if (Model.Employee.gender == "Male")
+                {
+                    <strong>Mr</strong>
+                }
+                else
+                {
+                    <strong>Mrs</strong>
+                }
+                @Model.Employee.first_name
+                @Model.Employee.father_name
+                @Model.Employee.grand_father_name has served:
+            </p>
+            <p>
+                <strong>Minstry of labor and skills:</strong> <br />
+                From
+                @Model.Employee.start_date until the date of this letter, he is working under
+                @Model.Employee.Employee_Office.Team.name as 
+                @Model.Employee.Employee_Office.Position.name
+                position and being paid a monthly salary of
+                @Model.Employee.salary and we would like to state that this proof of work experience is 
+                given to 
+                @if (Model.Employee.gender == "Male")
+                {
+                    <span>him</span>
+                }
+                else
+                {
+                    <span>her</span>
+                }
+                as per
+                @if (Model.Employee.gender == "Male")
+                {
+                    <span>his</span>
+                }
+                else
+                {
+                    <span>her</span>
+                }
+                request and does not use as a resignation.
+                
+            </p>
+            <p style="margin-top: 7%;">
+                Sincerely,
+            </p>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
