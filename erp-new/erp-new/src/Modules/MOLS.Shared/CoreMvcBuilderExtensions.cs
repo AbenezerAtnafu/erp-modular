@@ -28,22 +28,19 @@ public static class CoreMvcBuilderExtensions
         }
 
         string path = configuration.GetValue<string>(CONFIG_MODULES_PATH);
-        
-        var binariesFolderPath = Path.Combine("MOLS.Modules.Account", binariesFolderName);
-        var binariesFolder = new DirectoryInfo(binariesFolderPath);
-        
+       
         
         List<IModuleBase> modulesList = new List<IModuleBase>();
 
         if (string.IsNullOrEmpty(path))
-            path = Path.Combine(new FileInfo(Assembly.GetEntryAssembly().Location).DirectoryName, BASE_DIR_NAME_FOR_MODULES);
+            path = Path.Combine("C:\\Users\\Brook\\source\\repos\\erp-modular\\erp-new\\erp-new\\src\\Modules\\MOLS.Modules.Account\\bin\\Debug\\net8.0");
 
-        if (!Directory.Exists(binariesFolderPath))
+        if (!Directory.Exists(path))
             return builder;
 
         DirectoryInfo di = new DirectoryInfo(path);
 
-        foreach (var file in binariesFolder.GetFileSystemInfos("*.dll", SearchOption.TopDirectoryOnly))
+        foreach (var file in di.GetFileSystemInfos("*.dll", SearchOption.TopDirectoryOnly))
         {
             Assembly moduleAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file.FullName);
             Type moduleType = moduleAssembly.GetTypes().FirstOrDefault(x => typeof(IModuleBase).IsAssignableFrom(x));
@@ -65,10 +62,10 @@ public static class CoreMvcBuilderExtensions
             {
                 area = controller.GetTypeInfo().GetCustomAttribute<AreaAttribute>();
 
-                if (area == null)
-                    throw new MissingAttributeException($"Missing '{nameof(AreaAttribute)}' for controller {controller.FullName}");
-
-                list.Add(new ControllerInfo(area.RouteValue, controller.Name.Replace("Controller", "")));
+                /*if (area == null)
+                    throw new MissingAttributeException($"Missing '{nameof(AreaAttribute)}' for controller {controller.FullName}");*/
+/*
+                list.Add(new ControllerInfo(area.RouteValue, controller.Name.Replace("Controller", "")));*/
             }
 
             IModuleBase module = (IModuleBase)Activator.CreateInstance(moduleType, moduleAssembly);

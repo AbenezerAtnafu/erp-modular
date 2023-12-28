@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MOLS.Modules.Account.Models;
 
 namespace MOLS.Modules.Account.Controllers;
